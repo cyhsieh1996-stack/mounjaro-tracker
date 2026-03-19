@@ -1,102 +1,195 @@
-# 猛健樂健康紀錄
+# 猛健樂用藥紀錄
 
 這是一個手機優先的單頁網頁應用，可記錄：
 
-- 用藥紀錄：日期、時間、劑量、備註
+- 用藥紀錄：日期、時間、劑量、施打位置、備註
 - 體重紀錄：每日體重、備註
 - 檢驗紀錄：總膽固醇、HDL、LDL、三酸甘油脂、空腹血糖
 
-## 使用方式
+## 目前版本
 
-直接用瀏覽器開啟 `index.html` 即可使用。
+這個專案現在支援兩種模式：
 
-如果你想從手機操作，最簡單的方式有兩種：
+1. 本機模式：資料存瀏覽器 `localStorage`
+2. Supabase 模式：資料存雲端資料庫，可跨裝置同步
 
-1. 將整個資料夾部署到靜態網站服務，例如 GitHub Pages、Netlify 或 Vercel。
-2. 在家中電腦啟動本機伺服器，並讓手機連同一個 Wi-Fi 後用瀏覽器打開。
+如果 `config.js` 沒有填 Supabase 金鑰，網站會自動使用本機模式。
 
-例如在這個資料夾執行：
+## 本機使用
+
+直接用瀏覽器開啟 `index.html` 即可。
+
+如果要讓手機在同一個 Wi-Fi 下開啟，可在這個資料夾執行：
 
 ```bash
 python3 -m http.server 8080
 ```
 
-之後用手機打開：
+然後在手機打開：
 
 ```text
 http://你的電腦區網IP:8080
 ```
 
-## 資料儲存
+## Cloudflare Pages + Supabase
 
-目前資料儲存在瀏覽器 `localStorage`，不會自動上傳到雲端。
+這是目前最適合多人共用的部署方式：
 
-建議定期使用畫面上的「匯出資料」功能，把資料存成 JSON 檔保留。
+- Cloudflare Pages：放前端網站
+- Supabase：儲存共用資料
 
-### 目前這種做法的特性
+## 第 1 步：建立 Supabase 專案
 
-- 同一台裝置、同一個瀏覽器會保留資料
-- 換手機、換瀏覽器、清除瀏覽器資料後，原本資料不會自動帶過去
-- GitHub Pages 只負責「放網站」，不會幫你儲存每次輸入的資料
+1. 到 [Supabase](https://supabase.com/) 註冊並登入
+2. 建立一個新 project
+3. 選擇地區
+4. 設定 database password
+5. 等專案建立完成
 
-### 如果要手機與電腦同步
+## 第 2 步：建立資料表
 
-你可以考慮三種方案：
+1. 進入 Supabase project
+2. 打開 `SQL Editor`
+3. 新增一個 query
+4. 把 [supabase-schema.sql](/Users/CYHsieh/Desktop/猛間樂減重紀錄/supabase-schema.sql) 的內容整份貼上
+5. 按 `Run`
 
-1. 最簡單：繼續用 `localStorage`，搭配手動匯出/匯入 JSON
-2. 中等複雜度：接上 Firebase 或 Supabase，資料可跨裝置同步
-3. 進階：做登入系統與資料庫後端
+這份 SQL 會建立：
 
-如果只是你自己日常紀錄，建議先用第 1 種；如果你希望手機和電腦都能看到同一份資料，下一步建議升級到 Firebase 或 Supabase。
+- `medications`
+- `weights`
+- `labs`
 
-## 部署到 GitHub Pages
+目前策略是「共用資料模式」：
 
-### 1. 建立 GitHub repository
+- 任何拿到網站的人都能讀寫同一份資料
+- 適合團隊共用單一資料池
 
-先在 GitHub 建一個新 repo，例如：
+如果你之後要改成「每位同事只能看自己的資料」，我可以再幫你加登入與權限。
+
+## 第 3 步：取得 Supabase 金鑰
+
+到 Supabase project 的：
+
+- `Settings`
+- `API`
+
+記下兩個值：
+
+1. `Project URL`
+2. `anon public key`
+
+## 第 4 步：填入前端設定
+
+打開 [config.js](/Users/CYHsieh/Desktop/猛間樂減重紀錄/config.js)，把內容改成：
+
+```js
+window.APP_CONFIG = {
+  supabase: {
+    url: "https://YOUR_PROJECT_ID.supabase.co",
+    anonKey: "YOUR_SUPABASE_ANON_KEY",
+  },
+};
+```
+
+如果你想保留一份範例，可以參考 [config.example.js](/Users/CYHsieh/Desktop/猛間樂減重紀錄/config.example.js)。
+
+## 第 5 步：建立 Git repository
+
+在這個資料夾執行：
+
+```bash
+git add .
+git commit -m "Initial commit"
+```
+
+如果 git 還沒設定名稱與 email，先執行：
+
+```bash
+git config --global user.name "你的名字"
+git config --global user.email "你的Email"
+```
+
+然後再重新執行 commit。
+
+## 第 6 步：建立 GitHub repository
+
+1. 到 [GitHub](https://github.com/)
+2. 建立新的 repository
+3. 假設 repo 名稱叫：
 
 ```text
 mounjaro-tracker
 ```
 
-### 2. 在這個資料夾執行
+## 第 7 步：推到 GitHub
 
-把下面的 `YOUR_GITHUB_NAME` 換成你的 GitHub 帳號，把 `mounjaro-tracker` 換成你實際 repo 名稱：
+把下面的 `YOUR_GITHUB_NAME` 換成你的 GitHub 帳號：
 
 ```bash
-git add .
-git commit -m "Initial commit"
 git branch -M main
 git remote add origin https://github.com/YOUR_GITHUB_NAME/mounjaro-tracker.git
 git push -u origin main
 ```
 
-### 3. 在 GitHub 開啟 Pages
+## 第 8 步：部署到 Cloudflare Pages
 
-進入 repo 後：
-
-1. 打開 `Settings`
-2. 打開 `Pages`
-3. 在 `Build and deployment` 中選 `Deploy from a branch`
-4. Branch 選 `main`
-5. Folder 選 `/ (root)`
-
-幾分鐘後就會得到一個像下面的網址：
+1. 到 [Cloudflare Pages](https://pages.cloudflare.com/)
+2. 登入 Cloudflare
+3. 按 `Create a project`
+4. 選 `Connect to Git`
+5. 連接 GitHub
+6. 選你剛建立的 `mounjaro-tracker`
+7. Build 設定：
 
 ```text
-https://YOUR_GITHUB_NAME.github.io/mounjaro-tracker/
+Framework preset: None
+Build command: 留空
+Build output directory: /
 ```
 
-手機直接打開這個網址就可以用。
+8. 按 `Save and Deploy`
 
-## 建議的下一步
+部署完成後，你會得到一個 Cloudflare Pages 網址，手機直接打開即可。
 
-如果你要的不只是「把網站放上 GitHub」，而是希望資料真的能跨裝置同步，我建議下一步改做：
+## 資料存在哪裡
 
-- GitHub Pages 負責前端頁面
-- Firebase 或 Supabase 負責資料儲存
+### 如果沒有設定 Supabase
 
-如果你要，我下一步可以直接幫你把這個專案升級成：
+資料存在每台裝置自己的瀏覽器：
 
-- `GitHub Pages + Firebase`
-- 或 `GitHub Pages + Supabase`
+- 手機資料只在手機
+- 電腦資料只在電腦
+- 不會自動同步
+
+### 如果有設定 Supabase
+
+資料存在 Supabase 雲端資料庫：
+
+- 手機和電腦可共用
+- 同事也能看到同一份資料
+- 不再依賴單一裝置的瀏覽器
+
+## 目前最重要的注意事項
+
+這個版本的 Supabase 設定是「共用資料模式」。
+
+意思是：
+
+- 知道網站網址的人，都能存取同一份資料
+- 適合小團隊內部先使用
+- 不適合公開給外部不特定人員
+
+如果你接下來要正式給同事使用，我建議下一步做：
+
+1. 加登入
+2. 每位使用者只看自己的資料
+3. 管理者可看全部
+
+## 下一步
+
+如果你要，我下一步可以直接幫你做其中一個：
+
+1. 把 `config.js` 改成更安全的部署方式
+2. 加上 Supabase 登入
+3. 改成每位同事只看自己的資料

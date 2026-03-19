@@ -3,7 +3,12 @@ const STORAGE_KEY = "mounjaro-health-tracker-v1";
 const today = new Date().toISOString().split("T")[0];
 const nowTime = new Date().toTimeString().slice(0, 5);
 
-const state = loadState();
+const state = {
+  medications: [],
+  weights: [],
+  labs: [],
+};
+
 const charts = {
   weight: null,
   labs: null,
@@ -22,6 +27,7 @@ const clearDataButton = document.getElementById("clear-data-button");
 const injectionRegionSelect = document.getElementById("injection-region");
 const injectionDetailSelect = document.getElementById("injection-detail");
 const injectionDetailLabel = document.getElementById("injection-detail-label");
+const syncStatus = document.getElementById("sync-status");
 
 const injectionSiteOptions = {
   肚臍: ["左側", "右側", "上方", "下方"],
@@ -29,15 +35,39 @@ const injectionSiteOptions = {
   上臂: ["左上臂內側", "左上臂外側", "右上臂內側", "右上臂外側"],
 };
 
-document.addEventListener("DOMContentLoaded", initializeApp);
+const appConfig = window.APP_CONFIG || {};
+const supabaseConfig = appConfig.supabase || {};
+const hasSupabaseConfig = Boolean(supabaseConfig.url && supabaseConfig.anonKey && window.supabase);
+const supabaseClient = hasSupabaseConfig
+  ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey)
+  : null;
+let activeStorageMode = supabaseClient ? "supabase" : "local";
+let eventsBound = false;
 
-function initializeApp() {
+document.addEventListener("DOMContentLoaded", () => {
+  initializeApp().catch((error) => {
+    console.error(error);
+    window.alert("初始化資料時發生問題，已切換成本機模式。");
+    renderSyncStatus("local", true);
+    setDefaultFormValues();
+    bindEvents();
+    render();
+  });
+});
+
+async function initializeApp() {
   setDefaultFormValues();
   bindEvents();
+  await loadInitialData();
   render();
 }
 
 function bindEvents() {
+  if (eventsBound) {
+    return;
+  }
+  eventsBound = true;
+
   tabButtons.forEach((button) => {
     button.addEventListener("click", () => setActiveTab(button.dataset.tabTarget));
   });
@@ -45,6 +75,7 @@ function bindEvents() {
   injectionRegionSelect.addEventListener("change", () => {
     syncInjectionDetailOptions(injectionRegionSelect.value);
   });
+
   injectionDetailSelect.addEventListener("change", () => {
     medicationForm.elements.injectionSite.value = buildInjectionSite(
       injectionRegionSelect.value,
@@ -52,59 +83,59 @@ function bindEvents() {
     );
   });
 
-  medicationForm.addEventListener("submit", (event) => {
+  medicationForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(medicationForm);
-    state.medications.push({
+    const record = {
       id: crypto.randomUUID(),
-      date: formData.get("date"),
-      time: formData.get("time"),
+      date: String(formData.get("date")),
+      time: String(formData.get("time")),
       dose: Number(formData.get("dose")),
       injectionSite: String(formData.get("injectionSite")),
       note: String(formData.get("note")).trim(),
-    });
-    state.medications.sort(sortByDateTimeDesc);
+    };
+
+    await saveRecord("medications", record);
     medicationForm.reset();
     medicationForm.elements.date.value = today;
     medicationForm.elements.time.value = nowTime;
     medicationForm.elements.dose.value = "2.5";
     injectionRegionSelect.value = "肚臍";
     syncInjectionDetailOptions("肚臍", "左側");
-    persistAndRender();
   });
 
-  weightForm.addEventListener("submit", (event) => {
+  weightForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(weightForm);
-    state.weights.push({
+    const record = {
       id: crypto.randomUUID(),
-      date: formData.get("date"),
+      date: String(formData.get("date")),
       weight: Number(formData.get("weight")),
       note: String(formData.get("note")).trim(),
-    });
-    state.weights.sort(sortByDateDesc);
+    };
+
+    await saveRecord("weights", record);
     weightForm.reset();
     weightForm.elements.date.value = today;
-    persistAndRender();
   });
 
-  labsForm.addEventListener("submit", (event) => {
+  labsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(labsForm);
-    state.labs.push({
+    const record = {
       id: crypto.randomUUID(),
-      date: formData.get("date"),
+      date: String(formData.get("date")),
       totalCholesterol: Number(formData.get("totalCholesterol")),
       hdl: Number(formData.get("hdl")),
       ldl: Number(formData.get("ldl")),
       triglycerides: Number(formData.get("triglycerides")),
       fastingGlucose: Number(formData.get("fastingGlucose")),
       note: String(formData.get("note")).trim(),
-    });
-    state.labs.sort(sortByDateDesc);
+    };
+
+    await saveRecord("labs", record);
     labsForm.reset();
     labsForm.elements.date.value = today;
-    persistAndRender();
   });
 
   medicationList.addEventListener("click", handleDelete);
@@ -114,6 +145,28 @@ function bindEvents() {
   exportButton.addEventListener("click", exportData);
   importInput.addEventListener("change", importData);
   clearDataButton.addEventListener("click", clearAllData);
+}
+
+async function loadInitialData() {
+  if (!supabaseClient) {
+    Object.assign(state, loadState());
+    activeStorageMode = "local";
+    renderSyncStatus("local");
+    return;
+  }
+
+  try {
+    const remoteData = await fetchSupabaseData();
+    Object.assign(state, remoteData);
+    saveState();
+    activeStorageMode = "supabase";
+    renderSyncStatus("supabase");
+  } catch (error) {
+    console.error("Supabase load failed, fallback to localStorage.", error);
+    Object.assign(state, loadState());
+    activeStorageMode = "local";
+    renderSyncStatus("local", true);
+  }
 }
 
 function setDefaultFormValues() {
@@ -159,7 +212,7 @@ function setActiveTab(formId) {
   });
 }
 
-function handleDelete(event) {
+async function handleDelete(event) {
   const button = event.target.closest("[data-delete-id]");
   if (!button) {
     return;
@@ -173,8 +226,57 @@ function handleDelete(event) {
   };
 
   const key = collections[deleteType];
-  state[key] = state[key].filter((item) => item.id !== deleteId);
-  persistAndRender();
+  await removeRecord(key, deleteId);
+}
+
+async function saveRecord(collection, record) {
+  try {
+    if (activeStorageMode === "supabase" && supabaseClient) {
+      await upsertSupabaseRecord(collection, record);
+      Object.assign(state, await fetchSupabaseData());
+      saveState();
+      renderSyncStatus("supabase");
+    } else {
+      state[collection].push(record);
+      sortCollection(collection);
+      saveState();
+      renderSyncStatus("local");
+    }
+
+    render();
+  } catch (error) {
+    console.error(error);
+    window.alert("儲存資料失敗，請稍後再試。");
+  }
+}
+
+async function removeRecord(collection, id) {
+  try {
+    if (activeStorageMode === "supabase" && supabaseClient) {
+      await deleteSupabaseRecord(collection, id);
+      Object.assign(state, await fetchSupabaseData());
+      saveState();
+      renderSyncStatus("supabase");
+    } else {
+      state[collection] = state[collection].filter((item) => item.id !== id);
+      saveState();
+      renderSyncStatus("local");
+    }
+
+    render();
+  } catch (error) {
+    console.error(error);
+    window.alert("刪除資料失敗，請稍後再試。");
+  }
+}
+
+function sortCollection(collection) {
+  if (collection === "medications") {
+    state[collection].sort(sortByDateTimeDesc);
+    return;
+  }
+
+  state[collection].sort(sortByDateDesc);
 }
 
 function render() {
@@ -384,49 +486,73 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `mounjaro-tracker-backup-${today}.json`;
+  link.download = `mounjaro-tracker-data-${today}.json`;
   link.click();
   URL.revokeObjectURL(url);
 }
 
-function importData(event) {
+async function importData(event) {
   const [file] = event.target.files || [];
   if (!file) {
     return;
   }
 
   const reader = new FileReader();
-  reader.onload = () => {
+  reader.onload = async () => {
     try {
       const parsed = JSON.parse(String(reader.result));
-      state.medications = Array.isArray(parsed.medications) ? parsed.medications : [];
-      state.weights = Array.isArray(parsed.weights) ? parsed.weights : [];
-      state.labs = Array.isArray(parsed.labs) ? parsed.labs : [];
-      persistAndRender();
+      const nextState = {
+        medications: Array.isArray(parsed.medications) ? parsed.medications : [],
+        weights: Array.isArray(parsed.weights) ? parsed.weights : [],
+        labs: Array.isArray(parsed.labs) ? parsed.labs : [],
+      };
+
+      if (activeStorageMode === "supabase" && supabaseClient) {
+        await replaceSupabaseData(nextState);
+        Object.assign(state, await fetchSupabaseData());
+        saveState();
+        renderSyncStatus("supabase");
+      } else {
+        Object.assign(state, nextState);
+        saveState();
+        renderSyncStatus("local");
+      }
+
+      render();
     } catch (error) {
+      console.error(error);
       window.alert("匯入失敗，請確認檔案格式是否正確。");
     } finally {
       importInput.value = "";
     }
   };
+
   reader.readAsText(file);
 }
 
-function clearAllData() {
+async function clearAllData() {
   const shouldClear = window.confirm("確定要清空所有資料嗎？這個動作無法復原。");
   if (!shouldClear) {
     return;
   }
 
-  state.medications = [];
-  state.weights = [];
-  state.labs = [];
-  persistAndRender();
-}
+  try {
+    if (activeStorageMode === "supabase" && supabaseClient) {
+      await replaceSupabaseData({ medications: [], weights: [], labs: [] });
+      Object.assign(state, { medications: [], weights: [], labs: [] });
+      saveState();
+      renderSyncStatus("supabase");
+    } else {
+      Object.assign(state, { medications: [], weights: [], labs: [] });
+      saveState();
+      renderSyncStatus("local");
+    }
 
-function persistAndRender() {
-  saveState();
-  render();
+    render();
+  } catch (error) {
+    console.error(error);
+    window.alert("清空資料失敗，請稍後再試。");
+  }
 }
 
 function loadState() {
@@ -449,6 +575,161 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+async function fetchSupabaseData() {
+  const [medicationsResult, weightsResult, labsResult] = await Promise.all([
+    supabaseClient.from("medications").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
+    supabaseClient.from("weights").select("*").order("date", { ascending: false }),
+    supabaseClient.from("labs").select("*").order("date", { ascending: false }),
+  ]);
+
+  handleSupabaseError(medicationsResult.error);
+  handleSupabaseError(weightsResult.error);
+  handleSupabaseError(labsResult.error);
+
+  return {
+    medications: (medicationsResult.data || []).map(mapMedicationFromDb),
+    weights: (weightsResult.data || []).map(mapWeightFromDb),
+    labs: (labsResult.data || []).map(mapLabFromDb),
+  };
+}
+
+async function upsertSupabaseRecord(collection, record) {
+  const table = getSupabaseTable(collection);
+  const payload = mapRecordToDb(collection, record);
+  const result = await supabaseClient.from(table).upsert(payload);
+  handleSupabaseError(result.error);
+}
+
+async function deleteSupabaseRecord(collection, id) {
+  const table = getSupabaseTable(collection);
+  const result = await supabaseClient.from(table).delete().eq("id", id);
+  handleSupabaseError(result.error);
+}
+
+async function replaceSupabaseData(nextState) {
+  await Promise.all([
+    supabaseClient.from("medications").delete().not("id", "is", null),
+    supabaseClient.from("weights").delete().not("id", "is", null),
+    supabaseClient.from("labs").delete().not("id", "is", null),
+  ]).then((results) => results.forEach((result) => handleSupabaseError(result.error)));
+
+  if (nextState.medications.length) {
+    const result = await supabaseClient
+      .from("medications")
+      .insert(nextState.medications.map((item) => mapRecordToDb("medications", item)));
+    handleSupabaseError(result.error);
+  }
+
+  if (nextState.weights.length) {
+    const result = await supabaseClient
+      .from("weights")
+      .insert(nextState.weights.map((item) => mapRecordToDb("weights", item)));
+    handleSupabaseError(result.error);
+  }
+
+  if (nextState.labs.length) {
+    const result = await supabaseClient
+      .from("labs")
+      .insert(nextState.labs.map((item) => mapRecordToDb("labs", item)));
+    handleSupabaseError(result.error);
+  }
+}
+
+function getSupabaseTable(collection) {
+  return {
+    medications: "medications",
+    weights: "weights",
+    labs: "labs",
+  }[collection];
+}
+
+function mapRecordToDb(collection, record) {
+  if (collection === "medications") {
+    return {
+      id: record.id,
+      date: record.date,
+      time: record.time,
+      dose: record.dose,
+      injection_site: record.injectionSite,
+      note: record.note,
+    };
+  }
+
+  if (collection === "weights") {
+    return {
+      id: record.id,
+      date: record.date,
+      weight: record.weight,
+      note: record.note,
+    };
+  }
+
+  return {
+    id: record.id,
+    date: record.date,
+    total_cholesterol: record.totalCholesterol,
+    hdl: record.hdl,
+    ldl: record.ldl,
+    triglycerides: record.triglycerides,
+    fasting_glucose: record.fastingGlucose,
+    note: record.note,
+  };
+}
+
+function mapMedicationFromDb(record) {
+  return {
+    id: record.id,
+    date: record.date,
+    time: record.time,
+    dose: Number(record.dose),
+    injectionSite: record.injection_site,
+    note: record.note || "",
+  };
+}
+
+function mapWeightFromDb(record) {
+  return {
+    id: record.id,
+    date: record.date,
+    weight: Number(record.weight),
+    note: record.note || "",
+  };
+}
+
+function mapLabFromDb(record) {
+  return {
+    id: record.id,
+    date: record.date,
+    totalCholesterol: Number(record.total_cholesterol),
+    hdl: Number(record.hdl),
+    ldl: Number(record.ldl),
+    triglycerides: Number(record.triglycerides),
+    fastingGlucose: Number(record.fasting_glucose),
+    note: record.note || "",
+  };
+}
+
+function handleSupabaseError(error) {
+  if (error) {
+    throw error;
+  }
+}
+
+function renderSyncStatus(mode, fallback = false) {
+  if (!syncStatus) {
+    return;
+  }
+
+  if (mode === "supabase") {
+    syncStatus.textContent = "目前使用 Supabase 雲端同步模式";
+    return;
+  }
+
+  syncStatus.textContent = fallback
+    ? "Supabase 連線失敗，已切換成本機儲存模式"
+    : "目前使用本機儲存模式";
 }
 
 function formatDate(dateString, short = false) {
