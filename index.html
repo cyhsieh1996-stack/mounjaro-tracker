@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>猛健樂紀錄</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="background-glow background-glow-left"></div>
+    <div class="background-glow background-glow-right"></div>
+
+    <main class="app-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">HEALTH TRACKER</p>
+          <h1>猛健樂用藥紀錄</h1>
+        </div>
+        <div class="hero-stats" id="hero-stats">
+          <article class="stat-card">
+            <span>最近體重</span>
+            <strong id="latest-weight-stat">尚無資料</strong>
+          </article>
+          <article class="stat-card">
+            <span>最近劑量</span>
+            <strong id="latest-dose-stat">尚無資料</strong>
+          </article>
+          <article class="stat-card">
+            <span>最近檢驗</span>
+            <strong id="latest-lab-stat">尚無資料</strong>
+          </article>
+        </div>
+      </header>
+
+      <section class="workspace workspace-input">
+        <div class="workspace-header">
+          <div>
+            <p class="section-tag">INPUT</p>
+            <h2>資料輸入區</h2>
+          </div>
+        </div>
+
+        <section class="panel form-panel">
+          <div class="section-heading">
+            <div>
+              <p class="section-tag">INPUT</p>
+              <h2>新增紀錄</h2>
+            </div>
+            <div class="tab-bar" role="tablist" aria-label="資料類型">
+              <button class="tab active" type="button" data-tab-target="medication-form">用藥</button>
+              <button class="tab" type="button" data-tab-target="weight-form">體重</button>
+              <button class="tab" type="button" data-tab-target="labs-form">檢驗</button>
+            </div>
+          </div>
+
+          <div class="form-stack">
+            <form id="medication-form" class="data-form active" autocomplete="off">
+              <div class="field-grid">
+                <label class="field">
+                  <span>用藥日期</span>
+                  <input name="date" type="date" required />
+                </label>
+                <label class="field">
+                  <span>用藥時間</span>
+                  <input name="time" type="time" required />
+                </label>
+                <div class="field-grid field-grid-nested field-wide">
+                  <label class="field">
+                    <span>施打部位</span>
+                    <select name="injectionRegion" id="injection-region" required>
+                      <option value="肚臍">肚臍</option>
+                      <option value="大腿">大腿</option>
+                      <option value="上臂">上臂</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span id="injection-detail-label">細部位置（上下左右）</span>
+                    <select name="injectionDetail" id="injection-detail" required></select>
+                  </label>
+                  <input name="injectionSite" type="hidden" />
+                </div>
+                <fieldset class="field dose-fieldset">
+                  <span>劑量（mg）</span>
+                  <div class="dose-options">
+                    <label class="dose-option">
+                      <input name="dose" type="radio" value="2.5" checked required />
+                      <span>2.5 mg</span>
+                    </label>
+                    <label class="dose-option">
+                      <input name="dose" type="radio" value="5" />
+                      <span>5 mg</span>
+                    </label>
+                    <label class="dose-option">
+                      <input name="dose" type="radio" value="7.5" />
+                      <span>7.5 mg</span>
+                    </label>
+                    <label class="dose-option">
+                      <input name="dose" type="radio" value="10" />
+                      <span>10 mg</span>
+                    </label>
+                  </div>
+                </fieldset>
+                <label class="field field-wide">
+                  <span>備註</span>
+                  <input name="note" type="text" maxlength="120" placeholder="例如：打左腹、當天食慾明顯下降" />
+                </label>
+              </div>
+              <button class="primary-button primary-button-wide" type="submit">儲存用藥紀錄</button>
+            </form>
+
+            <form id="weight-form" class="data-form" autocomplete="off" hidden>
+              <div class="field-grid">
+                <label class="field">
+                  <span>紀錄日期</span>
+                  <input name="date" type="date" required />
+                </label>
+                <label class="field">
+                  <span>體重（kg）</span>
+                  <input name="weight" type="number" min="0" step="0.1" placeholder="例如 78.4" required />
+                </label>
+                <label class="field field-wide">
+                  <span>備註</span>
+                  <input name="note" type="text" maxlength="120" placeholder="例如：早上空腹量測" />
+                </label>
+              </div>
+              <button class="primary-button primary-button-wide" type="submit">儲存體重紀錄</button>
+            </form>
+
+            <form id="labs-form" class="data-form" autocomplete="off" hidden>
+              <div class="field-grid">
+                <label class="field">
+                  <span>檢驗日期</span>
+                  <input name="date" type="date" required />
+                </label>
+                <label class="field">
+                  <span>總膽固醇</span>
+                  <input name="totalCholesterol" type="number" min="0" step="1" placeholder="mg/dL" required />
+                </label>
+                <label class="field">
+                  <span>高密度膽固醇（HDL）</span>
+                  <input name="hdl" type="number" min="0" step="1" placeholder="mg/dL" required />
+                </label>
+                <label class="field">
+                  <span>低密度膽固醇（LDL）</span>
+                  <input name="ldl" type="number" min="0" step="1" placeholder="mg/dL" required />
+                </label>
+                <label class="field">
+                  <span>三酸甘油脂（TG）</span>
+                  <input name="triglycerides" type="number" min="0" step="1" placeholder="mg/dL" required />
+                </label>
+                <label class="field">
+                  <span>空腹血糖</span>
+                  <input name="fastingGlucose" type="number" min="0" step="1" placeholder="mg/dL" required />
+                </label>
+                <label class="field field-wide">
+                  <span>備註</span>
+                  <input name="note" type="text" maxlength="120" placeholder="例如：健檢 / 門診檢驗" />
+                </label>
+              </div>
+              <button class="primary-button primary-button-wide" type="submit">儲存檢驗紀錄</button>
+            </form>
+          </div>
+        </section>
+
+      </section>
+
+      <section class="workspace workspace-browse">
+        <div class="workspace-header">
+          <div>
+            <p class="section-tag">BROWSE</p>
+            <h2>資料瀏覽區</h2>
+          </div>
+        </div>
+
+        <section class="browse-top-grid">
+          <article class="panel">
+            <div class="section-heading compact">
+              <div>
+                <p class="section-tag">MEDICATION</p>
+                <h2>用藥紀錄</h2>
+              </div>
+            </div>
+            <div id="medication-list" class="record-list empty-state">尚無用藥紀錄</div>
+          </article>
+
+          <article class="panel">
+            <div class="section-heading compact">
+              <div>
+                <p class="section-tag">WEIGHT</p>
+                <h2>體重紀錄</h2>
+              </div>
+            </div>
+            <div id="weight-list" class="record-list empty-state">尚無體重紀錄</div>
+          </article>
+
+          <article class="panel">
+            <div class="section-heading compact">
+              <div>
+                <p class="section-tag">LAB RESULTS</p>
+                <h2>檢驗紀錄</h2>
+              </div>
+            </div>
+            <div id="labs-list" class="record-list empty-state">尚無檢驗紀錄</div>
+          </article>
+        </section>
+
+        <section class="trends-grid">
+          <article class="panel chart-panel">
+            <div class="section-heading compact">
+              <div>
+                <p class="section-tag">TRENDS</p>
+                <h2>體重變化</h2>
+              </div>
+            </div>
+            <canvas id="weight-chart" aria-label="體重折線圖"></canvas>
+          </article>
+
+          <article class="panel chart-panel">
+            <div class="section-heading compact">
+              <div>
+                <p class="section-tag">LABS</p>
+                <h2>檢驗指標走勢</h2>
+              </div>
+            </div>
+            <canvas id="labs-chart" aria-label="檢驗數據折線圖"></canvas>
+          </article>
+        </section>
+      </section>
+
+      <section class="panel quick-actions page-actions">
+        <button class="ghost-button" id="export-button" type="button">匯出資料</button>
+        <label class="ghost-button file-button" for="import-input">匯入資料</label>
+        <input id="import-input" type="file" accept="application/json" hidden />
+        <button class="ghost-button danger-button" id="clear-data-button" type="button">清空所有資料</button>
+      </section>
+    </main>
+  </body>
+</html>
