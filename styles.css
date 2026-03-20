@@ -120,6 +120,7 @@ fieldset {
 
 .auth-panel {
   display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
   gap: 1rem;
   align-items: end;
   padding: 1.15rem;
@@ -164,6 +165,7 @@ fieldset {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+  grid-column: 1 / -1;
 }
 
 .auth-user {
@@ -530,6 +532,7 @@ canvas {
   }
 
   .auth-panel {
+    grid-template-columns: 1fr;
     padding: 1rem;
   }
 
