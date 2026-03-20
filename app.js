@@ -59,7 +59,6 @@ const supabaseClient = hasSupabaseConfig
 let activeStorageMode = supabaseClient ? "supabase" : "local";
 let eventsBound = false;
 let currentSession = null;
-let hasShownWeightTimeCompatibilityNotice = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   initializeApp().catch((error) => {
@@ -886,7 +885,7 @@ function saveState() {
 async function fetchSupabaseData() {
   const [medicationsResult, weightsResult, labsResult] = await Promise.all([
     supabaseClient.from("medications").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
-    fetchWeightsWithCompatibilityFallback(),
+    supabaseClient.from("weights").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
     supabaseClient.from("labs").select("*").order("date", { ascending: false }),
   ]);
 
@@ -901,32 +900,10 @@ async function fetchSupabaseData() {
   };
 }
 
-async function fetchWeightsWithCompatibilityFallback() {
-  let result = await supabaseClient.from("weights").select("*").order("date", { ascending: false }).order("time", { ascending: false });
-
-  if (isMissingWeightTimeColumnError(result.error)) {
-    result = await supabaseClient.from("weights").select("*").order("date", { ascending: false });
-  }
-
-  return result;
-}
-
 async function upsertSupabaseRecord(collection, record) {
   const table = getSupabaseTable(collection);
   const payload = mapRecordToDb(collection, record);
-  let result = await supabaseClient.from(table).upsert(payload);
-
-  if (collection === "weights" && isMissingWeightTimeColumnError(result.error)) {
-    const fallbackPayload = { ...payload };
-    delete fallbackPayload.time;
-    result = await supabaseClient.from(table).upsert(fallbackPayload);
-
-    if (!result.error && !hasShownWeightTimeCompatibilityNotice) {
-      hasShownWeightTimeCompatibilityNotice = true;
-      window.alert("目前體重資料已先成功儲存，但雲端資料表尚未完成時間欄位更新，所以這筆體重時間不會被保留。請到 Supabase SQL Editor 重新執行最新的 schema。");
-    }
-  }
-
+  const result = await supabaseClient.from(table).upsert(payload);
   handleSupabaseError(result.error);
 }
 
@@ -952,20 +929,9 @@ async function replaceSupabaseData(nextState) {
   }
 
   if (nextState.weights.length) {
-    let result = await supabaseClient
+    const result = await supabaseClient
       .from("weights")
       .insert(nextState.weights.map((item) => mapRecordToDb("weights", item)));
-
-    if (isMissingWeightTimeColumnError(result.error)) {
-      result = await supabaseClient.from("weights").insert(
-        nextState.weights.map((item) => {
-          const payload = mapRecordToDb("weights", item);
-          delete payload.time;
-          return payload;
-        }),
-      );
-    }
-
     handleSupabaseError(result.error);
   }
 
@@ -1051,15 +1017,6 @@ function handleSupabaseError(error) {
   if (error) {
     throw error;
   }
-}
-
-function isMissingWeightTimeColumnError(error) {
-  if (!error) {
-    return false;
-  }
-
-  const message = String(error.message || "").toLowerCase();
-  return message.includes("time") && (message.includes("column") || message.includes("schema cache"));
 }
 
 function renderSyncStatus(mode, fallback = false) {
