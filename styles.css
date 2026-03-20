@@ -1099,11 +1099,17 @@ canvas {
 
   .section-toggle {
     min-width: 0;
-    width: fit-content;
-    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    flex: 0 0 auto;
+    margin-left: auto;
     align-self: center;
-    padding: 0.46rem 0.68rem;
-    font-size: 0.8rem;
+    padding: 0.34rem 0.58rem;
+    border-radius: 14px;
+    font-size: 0.78rem;
+    line-height: 1.1;
   }
 
   .section-heading {
