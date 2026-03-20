@@ -1279,7 +1279,7 @@ canvas {
 
   .quick-actions {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.55rem;
   }
 
@@ -1300,9 +1300,14 @@ canvas {
 
   .quick-actions .ghost-button,
   .quick-actions .danger-button {
+    min-width: 0;
+    padding-left: 0.48rem;
+    padding-right: 0.48rem;
     border-radius: 14px;
     background: linear-gradient(180deg, rgba(250, 246, 255, 0.98), rgba(241, 235, 250, 0.94));
     border-color: rgba(127, 108, 177, 0.18);
+    font-size: 0.82rem;
+    line-height: 1.2;
   }
 }
 
