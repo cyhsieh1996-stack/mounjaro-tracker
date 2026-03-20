@@ -886,7 +886,7 @@ function saveState() {
 async function fetchSupabaseData() {
   const [medicationsResult, weightsResult, labsResult] = await Promise.all([
     supabaseClient.from("medications").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
-    supabaseClient.from("weights").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
+    fetchWeightsWithCompatibilityFallback(),
     supabaseClient.from("labs").select("*").order("date", { ascending: false }),
   ]);
 
@@ -899,6 +899,16 @@ async function fetchSupabaseData() {
     weights: (weightsResult.data || []).map(mapWeightFromDb),
     labs: (labsResult.data || []).map(mapLabFromDb),
   };
+}
+
+async function fetchWeightsWithCompatibilityFallback() {
+  let result = await supabaseClient.from("weights").select("*").order("date", { ascending: false }).order("time", { ascending: false });
+
+  if (isMissingWeightTimeColumnError(result.error)) {
+    result = await supabaseClient.from("weights").select("*").order("date", { ascending: false });
+  }
+
+  return result;
 }
 
 async function upsertSupabaseRecord(collection, record) {
