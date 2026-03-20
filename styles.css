@@ -565,6 +565,14 @@ fieldset {
   font-size: 1rem;
 }
 
+.record-card-header strong {
+  font-size: 1.42rem;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--accent-deep);
+  letter-spacing: -0.02em;
+}
+
 .record-card p {
   margin: 0.2rem 0;
   color: var(--muted);
@@ -899,7 +907,7 @@ canvas {
   }
 
   .record-card-header strong {
-    font-size: 0.94rem;
+    font-size: 1.28rem;
     white-space: nowrap;
   }
 
@@ -982,5 +990,6 @@ canvas {
 
   .record-card-header strong {
     white-space: normal;
+    font-size: 1.16rem;
   }
 }
