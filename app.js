@@ -603,8 +603,8 @@ function renderCharts() {
         {
           label: "體重 (kg)",
           data: weightData.map((item) => item.weight),
-          borderColor: "#cb5b3f",
-          backgroundColor: "rgba(203, 91, 63, 0.16)",
+          borderColor: "#476dc7",
+          backgroundColor: "rgba(71, 109, 199, 0.18)",
           borderWidth: 3,
           tension: 0.28,
           fill: true,
