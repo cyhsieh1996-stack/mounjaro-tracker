@@ -164,7 +164,7 @@
             </form>
 
             <form id="inbody-form" class="data-form" autocomplete="off" hidden novalidate>
-              <div class="field-grid">
+              <div class="field-grid compact-field-grid">
                 <label class="field">
                   <span>InBody 日期</span>
                   <input name="date" type="date" required />
@@ -202,7 +202,7 @@
             </form>
 
             <form id="labs-form" class="data-form" autocomplete="off" hidden novalidate>
-              <div class="field-grid">
+              <div class="field-grid compact-field-grid">
                 <label class="field">
                   <span>檢驗日期</span>
                   <input name="date" type="date" required />
@@ -226,6 +226,10 @@
                 <label class="field">
                   <span>空腹血糖</span>
                   <input name="fastingGlucose" type="number" min="0" step="1" placeholder="mg/dL" required />
+                </label>
+                <label class="field">
+                  <span>尿酸</span>
+                  <input name="uricAcid" type="number" min="0" step="0.1" placeholder="mg/dL" required />
                 </label>
               </div>
               <button class="primary-button primary-button-wide" type="submit">儲存檢驗紀錄</button>

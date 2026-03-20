@@ -30,6 +30,7 @@ create table if not exists labs (
   ldl numeric not null,
   triglycerides numeric not null,
   fasting_glucose numeric not null,
+  uric_acid numeric not null,
   note text not null default '',
   created_at timestamptz not null default now()
 );
@@ -53,6 +54,7 @@ alter table weights add column if not exists user_id uuid default auth.uid();
 alter table labs add column if not exists user_id uuid default auth.uid();
 alter table inbody add column if not exists user_id uuid default auth.uid();
 alter table weights add column if not exists time text default '';
+alter table labs add column if not exists uric_acid numeric;
 
 alter table medications enable row level security;
 alter table weights enable row level security;

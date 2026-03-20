@@ -175,8 +175,9 @@ function bindEvents() {
     const ldl = parseRequiredNumberField(labsForm, "ldl", "低密度膽固醇（LDL）");
     const triglycerides = parseRequiredNumberField(labsForm, "triglycerides", "三酸甘油脂（TG）");
     const fastingGlucose = parseRequiredNumberField(labsForm, "fastingGlucose", "空腹血糖");
+    const uricAcid = parseRequiredNumberField(labsForm, "uricAcid", "尿酸");
 
-    if ([totalCholesterol, hdl, ldl, triglycerides, fastingGlucose].some((value) => value === null)) {
+    if ([totalCholesterol, hdl, ldl, triglycerides, fastingGlucose, uricAcid].some((value) => value === null)) {
       return;
     }
 
@@ -188,6 +189,7 @@ function bindEvents() {
       ldl,
       triglycerides,
       fastingGlucose,
+      uricAcid,
     };
 
     await saveRecord("labs", record);
@@ -713,15 +715,12 @@ function renderLabsList() {
           <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
         </div>
         <div class="lab-metrics">
-          <div class="lab-metric-row">
-            <span class="lab-metric"><span class="lab-metric-label">TC</span><span class="lab-metric-value">${item.totalCholesterol}</span></span>
-            <span class="lab-metric"><span class="lab-metric-label">HDL</span><span class="lab-metric-value">${item.hdl}</span></span>
-            <span class="lab-metric"><span class="lab-metric-label">LDL</span><span class="lab-metric-value">${item.ldl}</span></span>
-          </div>
-          <div class="lab-metric-row">
-            <span class="lab-metric"><span class="lab-metric-label">TG</span><span class="lab-metric-value">${item.triglycerides}</span></span>
-            <span class="lab-metric"><span class="lab-metric-label">FPG</span><span class="lab-metric-value">${item.fastingGlucose}</span></span>
-          </div>
+          <span class="lab-metric"><span class="lab-metric-label">TC</span><span class="lab-metric-value">${item.totalCholesterol}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">HDL</span><span class="lab-metric-value">${item.hdl}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">LDL</span><span class="lab-metric-value">${item.ldl}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">TG</span><span class="lab-metric-value">${item.triglycerides}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">FPG</span><span class="lab-metric-value">${item.fastingGlucose}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">UA</span><span class="lab-metric-value">${formatDecimal(item.uricAcid)}</span></span>
         </div>
       </article>
     `,
@@ -741,21 +740,13 @@ function renderInBodyList() {
           <button class="record-button" type="button" data-delete-collection="inbody" data-delete-id="${item.id}">刪除</button>
         </div>
         <div class="lab-metrics inbody-metrics">
-          <div class="lab-metric-row">
-            <span class="lab-metric"><span class="lab-metric-label">體重</span><span class="lab-metric-value">${formatDecimal(item.weight)}</span></span>
-            <span class="lab-metric"><span class="lab-metric-label">骨骼肌</span><span class="lab-metric-value">${formatDecimal(item.skeletalMuscleMass)}</span></span>
-          </div>
-          <div class="lab-metric-row">
-            <span class="lab-metric"><span class="lab-metric-label">體脂重</span><span class="lab-metric-value">${formatDecimal(item.bodyFatMass)}</span></span>
-            <span class="lab-metric"><span class="lab-metric-label">體脂率</span><span class="lab-metric-value">${formatDecimal(item.bodyFatPercentage)}</span></span>
-          </div>
-          <div class="lab-metric-row">
-            <span class="lab-metric"><span class="lab-metric-label">內臟脂肪</span><span class="lab-metric-value">${formatDecimal(item.visceralFatArea)}</span></span>
-          </div>
-          <div class="lab-metric-row">
-            <span class="lab-metric"><span class="lab-metric-label">分數</span><span class="lab-metric-value">${Math.round(item.inbodyScore)}</span></span>
-            <span class="lab-metric"><span class="lab-metric-label">BMR</span><span class="lab-metric-value">${Math.round(item.basalMetabolicRate)}</span></span>
-          </div>
+          <span class="lab-metric"><span class="lab-metric-label">體重</span><span class="lab-metric-value">${formatDecimal(item.weight)}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">骨骼肌</span><span class="lab-metric-value">${formatDecimal(item.skeletalMuscleMass)}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">體脂重</span><span class="lab-metric-value">${formatDecimal(item.bodyFatMass)}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">體脂率</span><span class="lab-metric-value">${formatDecimal(item.bodyFatPercentage)}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">內臟脂肪</span><span class="lab-metric-value">${formatDecimal(item.visceralFatArea)}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">分數</span><span class="lab-metric-value">${Math.round(item.inbodyScore)}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">BMR</span><span class="lab-metric-value">${Math.round(item.basalMetabolicRate)}</span></span>
         </div>
       </article>
     `,
@@ -819,6 +810,7 @@ function renderCharts() {
         buildLabDataset("LDL", labsData, "ldl", "#476dc7"),
         buildLabDataset("TG", labsData, "triglycerides", "#d89a1d"),
         buildLabDataset("空腹血糖", labsData, "fastingGlucose", "#8c4cc9"),
+        buildLabDataset("尿酸", labsData, "uricAcid", "#3f5db7"),
       ],
     },
     options: getChartOptions(),
@@ -1137,6 +1129,7 @@ function mapRecordToDb(collection, record) {
     ldl: record.ldl,
     triglycerides: record.triglycerides,
     fasting_glucose: record.fastingGlucose,
+    uric_acid: record.uricAcid,
   };
 }
 
@@ -1168,6 +1161,7 @@ function mapLabFromDb(record) {
     ldl: Number(record.ldl),
     triglycerides: Number(record.triglycerides),
     fastingGlucose: Number(record.fasting_glucose),
+    uricAcid: Number(record.uric_acid),
   };
 }
 

@@ -775,38 +775,23 @@ fieldset {
 
 .lab-metrics {
   display: grid;
-  gap: 0.58rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.35rem;
+  row-gap: 0.38rem;
   margin-top: 0.1rem;
 }
 
 .inbody-metrics {
-  gap: 0.66rem;
-}
-
-.inbody-metrics .lab-metric-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, max-content));
-  column-gap: 1.35rem;
-  row-gap: 0;
-  align-items: baseline;
-  min-height: 2.9rem;
-}
-
-.inbody-metrics .lab-metric-row:last-child {
-  min-height: 2.6rem;
-}
-
-.lab-metric-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.05rem;
+  row-gap: 0.42rem;
 }
 
 .lab-metric {
   display: inline-flex;
   align-items: baseline;
   gap: 0.38rem;
-  padding: 0.18rem 0;
+  min-height: 1.72rem;
+  padding: 0.06rem 0;
+  white-space: nowrap;
 }
 
 .lab-metric-label {
@@ -919,6 +904,10 @@ canvas {
   .field-grid,
   .field-grid-nested {
     grid-template-columns: 1fr;
+  }
+
+  .compact-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .browse-top-grid,
@@ -1143,6 +1132,10 @@ canvas {
     gap: 0.72rem;
   }
 
+  .compact-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .field {
     gap: 0.38rem;
   }
@@ -1329,6 +1322,10 @@ canvas {
     font-size: 0.86rem;
     padding-left: 0.45rem;
     padding-right: 0.45rem;
+  }
+
+  .compact-field-grid {
+    gap: 0.62rem;
   }
 
   .dose-option span {
