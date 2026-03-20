@@ -326,6 +326,15 @@ fieldset {
   padding: 0.3rem 0.2rem 0;
 }
 
+.workspace-header .section-tag {
+  margin-bottom: 0.16rem;
+}
+
+.workspace-header h2 {
+  margin: 0;
+  line-height: 1.08;
+}
+
 .workspace-text {
   margin: 0.45rem 0 0;
   color: var(--muted);
