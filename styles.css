@@ -668,6 +668,14 @@ canvas {
     grid-template-columns: 1fr;
   }
 
+  .browse-top-grid > .panel:nth-child(3) {
+    order: 2;
+  }
+
+  .trends-grid > .panel:nth-child(1) {
+    order: 1;
+  }
+
   .field-grid,
   .field-grid-nested {
     grid-template-columns: 1fr;
