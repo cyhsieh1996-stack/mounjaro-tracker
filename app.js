@@ -120,8 +120,7 @@ function bindEvents() {
     if (!ensureFormValid(medicationForm, "用藥紀錄")) {
       return;
     }
-    if (!canWriteRecords()) {
-      window.alert("請先登入後再新增資料。");
+    if (!ensureCanWrite("新增資料")) {
       return;
     }
 
@@ -135,12 +134,7 @@ function bindEvents() {
     };
 
     await saveRecord("medications", record);
-    medicationForm.reset();
-    medicationForm.elements.date.value = today;
-    medicationForm.elements.time.value = nowTime;
-    medicationForm.elements.dose.value = "2.5";
-    injectionRegionSelect.value = "肚臍";
-    syncInjectionDetailOptions("肚臍", "左側");
+    resetMedicationForm();
   });
 
   weightForm.addEventListener("submit", async (event) => {
@@ -148,8 +142,7 @@ function bindEvents() {
     if (!ensureFormValid(weightForm, "體重紀錄")) {
       return;
     }
-    if (!canWriteRecords()) {
-      window.alert("請先登入後再新增資料。");
+    if (!ensureCanWrite("新增資料")) {
       return;
     }
 
@@ -162,9 +155,7 @@ function bindEvents() {
     };
 
     await saveRecord("weights", record);
-    weightForm.reset();
-    weightForm.elements.date.value = today;
-    weightForm.elements.time.value = nowTime;
+    resetWeightForm();
   });
 
   labsForm.addEventListener("submit", async (event) => {
@@ -172,8 +163,7 @@ function bindEvents() {
     if (!ensureLabsFormValid()) {
       return;
     }
-    if (!canWriteRecords()) {
-      window.alert("請先登入後再新增資料。");
+    if (!ensureCanWrite("新增資料")) {
       return;
     }
 
@@ -199,8 +189,7 @@ function bindEvents() {
     };
 
     await saveRecord("labs", record);
-    labsForm.reset();
-    labsForm.elements.date.value = today;
+    resetLabsForm();
   });
 
   medicationList.addEventListener("click", handleDelete);
@@ -261,14 +250,9 @@ async function loadRemoteRecords() {
 }
 
 function setDefaultFormValues() {
-  medicationForm.elements.date.value = today;
-  medicationForm.elements.time.value = nowTime;
-  medicationForm.elements.dose.value = "2.5";
-  injectionRegionSelect.value = "肚臍";
-  syncInjectionDetailOptions("肚臍", "左側");
-  weightForm.elements.date.value = today;
-  weightForm.elements.time.value = nowTime;
-  labsForm.elements.date.value = today;
+  resetMedicationForm();
+  resetWeightForm();
+  resetLabsForm();
 }
 
 function syncInjectionDetailOptions(region, selectedDetail) {
@@ -450,14 +434,22 @@ function canWriteRecords() {
   return activeStorageMode === "local" || Boolean(currentSession?.user);
 }
 
+function ensureCanWrite(actionLabel) {
+  if (canWriteRecords()) {
+    return true;
+  }
+
+  window.alert(`請先登入後再${actionLabel}。`);
+  return false;
+}
+
 async function handleDelete(event) {
   const button = event.target.closest("[data-delete-id]");
   if (!button) {
     return;
   }
 
-  if (!canWriteRecords()) {
-    window.alert("請先登入後再刪除資料。");
+  if (!ensureCanWrite("刪除資料")) {
     return;
   }
 
@@ -602,77 +594,76 @@ function renderInputSummary() {
 
 function renderMedicationList() {
   const items = [...state.medications].sort(sortByDateTimeDesc);
-  medicationList.classList.toggle("empty-state", items.length === 0);
-  medicationList.innerHTML = items.length
-    ? items
-        .map(
-          (item) => `
-            <article class="record-card">
-              <div class="record-card-header">
-                <h3>${formatDate(item.date, true)} ${item.time}</h3>
-                <div class="record-card-header-actions">
-                  <strong>${item.dose} mg</strong>
-                  <button class="record-button" type="button" data-delete-collection="medications" data-delete-id="${item.id}">刪除</button>
-                </div>
-              </div>
-              <p>施打位置：${item.injectionSite || "未填位置"}</p>
-            </article>
-          `,
-        )
-        .join("")
-    : "尚無用藥紀錄";
+  renderRecordList(
+    medicationList,
+    items,
+    "尚無用藥紀錄",
+    (item) => `
+      <article class="record-card">
+        <div class="record-card-header">
+          <h3>${formatDate(item.date, true)} ${item.time}</h3>
+          <div class="record-card-header-actions">
+            <strong>${item.dose} mg</strong>
+            <button class="record-button" type="button" data-delete-collection="medications" data-delete-id="${item.id}">刪除</button>
+          </div>
+        </div>
+        <p>施打位置：${item.injectionSite || "未填位置"}</p>
+      </article>
+    `,
+  );
 }
 
 function renderWeightList() {
   const items = [...state.weights].sort(sortByDateTimeDesc);
-  weightList.classList.toggle("empty-state", items.length === 0);
-  weightList.innerHTML = items.length
-    ? items
-        .map(
-          (item) => `
-            <article class="record-card">
-              <div class="record-card-header">
-                <h3>${formatDate(item.date, true)} ${item.time || ""}</h3>
-                <div class="record-card-header-actions">
-                  <strong>${item.weight.toFixed(1)} kg</strong>
-                  <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
-                </div>
-              </div>
-            </article>
-          `,
-        )
-        .join("")
-    : "尚無體重紀錄";
+  renderRecordList(
+    weightList,
+    items,
+    "尚無體重紀錄",
+    (item) => `
+      <article class="record-card">
+        <div class="record-card-header">
+          <h3>${formatDate(item.date, true)} ${item.time || ""}</h3>
+          <div class="record-card-header-actions">
+            <strong>${item.weight.toFixed(1)} kg</strong>
+            <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
+          </div>
+        </div>
+      </article>
+    `,
+  );
 }
 
 function renderLabsList() {
   const items = [...state.labs].sort(sortByDateDesc);
-  labsList.classList.toggle("empty-state", items.length === 0);
-  labsList.innerHTML = items.length
-    ? items
-        .map(
-          (item) => `
-            <article class="record-card">
-              <div class="record-card-header record-card-header-inline-action">
-                <h3>${formatDate(item.date)}</h3>
-                <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
-              </div>
-              <div class="lab-metrics">
-                <div class="lab-metric-row">
-                  <span class="lab-metric"><span class="lab-metric-label">TC</span><span class="lab-metric-value">${item.totalCholesterol}</span></span>
-                  <span class="lab-metric"><span class="lab-metric-label">HDL</span><span class="lab-metric-value">${item.hdl}</span></span>
-                  <span class="lab-metric"><span class="lab-metric-label">LDL</span><span class="lab-metric-value">${item.ldl}</span></span>
-                </div>
-                <div class="lab-metric-row">
-                  <span class="lab-metric"><span class="lab-metric-label">TG</span><span class="lab-metric-value">${item.triglycerides}</span></span>
-                  <span class="lab-metric"><span class="lab-metric-label">FPG</span><span class="lab-metric-value">${item.fastingGlucose}</span></span>
-                </div>
-              </div>
-            </article>
-          `,
-        )
-        .join("")
-    : "尚無檢驗紀錄";
+  renderRecordList(
+    labsList,
+    items,
+    "尚無檢驗紀錄",
+    (item) => `
+      <article class="record-card">
+        <div class="record-card-header record-card-header-inline-action">
+          <h3>${formatDate(item.date)}</h3>
+          <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
+        </div>
+        <div class="lab-metrics">
+          <div class="lab-metric-row">
+            <span class="lab-metric"><span class="lab-metric-label">TC</span><span class="lab-metric-value">${item.totalCholesterol}</span></span>
+            <span class="lab-metric"><span class="lab-metric-label">HDL</span><span class="lab-metric-value">${item.hdl}</span></span>
+            <span class="lab-metric"><span class="lab-metric-label">LDL</span><span class="lab-metric-value">${item.ldl}</span></span>
+          </div>
+          <div class="lab-metric-row">
+            <span class="lab-metric"><span class="lab-metric-label">TG</span><span class="lab-metric-value">${item.triglycerides}</span></span>
+            <span class="lab-metric"><span class="lab-metric-label">FPG</span><span class="lab-metric-value">${item.fastingGlucose}</span></span>
+          </div>
+        </div>
+      </article>
+    `,
+  );
+}
+
+function renderRecordList(container, items, emptyText, renderItem) {
+  container.classList.toggle("empty-state", items.length === 0);
+  container.innerHTML = items.length ? items.map(renderItem).join("") : emptyText;
 }
 
 function renderCharts() {
@@ -786,8 +777,7 @@ function getChartOptions(yAxisOverrides = {}) {
 }
 
 function exportData() {
-  if (!canWriteRecords()) {
-    window.alert("請先登入後再匯出資料。");
+  if (!ensureCanWrite("匯出資料")) {
     return;
   }
 
@@ -806,8 +796,7 @@ async function importData(event) {
     return;
   }
 
-  if (!canWriteRecords()) {
-    window.alert("請先登入後再匯入資料。");
+  if (!ensureCanWrite("匯入資料")) {
     importInput.value = "";
     return;
   }
@@ -845,8 +834,7 @@ async function importData(event) {
 }
 
 async function clearAllData() {
-  if (!canWriteRecords()) {
-    window.alert("請先登入後再清空資料。");
+  if (!ensureCanWrite("清空資料")) {
     return;
   }
 
@@ -1110,4 +1098,24 @@ function sortByDateAsc(a, b) {
 
 function sortByDateTimeDesc(a, b) {
   return new Date(`${b.date}T${b.time || "00:00"}`) - new Date(`${a.date}T${a.time || "00:00"}`);
+}
+
+function resetMedicationForm() {
+  medicationForm.reset();
+  medicationForm.elements.date.value = today;
+  medicationForm.elements.time.value = nowTime;
+  medicationForm.elements.dose.value = "2.5";
+  injectionRegionSelect.value = "肚臍";
+  syncInjectionDetailOptions("肚臍", "左側");
+}
+
+function resetWeightForm() {
+  weightForm.reset();
+  weightForm.elements.date.value = today;
+  weightForm.elements.time.value = nowTime;
+}
+
+function resetLabsForm() {
+  labsForm.reset();
+  labsForm.elements.date.value = today;
 }
