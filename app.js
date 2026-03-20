@@ -608,6 +608,9 @@ function renderCharts() {
           fill: true,
           pointRadius: 4,
           pointHoverRadius: 5,
+          pointBackgroundColor: "#476dc7",
+          pointBorderColor: "#476dc7",
+          pointBorderWidth: 0,
         },
       ],
     },
@@ -641,6 +644,9 @@ function buildLabDataset(label, source, key, color) {
     fill: false,
     pointRadius: 3,
     pointHoverRadius: 4,
+    pointBackgroundColor: color,
+    pointBorderColor: color,
+    pointBorderWidth: 0,
   };
 }
 
