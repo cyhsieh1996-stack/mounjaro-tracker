@@ -129,7 +129,6 @@ function bindEvents() {
       time: String(formData.get("time")),
       dose: Number(formData.get("dose")),
       injectionSite: String(formData.get("injectionSite")),
-      note: String(formData.get("note")).trim(),
     };
 
     await saveRecord("medications", record);
@@ -156,7 +155,6 @@ function bindEvents() {
       id: crypto.randomUUID(),
       date: String(formData.get("date")),
       weight: Number(formData.get("weight")),
-      note: String(formData.get("note")).trim(),
     };
 
     await saveRecord("weights", record);
@@ -193,7 +191,6 @@ function bindEvents() {
       ldl,
       triglycerides,
       fastingGlucose,
-      note: String(labsForm.elements.note.value || "").trim(),
     };
 
     await saveRecord("labs", record);
@@ -601,7 +598,6 @@ function renderMedicationList() {
                 </div>
               </div>
               <p>施打位置：${item.injectionSite || "未填位置"}</p>
-              <p>${item.note || "無備註"}</p>
             </article>
           `,
         )
@@ -624,7 +620,6 @@ function renderWeightList() {
                   <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
                 </div>
               </div>
-              <p>${item.note || "無備註"}</p>
             </article>
           `,
         )
@@ -644,9 +639,17 @@ function renderLabsList() {
                 <h3>${formatDate(item.date)}</h3>
                 <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
               </div>
-              <p>TC ${item.totalCholesterol} / HDL ${item.hdl} / LDL ${item.ldl}</p>
-              <p>TG ${item.triglycerides} / FPG ${item.fastingGlucose} mg/dL</p>
-              <p>${item.note || "無備註"}</p>
+              <div class="lab-metrics">
+                <div class="lab-metric-row">
+                  <span class="lab-metric"><span class="lab-metric-label">TC</span><span class="lab-metric-value">${item.totalCholesterol}</span></span>
+                  <span class="lab-metric"><span class="lab-metric-label">HDL</span><span class="lab-metric-value">${item.hdl}</span></span>
+                  <span class="lab-metric"><span class="lab-metric-label">LDL</span><span class="lab-metric-value">${item.ldl}</span></span>
+                </div>
+                <div class="lab-metric-row">
+                  <span class="lab-metric"><span class="lab-metric-label">TG</span><span class="lab-metric-value">${item.triglycerides}</span></span>
+                  <span class="lab-metric"><span class="lab-metric-label">FPG</span><span class="lab-metric-value">${item.fastingGlucose}</span></span>
+                </div>
+              </div>
             </article>
           `,
         )
@@ -951,7 +954,6 @@ function mapRecordToDb(collection, record) {
       time: record.time,
       dose: record.dose,
       injection_site: record.injectionSite,
-      note: record.note,
     };
   }
 
@@ -960,7 +962,6 @@ function mapRecordToDb(collection, record) {
       id: record.id,
       date: record.date,
       weight: record.weight,
-      note: record.note,
     };
   }
 
@@ -972,7 +973,6 @@ function mapRecordToDb(collection, record) {
     ldl: record.ldl,
     triglycerides: record.triglycerides,
     fasting_glucose: record.fastingGlucose,
-    note: record.note,
   };
 }
 
@@ -983,7 +983,6 @@ function mapMedicationFromDb(record) {
     time: record.time,
     dose: Number(record.dose),
     injectionSite: record.injection_site,
-    note: record.note || "",
   };
 }
 
@@ -992,7 +991,6 @@ function mapWeightFromDb(record) {
     id: record.id,
     date: record.date,
     weight: Number(record.weight),
-    note: record.note || "",
   };
 }
 
@@ -1005,7 +1003,6 @@ function mapLabFromDb(record) {
     ldl: Number(record.ldl),
     triglycerides: Number(record.triglycerides),
     fastingGlucose: Number(record.fasting_glucose),
-    note: record.note || "",
   };
 }
 

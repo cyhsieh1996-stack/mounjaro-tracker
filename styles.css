@@ -689,28 +689,43 @@ fieldset {
   margin-top: 0.16rem;
 }
 
-#labs-list .record-card p {
-  font-size: 1rem;
-  line-height: 1.62;
-  color: #22313d;
-}
-
-#labs-list .record-card p:nth-of-type(1),
-#labs-list .record-card p:nth-of-type(2) {
-  font-size: 1.02rem;
-  font-weight: 720;
-  letter-spacing: -0.01em;
-  color: #000;
-}
-
-#labs-list .record-card p:nth-of-type(3) {
-  font-size: 0.98rem;
-  color: #5d7080;
-}
-
 #labs-list .record-card .record-button {
   padding: 0.34rem 0.74rem;
   margin-top: -0.08rem;
+}
+
+.lab-metrics {
+  display: grid;
+  gap: 0.58rem;
+  margin-top: 0.1rem;
+}
+
+.lab-metric-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.56rem;
+}
+
+.lab-metric {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.32rem;
+  padding: 0.18rem 0;
+}
+
+.lab-metric-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #6a8298;
+}
+
+.lab-metric-value {
+  font-size: 0.98rem;
+  font-weight: 680;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #112436;
 }
 
 .record-card p {
