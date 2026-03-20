@@ -7,6 +7,7 @@ const state = {
   medications: [],
   weights: [],
   labs: [],
+  inbody: [],
 };
 
 const charts = {
@@ -17,10 +18,12 @@ const charts = {
 const medicationForm = document.getElementById("medication-form");
 const weightForm = document.getElementById("weight-form");
 const labsForm = document.getElementById("labs-form");
+const inbodyForm = document.getElementById("inbody-form");
 const tabButtons = document.querySelectorAll(".tab");
 const medicationList = document.getElementById("medication-list");
 const weightList = document.getElementById("weight-list");
 const labsList = document.getElementById("labs-list");
+const inbodyList = document.getElementById("inbody-list");
 const exportButton = document.getElementById("export-button");
 const importInput = document.getElementById("import-input");
 const clearDataButton = document.getElementById("clear-data-button");
@@ -191,9 +194,49 @@ function bindEvents() {
     resetLabsForm();
   });
 
+  inbodyForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!ensureFormValid(inbodyForm, "InBody 紀錄")) {
+      return;
+    }
+    if (!ensureCanWrite("新增資料")) {
+      return;
+    }
+
+    const record = {
+      id: crypto.randomUUID(),
+      date: String(inbodyForm.elements.date.value || "").trim(),
+      weight: parseRequiredNumberField(inbodyForm, "weight", "體重", "InBody 紀錄"),
+      skeletalMuscleMass: parseRequiredNumberField(inbodyForm, "skeletalMuscleMass", "骨骼肌重", "InBody 紀錄"),
+      bodyFatMass: parseRequiredNumberField(inbodyForm, "bodyFatMass", "體脂肪重", "InBody 紀錄"),
+      bodyFatPercentage: parseRequiredNumberField(inbodyForm, "bodyFatPercentage", "體脂肪率", "InBody 紀錄"),
+      visceralFatArea: parseRequiredNumberField(inbodyForm, "visceralFatArea", "內臟脂肪面積", "InBody 紀錄"),
+      inbodyScore: parseRequiredNumberField(inbodyForm, "inbodyScore", "InBody 分數", "InBody 紀錄"),
+      basalMetabolicRate: parseRequiredNumberField(inbodyForm, "basalMetabolicRate", "基礎代謝率", "InBody 紀錄"),
+    };
+
+    if (
+      [
+        record.weight,
+        record.skeletalMuscleMass,
+        record.bodyFatMass,
+        record.bodyFatPercentage,
+        record.visceralFatArea,
+        record.inbodyScore,
+        record.basalMetabolicRate,
+      ].some((value) => value === null)
+    ) {
+      return;
+    }
+
+    await saveRecord("inbody", record);
+    resetInBodyForm();
+  });
+
   medicationList.addEventListener("click", handleDelete);
   weightList.addEventListener("click", handleDelete);
   labsList.addEventListener("click", handleDelete);
+  inbodyList.addEventListener("click", handleDelete);
 
   exportButton.addEventListener("click", exportData);
   importInput.addEventListener("change", importData);
@@ -223,7 +266,7 @@ async function setupStorageMode() {
       await loadRemoteRecords();
       renderSyncStatus("supabase");
     } else {
-      Object.assign(state, { medications: [], weights: [], labs: [] });
+      Object.assign(state, { medications: [], weights: [], labs: [], inbody: [] });
       renderSyncStatus("auth-required");
     }
 
@@ -237,7 +280,7 @@ async function setupStorageMode() {
     renderSyncStatus("supabase");
   } else {
     activeStorageMode = "supabase";
-    Object.assign(state, { medications: [], weights: [], labs: [] });
+    Object.assign(state, { medications: [], weights: [], labs: [], inbody: [] });
     renderSyncStatus("auth-required");
   }
 }
@@ -252,6 +295,7 @@ function setDefaultFormValues() {
   resetMedicationForm();
   resetWeightForm();
   resetLabsForm();
+  resetInBodyForm();
 }
 
 function syncInjectionDetailOptions(region, selectedDetail) {
@@ -395,7 +439,7 @@ async function handleSignOut() {
   }
 
   currentSession = null;
-  Object.assign(state, { medications: [], weights: [], labs: [] });
+  Object.assign(state, { medications: [], weights: [], labs: [], inbody: [] });
   renderSyncStatus("auth-required");
   updateAuthUI();
   render();
@@ -541,14 +585,14 @@ function ensureLabsFormValid() {
   return true;
 }
 
-function parseRequiredNumberField(form, fieldName, fieldLabel) {
+function parseRequiredNumberField(form, fieldName, fieldLabel, formLabel = "檢驗紀錄") {
   const field = form.elements[fieldName];
   const rawValue = String(field.value || "").trim();
 
   if (!rawValue) {
     field.scrollIntoView({ behavior: "smooth", block: "center" });
     field.focus({ preventScroll: true });
-    window.alert(`請先完成「${fieldLabel}」再儲存檢驗紀錄。`);
+    window.alert(`請先完成「${fieldLabel}」再儲存${formLabel}。`);
     return null;
   }
 
@@ -574,13 +618,14 @@ function render() {
   renderInputSummary();
   renderMedicationList();
   renderWeightList();
+  renderInBodyList();
   renderLabsList();
   renderCharts();
 }
 
 function renderInputSummary() {
   const latestMedication = [...state.medications].sort(sortByDateTimeDesc)[0];
-  const latestWeight = [...state.weights].sort(sortByDateTimeDesc)[0];
+  const latestWeight = getLatestWeightSummaryRecord();
 
   latestMedicationSummary.textContent = latestMedication
     ? `${latestMedication.injectionSite} / ${latestMedication.dose} mg`
@@ -589,6 +634,23 @@ function renderInputSummary() {
   latestWeightSummary.textContent = latestWeight
     ? `${latestWeight.weight.toFixed(1)} kg`
     : "尚無資料";
+}
+
+function getLatestWeightSummaryRecord() {
+  const latestWeight = [...state.weights].sort(sortByDateTimeDesc)[0];
+  const latestInBody = [...state.inbody].sort(sortByDateDesc)[0];
+
+  if (!latestWeight) {
+    return latestInBody || null;
+  }
+
+  if (!latestInBody) {
+    return latestWeight;
+  }
+
+  const latestWeightDateTime = new Date(`${latestWeight.date}T${latestWeight.time || "00:00"}`);
+  const latestInBodyDate = new Date(`${latestInBody.date}T00:00`);
+  return latestInBodyDate > latestWeightDateTime ? latestInBody : latestWeight;
 }
 
 function renderMedicationList() {
@@ -653,6 +715,38 @@ function renderLabsList() {
           <div class="lab-metric-row">
             <span class="lab-metric"><span class="lab-metric-label">TG</span><span class="lab-metric-value">${item.triglycerides}</span></span>
             <span class="lab-metric"><span class="lab-metric-label">FPG</span><span class="lab-metric-value">${item.fastingGlucose}</span></span>
+          </div>
+        </div>
+      </article>
+    `,
+  );
+}
+
+function renderInBodyList() {
+  const items = [...state.inbody].sort(sortByDateDesc);
+  renderRecordList(
+    inbodyList,
+    items,
+    "尚無 InBody 紀錄",
+    (item) => `
+      <article class="record-card">
+        <div class="record-card-header record-card-header-inline-action">
+          <h3>${formatDate(item.date)}</h3>
+          <button class="record-button" type="button" data-delete-collection="inbody" data-delete-id="${item.id}">刪除</button>
+        </div>
+        <div class="lab-metrics inbody-metrics">
+          <div class="lab-metric-row">
+            <span class="lab-metric"><span class="lab-metric-label">體重</span><span class="lab-metric-value">${formatDecimal(item.weight)}</span></span>
+            <span class="lab-metric"><span class="lab-metric-label">骨骼肌</span><span class="lab-metric-value">${formatDecimal(item.skeletalMuscleMass)}</span></span>
+            <span class="lab-metric"><span class="lab-metric-label">體脂重</span><span class="lab-metric-value">${formatDecimal(item.bodyFatMass)}</span></span>
+          </div>
+          <div class="lab-metric-row">
+            <span class="lab-metric"><span class="lab-metric-label">體脂率</span><span class="lab-metric-value">${formatDecimal(item.bodyFatPercentage)}</span></span>
+            <span class="lab-metric"><span class="lab-metric-label">內臟脂肪</span><span class="lab-metric-value">${formatDecimal(item.visceralFatArea)}</span></span>
+          </div>
+          <div class="lab-metric-row">
+            <span class="lab-metric"><span class="lab-metric-label">分數</span><span class="lab-metric-value">${Math.round(item.inbodyScore)}</span></span>
+            <span class="lab-metric"><span class="lab-metric-label">BMR</span><span class="lab-metric-value">${Math.round(item.basalMetabolicRate)}</span></span>
           </div>
         </div>
       </article>
@@ -808,6 +902,7 @@ async function importData(event) {
         medications: Array.isArray(parsed.medications) ? parsed.medications : [],
         weights: Array.isArray(parsed.weights) ? parsed.weights : [],
         labs: Array.isArray(parsed.labs) ? parsed.labs : [],
+        inbody: Array.isArray(parsed.inbody) ? parsed.inbody : [],
       };
 
       if (activeStorageMode === "supabase" && supabaseClient) {
@@ -844,11 +939,11 @@ async function clearAllData() {
 
   try {
     if (activeStorageMode === "supabase" && supabaseClient) {
-      await replaceSupabaseData({ medications: [], weights: [], labs: [] });
-      Object.assign(state, { medications: [], weights: [], labs: [] });
+      await replaceSupabaseData({ medications: [], weights: [], labs: [], inbody: [] });
+      Object.assign(state, { medications: [], weights: [], labs: [], inbody: [] });
       renderSyncStatus("supabase");
     } else {
-      Object.assign(state, { medications: [], weights: [], labs: [] });
+      Object.assign(state, { medications: [], weights: [], labs: [], inbody: [] });
       saveState();
       renderSyncStatus("local");
     }
@@ -863,7 +958,7 @@ async function clearAllData() {
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
-    return { medications: [], weights: [], labs: [] };
+    return { medications: [], weights: [], labs: [], inbody: [] };
   }
 
   try {
@@ -872,9 +967,10 @@ function loadState() {
       medications: Array.isArray(parsed.medications) ? parsed.medications : [],
       weights: Array.isArray(parsed.weights) ? parsed.weights : [],
       labs: Array.isArray(parsed.labs) ? parsed.labs : [],
+      inbody: Array.isArray(parsed.inbody) ? parsed.inbody : [],
     };
   } catch (error) {
-    return { medications: [], weights: [], labs: [] };
+    return { medications: [], weights: [], labs: [], inbody: [] };
   }
 }
 
@@ -883,20 +979,23 @@ function saveState() {
 }
 
 async function fetchSupabaseData() {
-  const [medicationsResult, weightsResult, labsResult] = await Promise.all([
+  const [medicationsResult, weightsResult, labsResult, inbodyResult] = await Promise.all([
     supabaseClient.from("medications").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
     supabaseClient.from("weights").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
     supabaseClient.from("labs").select("*").order("date", { ascending: false }),
+    supabaseClient.from("inbody").select("*").order("date", { ascending: false }),
   ]);
 
   handleSupabaseError(medicationsResult.error);
   handleSupabaseError(weightsResult.error);
   handleSupabaseError(labsResult.error);
+  handleSupabaseError(inbodyResult.error);
 
   return {
     medications: (medicationsResult.data || []).map(mapMedicationFromDb),
     weights: (weightsResult.data || []).map(mapWeightFromDb),
     labs: (labsResult.data || []).map(mapLabFromDb),
+    inbody: (inbodyResult.data || []).map(mapInBodyFromDb),
   };
 }
 
@@ -918,6 +1017,7 @@ async function replaceSupabaseData(nextState) {
     supabaseClient.from("medications").delete().not("id", "is", null),
     supabaseClient.from("weights").delete().not("id", "is", null),
     supabaseClient.from("labs").delete().not("id", "is", null),
+    supabaseClient.from("inbody").delete().not("id", "is", null),
   ]);
   results.forEach((result) => handleSupabaseError(result.error));
 
@@ -941,6 +1041,13 @@ async function replaceSupabaseData(nextState) {
       .insert(nextState.labs.map((item) => mapRecordToDb("labs", item)));
     handleSupabaseError(result.error);
   }
+
+  if (nextState.inbody.length) {
+    const result = await supabaseClient
+      .from("inbody")
+      .insert(nextState.inbody.map((item) => mapRecordToDb("inbody", item)));
+    handleSupabaseError(result.error);
+  }
 }
 
 function getSupabaseTable(collection) {
@@ -948,6 +1055,7 @@ function getSupabaseTable(collection) {
     medications: "medications",
     weights: "weights",
     labs: "labs",
+    inbody: "inbody",
   }[collection];
 }
 
@@ -968,6 +1076,20 @@ function mapRecordToDb(collection, record) {
       date: record.date,
       time: record.time,
       weight: record.weight,
+    };
+  }
+
+  if (collection === "inbody") {
+    return {
+      id: record.id,
+      date: record.date,
+      weight: record.weight,
+      skeletal_muscle_mass: record.skeletalMuscleMass,
+      body_fat_mass: record.bodyFatMass,
+      body_fat_percentage: record.bodyFatPercentage,
+      visceral_fat_area: record.visceralFatArea,
+      inbody_score: record.inbodyScore,
+      basal_metabolic_rate: record.basalMetabolicRate,
     };
   }
 
@@ -1010,6 +1132,20 @@ function mapLabFromDb(record) {
     ldl: Number(record.ldl),
     triglycerides: Number(record.triglycerides),
     fastingGlucose: Number(record.fasting_glucose),
+  };
+}
+
+function mapInBodyFromDb(record) {
+  return {
+    id: record.id,
+    date: record.date,
+    weight: Number(record.weight),
+    skeletalMuscleMass: Number(record.skeletal_muscle_mass),
+    bodyFatMass: Number(record.body_fat_mass),
+    bodyFatPercentage: Number(record.body_fat_percentage),
+    visceralFatArea: Number(record.visceral_fat_area),
+    inbodyScore: Number(record.inbody_score),
+    basalMetabolicRate: Number(record.basal_metabolic_rate),
   };
 }
 
@@ -1067,6 +1203,10 @@ function sortByDateTimeDesc(a, b) {
   return new Date(`${b.date}T${b.time || "00:00"}`) - new Date(`${a.date}T${a.time || "00:00"}`);
 }
 
+function formatDecimal(value) {
+  return Number(value).toFixed(1);
+}
+
 function resetMedicationForm() {
   medicationForm.reset();
   medicationForm.elements.date.value = today;
@@ -1085,4 +1225,9 @@ function resetWeightForm() {
 function resetLabsForm() {
   labsForm.reset();
   labsForm.elements.date.value = today;
+}
+
+function resetInBodyForm() {
+  inbodyForm.reset();
+  inbodyForm.elements.date.value = today;
 }

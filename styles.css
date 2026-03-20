@@ -559,7 +559,7 @@ fieldset {
 }
 
 .browse-top-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: 1rem;
 }
 
@@ -607,6 +607,16 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(3)::before {
+  background: linear-gradient(180deg, rgba(111, 53, 200, 0.88), rgba(171, 132, 239, 0.52));
+}
+
+.browse-top-grid > .panel:nth-child(4) {
+  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  border-color: rgba(149, 130, 194, 0.14);
+  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
+}
+
+.browse-top-grid > .panel:nth-child(4)::before {
   background: linear-gradient(180deg, rgba(111, 53, 200, 0.88), rgba(171, 132, 239, 0.52));
 }
 
@@ -740,6 +750,10 @@ fieldset {
   margin-top: 0.1rem;
 }
 
+.inbody-metrics {
+  gap: 0.66rem;
+}
+
 .lab-metric-row {
   display: flex;
   flex-wrap: wrap;
@@ -843,16 +857,20 @@ canvas {
     order: 2;
   }
 
-  #weight-trend-panel {
+  #inbody-records-panel {
     order: 3;
   }
 
-  #labs-records-panel {
+  #weight-trend-panel {
     order: 4;
   }
 
-  #labs-trend-panel {
+  #labs-records-panel {
     order: 5;
+  }
+
+  #labs-trend-panel {
+    order: 6;
   }
 
   .field-grid,
@@ -1057,7 +1075,7 @@ canvas {
 
   .tab-bar {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.45rem;
     padding: 0;
     border-radius: 0;
