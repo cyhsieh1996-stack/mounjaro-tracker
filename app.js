@@ -636,7 +636,7 @@ function renderLabsList() {
           (item) => `
             <article class="record-card">
               <div class="record-card-header record-card-header-inline-action">
-                <h3>${formatDate(item.date, true)}</h3>
+                <h3>${formatDate(item.date)}</h3>
                 <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
               </div>
               <div class="lab-metrics">
