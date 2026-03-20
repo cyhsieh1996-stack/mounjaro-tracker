@@ -644,9 +644,9 @@ fieldset {
 }
 
 #medication-list .record-button {
-  background: rgba(188, 158, 58, 0.14);
-  border: 1px solid rgba(188, 158, 58, 0.22);
-  color: #8c7220;
+  background: linear-gradient(180deg, rgba(229, 214, 132, 0.98), rgba(216, 198, 107, 0.94));
+  border: 1px solid rgba(188, 158, 58, 0.28);
+  color: #7b641a;
 }
 
 #weight-list .record-button {
