@@ -373,19 +373,21 @@ fieldset {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  min-height: 4.2rem;
   margin-bottom: 1rem;
-  padding: 0.3rem 0.2rem 0;
+  padding: 0.35rem 0.2rem;
 }
 
 .workspace-header > div:first-child {
   display: grid;
+  gap: 0.18rem;
   justify-items: start;
   width: fit-content;
   margin: 0 auto;
 }
 
 .workspace-header .section-tag {
-  margin-bottom: 0.16rem;
+  margin-bottom: 0;
 }
 
 .workspace-header h2 {
@@ -1086,8 +1088,9 @@ canvas {
   }
 
   .workspace-header {
+    min-height: 3.6rem;
     margin-bottom: 0.6rem;
-    padding: 0.02rem 0.1rem 0.16rem;
+    padding: 0.2rem 0.1rem;
   }
 
   .section-toggle {
