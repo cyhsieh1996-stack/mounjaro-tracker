@@ -104,6 +104,9 @@ function bindEvents() {
 
   medicationForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!ensureFormValid(medicationForm, "用藥紀錄")) {
+      return;
+    }
     if (!canWriteRecords()) {
       window.alert("請先登入後再新增資料。");
       return;
@@ -130,6 +133,9 @@ function bindEvents() {
 
   weightForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!ensureFormValid(weightForm, "體重紀錄")) {
+      return;
+    }
     if (!canWriteRecords()) {
       window.alert("請先登入後再新增資料。");
       return;
@@ -150,6 +156,9 @@ function bindEvents() {
 
   labsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!ensureFormValid(labsForm, "檢驗紀錄")) {
+      return;
+    }
     if (!canWriteRecords()) {
       window.alert("請先登入後再新增資料。");
       return;
@@ -389,7 +398,8 @@ async function saveRecord(collection, record) {
     render();
   } catch (error) {
     console.error(error);
-    window.alert("儲存資料失敗，請稍後再試。");
+    const detail = error instanceof Error && error.message ? `\n${error.message}` : "";
+    window.alert(`儲存資料失敗，請稍後再試。${detail}`);
   }
 }
 
@@ -418,6 +428,26 @@ function sortCollection(collection) {
     return;
   }
   state[collection].sort(sortByDateDesc);
+}
+
+function ensureFormValid(form, formLabel) {
+  if (form.checkValidity()) {
+    return true;
+  }
+
+  form.reportValidity();
+
+  const invalidField = form.querySelector(":invalid");
+  if (invalidField instanceof HTMLElement) {
+    invalidField.scrollIntoView({ behavior: "smooth", block: "center" });
+    invalidField.focus({ preventScroll: true });
+    const fieldLabel = invalidField.closest(".field")?.querySelector("span")?.textContent?.trim();
+    if (fieldLabel) {
+      window.alert(`請先完成「${fieldLabel}」再儲存${formLabel}。`);
+    }
+  }
+
+  return false;
 }
 
 function render() {
