@@ -82,6 +82,11 @@ fieldset {
   padding: 1.1rem 0.35rem 0.9rem;
 }
 
+.hero-copy {
+  display: grid;
+  gap: 0.2rem;
+}
+
 .eyebrow,
 .section-tag {
   margin: 0 0 0.35rem;
@@ -117,10 +122,19 @@ fieldset {
   display: grid;
   gap: 1rem;
   align-items: end;
+  padding: 1.15rem;
+  background:
+    linear-gradient(180deg, rgba(255, 249, 242, 0.97), rgba(246, 234, 219, 0.93)),
+    linear-gradient(135deg, rgba(199, 102, 65, 0.06), transparent 55%);
+  border-color: rgba(199, 102, 65, 0.2);
+  box-shadow:
+    0 20px 48px rgba(86, 58, 33, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .auth-copy h2 {
   margin: 0;
+  font-size: 1.2rem;
 }
 
 .auth-help {
@@ -155,6 +169,10 @@ fieldset {
 .auth-user {
   margin: 0;
   font-weight: 700;
+}
+
+.hero > .sync-status {
+  justify-self: start;
 }
 
 #app-content.is-locked {
@@ -511,6 +529,10 @@ canvas {
     gap: 1.35rem;
   }
 
+  .auth-panel {
+    padding: 1rem;
+  }
+
   .hero h1 {
     font-size: clamp(2rem, 8vw, 3rem);
   }
@@ -584,6 +606,19 @@ canvas {
   .auth-panel {
     gap: 0.9rem;
     padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .auth-panel::after {
+    content: "";
+    position: absolute;
+    inset: auto -1.5rem -2.8rem auto;
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(199, 102, 65, 0.13), transparent 68%);
+    pointer-events: none;
   }
 
   .auth-copy h2 {
@@ -613,13 +648,27 @@ canvas {
   }
 
   .hero-stats {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
     gap: 0.7rem;
+    overflow-x: auto;
+    padding-bottom: 0.2rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .hero-stats::-webkit-scrollbar {
+    display: none;
   }
 
   .stat-card {
     padding: 0.95rem 1rem;
     border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(255, 252, 247, 0.96), rgba(246, 236, 225, 0.92)),
+      linear-gradient(135deg, rgba(199, 102, 65, 0.05), transparent 60%);
+    scroll-snap-align: start;
   }
 
   .stat-card span {
@@ -635,6 +684,14 @@ canvas {
     margin-top: 0.9rem;
     padding: 0.7rem;
     border-radius: 22px;
+  }
+
+  .workspace-input {
+    background: linear-gradient(180deg, rgba(255, 246, 235, 0.86), rgba(253, 248, 241, 0.72));
+  }
+
+  .workspace-browse {
+    background: linear-gradient(180deg, rgba(248, 243, 236, 0.94), rgba(242, 233, 222, 0.78));
   }
 
   .workspace-header {
@@ -664,12 +721,17 @@ canvas {
 
   .form-panel {
     margin-top: 0.75rem;
+    overflow: hidden;
   }
 
   .tab-bar {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.45rem;
+    padding: 0.28rem;
+    border-radius: 18px;
+    background: rgba(255, 251, 246, 0.78);
+    border: 1px solid rgba(123, 101, 82, 0.08);
   }
 
   .tab {
@@ -677,6 +739,10 @@ canvas {
     border-radius: 14px;
     font-size: 0.9rem;
     text-align: center;
+  }
+
+  .data-form {
+    padding-top: 0.1rem;
   }
 
   .field-grid,
@@ -701,8 +767,13 @@ canvas {
     font-size: 0.98rem;
   }
 
+  .field input::placeholder {
+    color: rgba(117, 98, 82, 0.72);
+  }
+
   .dose-fieldset {
     gap: 0.55rem;
+    padding: 0.1rem 0 0;
   }
 
   .dose-options {
@@ -728,12 +799,30 @@ canvas {
     max-width: none;
     padding-top: 1rem;
     padding-bottom: 1rem;
+    box-shadow: 0 12px 24px rgba(199, 102, 65, 0.18);
   }
 
   .browse-top-grid,
   .trends-grid {
     gap: 0.75rem;
     margin-top: 0.75rem;
+  }
+
+  .browse-top-grid > .panel,
+  .trends-grid > .panel {
+    border-radius: 18px;
+  }
+
+  .browse-top-grid > .panel:nth-child(1) {
+    border-color: rgba(199, 102, 65, 0.18);
+  }
+
+  .browse-top-grid > .panel:nth-child(2) {
+    border-color: rgba(143, 122, 96, 0.16);
+  }
+
+  .browse-top-grid > .panel:nth-child(3) {
+    border-color: rgba(106, 132, 108, 0.18);
   }
 
   .chart-panel {
@@ -744,6 +833,17 @@ canvas {
     max-height: 16.5rem;
   }
 
+  .chart-panel .section-heading.compact {
+    margin-bottom: 0.55rem;
+  }
+
+  .empty-state {
+    min-height: 4.8rem;
+    padding: 0.4rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
   .record-list {
     gap: 0.6rem;
   }
@@ -751,6 +851,7 @@ canvas {
   .record-card {
     padding: 0.82rem;
     border-radius: 16px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
   }
 
   .record-card-header {
@@ -788,6 +889,7 @@ canvas {
   .page-actions {
     margin-top: 0.95rem;
     padding: 0.85rem;
+    border-radius: 18px;
   }
 
   .quick-actions {
@@ -802,6 +904,12 @@ canvas {
     width: 100%;
     min-height: 2.9rem;
   }
+
+  .quick-actions .ghost-button,
+  .quick-actions .danger-button {
+    border-radius: 14px;
+    background: rgba(255, 251, 246, 0.92);
+  }
 }
 
 @media (max-width: 420px) {
@@ -811,6 +919,10 @@ canvas {
 
   .hero h1 {
     font-size: clamp(1.7rem, 10vw, 2.1rem);
+  }
+
+  .auth-panel {
+    padding: 0.88rem;
   }
 
   .panel,
@@ -826,6 +938,10 @@ canvas {
     font-size: 0.86rem;
     padding-left: 0.45rem;
     padding-right: 0.45rem;
+  }
+
+  .hero-stats {
+    grid-auto-columns: 88%;
   }
 
   .dose-option span {
