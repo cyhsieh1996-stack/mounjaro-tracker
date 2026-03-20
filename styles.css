@@ -396,6 +396,18 @@ fieldset {
   line-height: 1.08;
 }
 
+.workspace-body[hidden] {
+  display: none !important;
+}
+
+.section-toggle {
+  min-width: 5.4rem;
+  padding: 0.68rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
 .form-panel {
   margin-top: 1rem;
 }
@@ -725,7 +737,7 @@ fieldset {
 }
 
 .record-card-header-inline-action {
-  align-items: flex-start;
+  align-items: center;
 }
 
 .record-card-header-actions {
@@ -770,7 +782,7 @@ fieldset {
 #labs-list .record-card .record-button,
 #inbody-list .record-card .record-button {
   padding: 0.34rem 0.74rem;
-  margin-top: -0.08rem;
+  margin-top: 0;
 }
 
 .lab-metrics {
@@ -1083,6 +1095,12 @@ canvas {
   .workspace-header {
     margin-bottom: 0.6rem;
     padding: 0.02rem 0.1rem 0.16rem;
+  }
+
+  .section-toggle {
+    min-width: 4.7rem;
+    padding: 0.62rem 0.82rem;
+    font-size: 0.86rem;
   }
 
   .section-heading {

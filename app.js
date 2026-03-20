@@ -1,4 +1,5 @@
 const STORAGE_KEY = "mounjaro-health-tracker-v1";
+const SECTION_UI_STATE_KEY = "mounjaro-health-tracker-sections-v1";
 
 const today = new Date().toISOString().split("T")[0];
 const nowTime = new Date().toTimeString().slice(0, 5);
@@ -45,6 +46,10 @@ const authUserEmail = document.getElementById("auth-user-email");
 const signOutButton = document.getElementById("sign-out-button");
 const authHelp = document.getElementById("auth-help");
 const appContent = document.getElementById("app-content");
+const inputSectionToggle = document.getElementById("input-section-toggle");
+const browseSectionToggle = document.getElementById("browse-section-toggle");
+const inputWorkspaceBody = document.getElementById("input-workspace-body");
+const browseWorkspaceBody = document.getElementById("browse-workspace-body");
 
 const injectionSiteOptions = {
   肚臍: ["左側", "右側", "上方", "下方"],
@@ -80,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function initializeApp() {
   setDefaultFormValues();
+  applySectionVisibility();
   bindEvents();
   await setupStorageMode();
   updateAuthUI();
@@ -116,6 +122,8 @@ function bindEvents() {
     }
   });
   signOutButton.addEventListener("click", handleSignOut);
+  inputSectionToggle?.addEventListener("click", () => toggleSectionVisibility("input"));
+  browseSectionToggle?.addEventListener("click", () => toggleSectionVisibility("browse"));
 
   medicationForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -980,6 +988,49 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadSectionVisibility() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(SECTION_UI_STATE_KEY) || "{}");
+    return {
+      input: parsed.input !== false,
+      browse: parsed.browse !== false,
+    };
+  } catch (error) {
+    return { input: true, browse: true };
+  }
+}
+
+function saveSectionVisibility(nextState) {
+  localStorage.setItem(SECTION_UI_STATE_KEY, JSON.stringify(nextState));
+}
+
+function updateSectionVisibility(section, isExpanded) {
+  const targetBody = section === "input" ? inputWorkspaceBody : browseWorkspaceBody;
+  const targetButton = section === "input" ? inputSectionToggle : browseSectionToggle;
+
+  if (!targetBody || !targetButton) {
+    return;
+  }
+
+  targetBody.hidden = !isExpanded;
+  targetButton.setAttribute("aria-expanded", String(isExpanded));
+  targetButton.textContent = isExpanded ? "收合" : "展開";
+}
+
+function applySectionVisibility() {
+  const sectionState = loadSectionVisibility();
+  updateSectionVisibility("input", sectionState.input);
+  updateSectionVisibility("browse", sectionState.browse);
+}
+
+function toggleSectionVisibility(section) {
+  const sectionState = loadSectionVisibility();
+  const nextExpanded = !sectionState[section];
+  const nextState = { ...sectionState, [section]: nextExpanded };
+  saveSectionVisibility(nextState);
+  updateSectionVisibility(section, nextExpanded);
 }
 
 async function fetchSupabaseData() {

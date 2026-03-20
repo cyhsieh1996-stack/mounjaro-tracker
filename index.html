@@ -78,8 +78,18 @@
             <p class="section-tag">INPUT</p>
             <h2>資料輸入區</h2>
           </div>
+          <button
+            class="ghost-button section-toggle"
+            id="input-section-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="input-workspace-body"
+          >
+            收合
+          </button>
         </div>
 
+        <div class="workspace-body" id="input-workspace-body">
         <section class="panel form-panel">
           <div class="section-heading">
             <div>
@@ -240,6 +250,7 @@
             </form>
           </div>
         </section>
+        </div>
 
       </section>
 
@@ -249,8 +260,18 @@
             <p class="section-tag">BROWSE</p>
             <h2>資料瀏覽區</h2>
           </div>
+          <button
+            class="ghost-button section-toggle"
+            id="browse-section-toggle"
+            type="button"
+            aria-expanded="true"
+            aria-controls="browse-workspace-body"
+          >
+            收合
+          </button>
         </div>
 
+        <div class="workspace-body" id="browse-workspace-body">
         <section class="browse-top-grid">
           <article class="panel" id="medication-records-panel">
             <div class="section-heading compact">
@@ -314,6 +335,7 @@
             <canvas id="labs-chart" aria-label="檢驗數據折線圖"></canvas>
           </article>
         </section>
+        </div>
       </section>
 
       <section class="panel auth-session-panel" id="auth-session" hidden>
