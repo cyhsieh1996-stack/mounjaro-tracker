@@ -835,8 +835,8 @@ canvas {
     gap: 0.45rem;
     padding: 0.28rem;
     border-radius: 18px;
-    background: rgba(255, 251, 246, 0.78);
-    border: 1px solid rgba(123, 101, 82, 0.08);
+    background: rgba(240, 247, 251, 0.92);
+    border: 1px solid rgba(89, 121, 146, 0.1);
   }
 
   .tab {
