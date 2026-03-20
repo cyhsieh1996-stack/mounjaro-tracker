@@ -828,12 +828,12 @@ canvas {
 
   .app-shell {
     width: min(100vw - 1rem, 100%);
-    padding: 0.82rem 0 0.85rem;
+    padding: 0.98rem 0 0.85rem;
   }
 
   .hero {
     gap: 1.05rem;
-    padding: 1.02rem 0.2rem 0.82rem;
+    padding: 1.38rem 0.2rem 1.14rem;
   }
 
   .section-tag {
@@ -845,6 +845,8 @@ canvas {
   .hero-copy {
     padding-left: 0.82rem;
     margin-left: 0;
+    padding-top: 0.12rem;
+    padding-bottom: 0.18rem;
   }
 
   .hero h1 {
