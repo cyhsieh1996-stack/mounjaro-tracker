@@ -248,8 +248,8 @@ fieldset {
 
 .ghost-button {
   padding: 0.9rem 1rem;
-  background: var(--surface-strong);
-  border: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, rgba(245, 250, 253, 0.98), rgba(235, 244, 250, 0.94));
+  border: 1px solid rgba(126, 155, 182, 0.18);
   color: var(--text);
   font-weight: 600;
 }
@@ -1061,7 +1061,8 @@ canvas {
   .quick-actions .ghost-button,
   .quick-actions .danger-button {
     border-radius: 14px;
-    background: rgba(255, 251, 246, 0.92);
+    background: linear-gradient(180deg, rgba(245, 250, 253, 0.98), rgba(235, 244, 250, 0.94));
+    border-color: rgba(126, 155, 182, 0.18);
   }
 }
 
