@@ -438,8 +438,8 @@ fieldset {
 }
 
 .dose-option input:checked + span {
-  background: linear-gradient(135deg, rgba(199, 102, 65, 0.18), rgba(234, 188, 118, 0.2));
-  border-color: rgba(199, 102, 65, 0.45);
+  background: linear-gradient(135deg, rgba(213, 231, 242, 0.95), rgba(233, 245, 250, 0.98));
+  border-color: rgba(71, 109, 199, 0.38);
   color: var(--accent-deep);
 }
 
