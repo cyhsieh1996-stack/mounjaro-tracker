@@ -1,6 +1,6 @@
 window.APP_CONFIG = window.APP_CONFIG || {
   supabase: {
-    url: "https://uofdhrlklgmxaasxrbyr.supabase.co",
-    anonKey: "sb_publishable_V5QI0d3eTTdJZlz_yz-bvQ_9CLobYwn",
+    url: "https://wefujeubuguiuexpqopu.supabase.co",
+    anonKey: "sb_publishable_TcDa-CQleNimUOzg51ZSJg_2sick4-X",
   },
 };
