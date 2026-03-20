@@ -626,10 +626,25 @@ fieldset {
 
 .record-button {
   padding: 0.4rem 0.78rem;
-  background: rgba(170, 59, 47, 0.11);
-  border: 1px solid rgba(170, 59, 47, 0.15);
-  color: var(--danger);
   font-weight: 700;
+}
+
+#medication-list .record-button {
+  background: rgba(188, 158, 58, 0.14);
+  border: 1px solid rgba(188, 158, 58, 0.22);
+  color: #8c7220;
+}
+
+#weight-list .record-button {
+  background: rgba(71, 109, 199, 0.12);
+  border: 1px solid rgba(71, 109, 199, 0.18);
+  color: #355aa8;
+}
+
+#labs-list .record-button {
+  background: rgba(106, 132, 108, 0.12);
+  border: 1px solid rgba(106, 132, 108, 0.2);
+  color: #42674c;
 }
 
 .empty-state {
