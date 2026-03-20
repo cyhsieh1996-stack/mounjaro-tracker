@@ -1140,6 +1140,11 @@ canvas {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .medication-site-grid {
+    column-gap: 0.62rem;
+    row-gap: 0.72rem;
+  }
+
   .field {
     gap: 0.38rem;
   }
