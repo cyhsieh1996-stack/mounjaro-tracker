@@ -28,6 +28,7 @@ const injectionRegionSelect = document.getElementById("injection-region");
 const injectionDetailSelect = document.getElementById("injection-detail");
 const injectionDetailLabel = document.getElementById("injection-detail-label");
 const syncStatus = document.getElementById("sync-status");
+const authPanel = document.getElementById("auth-panel");
 const authEmailField = document.getElementById("auth-email-field");
 const emailSignInInput = document.getElementById("email-sign-in-input");
 const emailSignInButton = document.getElementById("email-sign-in-button");
@@ -325,6 +326,7 @@ function updateAuthUI() {
   const isSignedIn = Boolean(currentSession?.user);
 
   if (!requiresAuth) {
+    authPanel.hidden = false;
     authEmailField.hidden = true;
     emailSignInButton.hidden = true;
     authSession.hidden = true;
@@ -333,6 +335,7 @@ function updateAuthUI() {
     return;
   }
 
+  authPanel.hidden = isSignedIn;
   authEmailField.hidden = isSignedIn;
   emailSignInButton.hidden = isSignedIn;
   authSession.hidden = !isSignedIn;
