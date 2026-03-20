@@ -832,7 +832,8 @@ fieldset {
 
 #medication-list .record-button,
 #weight-list .record-button,
-#labs-list .record-button {
+#labs-list .record-button,
+#inbody-list .record-button {
   background: linear-gradient(180deg, rgba(245, 240, 252, 0.98), rgba(235, 227, 248, 0.96));
   border: 1px solid rgba(149, 130, 194, 0.16);
   color: #6f5e8e;
