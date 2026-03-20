@@ -516,13 +516,13 @@ function renderMedicationList() {
             <article class="record-card">
               <div class="record-card-header">
                 <h3>${formatDate(item.date)} ${item.time}</h3>
-                <strong>${item.dose} mg</strong>
+                <div class="record-card-header-actions">
+                  <strong>${item.dose} mg</strong>
+                  <button class="record-button" type="button" data-delete-collection="medications" data-delete-id="${item.id}">刪除</button>
+                </div>
               </div>
               <p>施打位置：${item.injectionSite || "未填位置"}</p>
               <p>${item.note || "無備註"}</p>
-              <div class="record-actions">
-                <button class="record-button" type="button" data-delete-collection="medications" data-delete-id="${item.id}">刪除</button>
-              </div>
             </article>
           `,
         )
@@ -540,12 +540,12 @@ function renderWeightList() {
             <article class="record-card">
               <div class="record-card-header">
                 <h3>${formatDate(item.date)}</h3>
-                <strong>${item.weight.toFixed(1)} kg</strong>
+                <div class="record-card-header-actions">
+                  <strong>${item.weight.toFixed(1)} kg</strong>
+                  <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
+                </div>
               </div>
               <p>${item.note || "無備註"}</p>
-              <div class="record-actions">
-                <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
-              </div>
             </article>
           `,
         )

@@ -599,6 +599,14 @@ fieldset {
   align-items: flex-start;
 }
 
+.record-card-header-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+
 .record-card-header h3 {
   margin: 0;
   font-size: 1rem;
@@ -610,6 +618,11 @@ fieldset {
   font-weight: 800;
   color: var(--text);
   letter-spacing: -0.02em;
+}
+
+#medication-list .record-card-header strong,
+#weight-list .record-card-header strong {
+  margin-top: 0.16rem;
 }
 
 #labs-list .record-card p {
