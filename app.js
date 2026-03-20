@@ -779,7 +779,7 @@ function getChartOptions(unit, yAxisOverrides = {}) {
         ...yAxisOverrides,
         ticks: {
           callback(value) {
-            return `${value} ${unit}`;
+            return `${value}`;
           },
         },
       },
