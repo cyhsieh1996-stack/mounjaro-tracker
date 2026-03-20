@@ -638,15 +638,15 @@ fieldset {
 #medication-list .record-card,
 #weight-list .record-card,
 #labs-list .record-card {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(244, 249, 252, 0.96));
-  border-color: rgba(146, 174, 198, 0.13);
+  background: linear-gradient(180deg, rgba(245, 250, 254, 0.99), rgba(232, 242, 249, 0.96));
+  border-color: rgba(146, 174, 198, 0.15);
 }
 
 #labs-list .record-card-header h3 {
-  font-size: 1.02rem;
-  font-weight: 800;
+  font-size: 1rem;
+  font-weight: 750;
   color: #000;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 .record-card-header {
@@ -671,16 +671,17 @@ fieldset {
 
 .record-card-header h3 {
   margin: 0;
-  font-size: 0.96rem;
-  line-height: 1.32;
+  font-size: 0.92rem;
+  line-height: 1.36;
+  letter-spacing: -0.01em;
 }
 
 .record-card-header strong {
-  font-size: 1.08rem;
+  font-size: 1rem;
   line-height: 1;
-  font-weight: 800;
+  font-weight: 720;
   color: var(--text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 #medication-list .record-card-header strong,
@@ -689,22 +690,22 @@ fieldset {
 }
 
 #labs-list .record-card p {
-  font-size: 1.08rem;
-  line-height: 1.6;
-  color: #111;
+  font-size: 1rem;
+  line-height: 1.62;
+  color: #22313d;
 }
 
 #labs-list .record-card p:nth-of-type(1),
 #labs-list .record-card p:nth-of-type(2) {
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: -0.015em;
+  font-size: 1.02rem;
+  font-weight: 720;
+  letter-spacing: -0.01em;
   color: #000;
 }
 
 #labs-list .record-card p:nth-of-type(3) {
-  font-size: 1rem;
-  color: #384741;
+  font-size: 0.98rem;
+  color: #5d7080;
 }
 
 #labs-list .record-card .record-button {
@@ -715,8 +716,8 @@ fieldset {
 .record-card p {
   margin: 0.18rem 0;
   color: var(--muted);
-  line-height: 1.46;
-  font-size: 0.96rem;
+  line-height: 1.5;
+  font-size: 0.94rem;
 }
 
 .record-card p:last-of-type {
