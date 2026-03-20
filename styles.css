@@ -89,15 +89,34 @@ fieldset {
 .hero-copy {
   display: grid;
   gap: 0.2rem;
+  padding: 1rem 1.15rem 0.9rem 1.3rem;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(255, 247, 238, 0.9), rgba(247, 236, 224, 0.76)),
+    radial-gradient(circle at top left, rgba(224, 139, 72, 0.12), transparent 44%);
+  border: 1px solid rgba(199, 102, 65, 0.14);
+  box-shadow:
+    0 16px 36px rgba(99, 69, 43, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  position: relative;
+  overflow: hidden;
 }
 
-.eyebrow,
 .section-tag {
   margin: 0 0 0.35rem;
   font-size: 0.72rem;
   letter-spacing: 0.18em;
   color: var(--accent-deep);
   font-weight: 800;
+}
+
+.hero-copy::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(199, 102, 65, 0.9), rgba(224, 139, 72, 0.45));
 }
 
 .hero h1,
@@ -107,7 +126,8 @@ fieldset {
 
 .hero h1 {
   font-size: clamp(2rem, 5vw, 3.6rem);
-  line-height: 1;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
 }
 
 .sync-status {
@@ -689,11 +709,15 @@ canvas {
     padding: 0.5rem 0.15rem 0.4rem;
   }
 
-  .eyebrow,
   .section-tag {
     margin-bottom: 0.3rem;
     font-size: 0.68rem;
     letter-spacing: 0.16em;
+  }
+
+  .hero-copy {
+    padding: 0.9rem 0.95rem 0.82rem 1.05rem;
+    border-radius: 22px;
   }
 
   .hero h1 {
