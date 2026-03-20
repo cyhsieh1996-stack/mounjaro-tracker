@@ -780,12 +780,12 @@ canvas {
 
   .app-shell {
     width: min(100vw - 1rem, 100%);
-    padding: 0.55rem 0 0.85rem;
+    padding: 0.82rem 0 0.85rem;
   }
 
   .hero {
     gap: 1.05rem;
-    padding: 0.58rem 0.2rem 0.42rem;
+    padding: 1.02rem 0.2rem 0.82rem;
   }
 
   .section-tag {
@@ -1090,6 +1090,11 @@ canvas {
 @media (max-width: 420px) {
   .app-shell {
     width: min(100vw - 0.7rem, 100%);
+  }
+
+  .hero {
+    padding-top: 1.08rem;
+    padding-bottom: 0.9rem;
   }
 
   .auth-user {
