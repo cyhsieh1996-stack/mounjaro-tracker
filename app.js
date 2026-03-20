@@ -613,7 +613,7 @@ function renderCharts() {
         },
       ],
     },
-    options: getChartOptions("kg", { min: 0, max: 100 }),
+    options: getChartOptions("kg", { min: 50, max: 100 }),
   });
 
   charts.labs = new Chart(labsCtx, {
