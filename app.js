@@ -53,8 +53,8 @@ const browseWorkspaceBody = document.getElementById("browse-workspace-body");
 
 const injectionSiteOptions = {
   肚臍: ["左側", "右側", "上方", "下方"],
-  大腿: ["左腿內側", "左腿外側", "右腿內側", "右腿外側"],
-  上臂: ["左上臂內側", "左上臂外側", "右上臂內側", "右上臂外側"],
+  大腿: ["左腿外側", "右腿外側"],
+  上臂: ["左上臂外側", "右上臂外側"],
 };
 
 const appConfig = window.APP_CONFIG || {};
@@ -312,8 +312,7 @@ function setDefaultFormValues() {
 
 function syncInjectionDetailOptions(region, selectedDetail) {
   const options = injectionSiteOptions[region] || [];
-  injectionDetailLabel.textContent =
-    region === "肚臍" ? "細部位置（上下左右）" : "細部位置（左/右＋內/外側）";
+  injectionDetailLabel.textContent = "細部位置";
 
   injectionDetailSelect.innerHTML = options
     .map((option) => `<option value="${option}">${option}</option>`)
