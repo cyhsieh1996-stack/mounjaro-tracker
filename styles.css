@@ -717,18 +717,38 @@ canvas {
     font-size: clamp(2rem, 7.4vw, 2.85rem);
   }
 
-  .browse-top-grid,
-  .trends-grid,
   .records-grid {
     grid-template-columns: 1fr;
   }
 
-  .browse-top-grid > .panel:nth-child(3) {
+  .workspace-browse {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .workspace-browse > .browse-top-grid,
+  .workspace-browse > .trends-grid {
+    display: contents;
+  }
+
+  #medication-records-panel {
+    order: 1;
+  }
+
+  #weight-records-panel {
     order: 2;
   }
 
-  .trends-grid > .panel:nth-child(1) {
-    order: 1;
+  #weight-trend-panel {
+    order: 3;
+  }
+
+  #labs-records-panel {
+    order: 4;
+  }
+
+  #labs-trend-panel {
+    order: 5;
   }
 
   .field-grid,
@@ -738,6 +758,7 @@ canvas {
 
   .browse-top-grid,
   .trends-grid {
+    grid-template-columns: 1fr;
     gap: 0.9rem;
   }
 }
