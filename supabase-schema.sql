@@ -15,6 +15,7 @@ create table if not exists weights (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
   date date not null,
+  time text not null default '',
   weight numeric not null,
   note text not null default '',
   created_at timestamptz not null default now()
@@ -36,6 +37,7 @@ create table if not exists labs (
 alter table medications add column if not exists user_id uuid default auth.uid();
 alter table weights add column if not exists user_id uuid default auth.uid();
 alter table labs add column if not exists user_id uuid default auth.uid();
+alter table weights add column if not exists time text default '';
 
 alter table medications enable row level security;
 alter table weights enable row level security;

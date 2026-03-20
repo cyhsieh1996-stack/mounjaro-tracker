@@ -154,12 +154,14 @@ function bindEvents() {
     const record = {
       id: crypto.randomUUID(),
       date: String(formData.get("date")),
+      time: String(formData.get("time")),
       weight: Number(formData.get("weight")),
     };
 
     await saveRecord("weights", record);
     weightForm.reset();
     weightForm.elements.date.value = today;
+    weightForm.elements.time.value = nowTime;
   });
 
   labsForm.addEventListener("submit", async (event) => {
@@ -262,6 +264,7 @@ function setDefaultFormValues() {
   injectionRegionSelect.value = "肚臍";
   syncInjectionDetailOptions("肚臍", "左側");
   weightForm.elements.date.value = today;
+  weightForm.elements.time.value = nowTime;
   labsForm.elements.date.value = today;
 }
 
@@ -614,7 +617,7 @@ function renderWeightList() {
           (item) => `
             <article class="record-card">
               <div class="record-card-header">
-                <h3>${formatDate(item.date, true)}</h3>
+                <h3>${formatDate(item.date, true)} ${item.time || ""}</h3>
                 <div class="record-card-header-actions">
                   <strong>${item.weight.toFixed(1)} kg</strong>
                   <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
@@ -961,6 +964,7 @@ function mapRecordToDb(collection, record) {
     return {
       id: record.id,
       date: record.date,
+      time: record.time,
       weight: record.weight,
     };
   }
@@ -990,6 +994,7 @@ function mapWeightFromDb(record) {
   return {
     id: record.id,
     date: record.date,
+    time: record.time || "",
     weight: Number(record.weight),
   };
 }
