@@ -187,7 +187,6 @@ fieldset {
   user-select: none;
 }
 
-.hero-stats,
 .browse-top-grid,
 .trends-grid,
 .records-grid {
@@ -195,34 +194,12 @@ fieldset {
   gap: 1rem;
 }
 
-.hero-stats {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.stat-card,
 .panel {
   backdrop-filter: blur(16px);
   background: var(--panel);
   border: 1px solid var(--panel-border);
   border-radius: 24px;
   box-shadow: var(--shadow);
-}
-
-.stat-card {
-  padding: 1.25rem 1.1rem;
-  background: linear-gradient(180deg, rgba(255, 252, 247, 0.95), rgba(250, 242, 233, 0.9));
-}
-
-.stat-card span {
-  display: block;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
-.stat-card strong {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 1.15rem;
 }
 
 .panel {
@@ -357,10 +334,16 @@ fieldset {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.field-grid > *,
+.field-grid-nested > * {
+  min-width: 0;
+}
+
 .field {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+  min-width: 0;
 }
 
 .field span {
@@ -371,6 +354,8 @@ fieldset {
 .field input,
 .field select {
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid var(--panel-border);
   border-radius: 16px;
   padding: 0.95rem 1rem;
@@ -387,6 +372,7 @@ fieldset {
 
 .dose-fieldset {
   gap: 0.7rem;
+  margin-bottom: 0.35rem;
 }
 
 .dose-options {
@@ -410,8 +396,8 @@ fieldset {
 .dose-option span {
   display: grid;
   place-items: center;
-  min-height: 2.8rem;
-  padding: 0.7rem 0.5rem;
+  min-height: 3.35rem;
+  padding: 0.9rem 0.5rem;
   border-radius: 16px;
   border: 1px solid var(--panel-border);
   background: var(--surface-strong);
@@ -454,9 +440,59 @@ fieldset {
   font-size: 1rem;
 }
 
+#medication-form .primary-button-wide {
+  margin-top: 1.45rem;
+}
+
 .browse-top-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 1rem;
+}
+
+.browse-top-grid > .panel,
+.trends-grid > .panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.browse-top-grid > .panel::before,
+.trends-grid > .panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  border-radius: 999px;
+  opacity: 0.9;
+}
+
+.browse-top-grid > .panel:nth-child(1) {
+  background: linear-gradient(180deg, rgba(252, 242, 236, 0.96), rgba(244, 229, 220, 0.9));
+  border-color: rgba(199, 102, 65, 0.18);
+  box-shadow: 0 18px 36px rgba(138, 79, 52, 0.1);
+}
+
+.browse-top-grid > .panel:nth-child(1)::before {
+  background: linear-gradient(180deg, rgba(199, 102, 65, 0.9), rgba(224, 139, 72, 0.6));
+}
+
+.browse-top-grid > .panel:nth-child(2) {
+  background: linear-gradient(180deg, rgba(249, 244, 236, 0.96), rgba(239, 231, 220, 0.9));
+  border-color: rgba(143, 122, 96, 0.18);
+  box-shadow: 0 18px 36px rgba(110, 92, 72, 0.08);
+}
+
+.browse-top-grid > .panel:nth-child(2)::before {
+  background: linear-gradient(180deg, rgba(143, 122, 96, 0.88), rgba(198, 170, 132, 0.55));
+}
+
+.browse-top-grid > .panel:nth-child(3) {
+  background: linear-gradient(180deg, rgba(243, 246, 239, 0.97), rgba(230, 237, 225, 0.9));
+  border-color: rgba(106, 132, 108, 0.2);
+  box-shadow: 0 18px 36px rgba(82, 110, 84, 0.08);
+}
+
+.browse-top-grid > .panel:nth-child(3)::before {
+  background: linear-gradient(180deg, rgba(106, 132, 108, 0.9), rgba(158, 182, 135, 0.58));
 }
 
 .trends-grid {
@@ -467,6 +503,26 @@ fieldset {
 .chart-panel {
   min-height: 22rem;
   background: var(--panel-soft-strong);
+}
+
+.trends-grid > .panel:nth-child(1) {
+  background: linear-gradient(180deg, rgba(251, 243, 236, 0.97), rgba(242, 231, 221, 0.91));
+  border-color: rgba(180, 120, 83, 0.18);
+  box-shadow: 0 18px 36px rgba(120, 83, 56, 0.08);
+}
+
+.trends-grid > .panel:nth-child(1)::before {
+  background: linear-gradient(180deg, rgba(180, 120, 83, 0.88), rgba(226, 172, 108, 0.52));
+}
+
+.trends-grid > .panel:nth-child(2) {
+  background: linear-gradient(180deg, rgba(244, 244, 239, 0.97), rgba(233, 235, 228, 0.9));
+  border-color: rgba(116, 123, 92, 0.18);
+  box-shadow: 0 18px 36px rgba(90, 96, 74, 0.08);
+}
+
+.trends-grid > .panel:nth-child(2)::before {
+  background: linear-gradient(180deg, rgba(116, 123, 92, 0.88), rgba(165, 176, 132, 0.54));
 }
 
 .record-list {
@@ -548,10 +604,6 @@ canvas {
   .trends-grid,
   .records-grid {
     grid-template-columns: 1fr;
-  }
-
-  .hero-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .field-grid,
@@ -654,39 +706,6 @@ canvas {
     min-width: 0;
   }
 
-  .hero-stats {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 82%;
-    gap: 0.7rem;
-    overflow-x: auto;
-    padding-bottom: 0.2rem;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-  }
-
-  .hero-stats::-webkit-scrollbar {
-    display: none;
-  }
-
-  .stat-card {
-    padding: 0.95rem 1rem;
-    border-radius: 18px;
-    background:
-      linear-gradient(180deg, rgba(255, 252, 247, 0.96), rgba(246, 236, 225, 0.92)),
-      linear-gradient(135deg, rgba(199, 102, 65, 0.05), transparent 60%);
-    scroll-snap-align: start;
-  }
-
-  .stat-card span {
-    font-size: 0.84rem;
-  }
-
-  .stat-card strong {
-    margin-top: 0.32rem;
-    font-size: 1.02rem;
-  }
-
   .workspace {
     margin-top: 0.9rem;
     padding: 0.7rem;
@@ -717,8 +736,7 @@ canvas {
     font-size: 1.1rem;
   }
 
-  .panel,
-  .stat-card {
+  .panel {
     border-radius: 20px;
   }
 
@@ -781,6 +799,7 @@ canvas {
   .dose-fieldset {
     gap: 0.55rem;
     padding: 0.1rem 0 0;
+    margin-bottom: 0.45rem;
   }
 
   .dose-options {
@@ -788,8 +807,8 @@ canvas {
   }
 
   .dose-option span {
-    min-height: 2.55rem;
-    padding: 0.58rem 0.2rem;
+    min-height: 3rem;
+    padding: 0.78rem 0.2rem;
     border-radius: 14px;
     font-size: 0.84rem;
   }
@@ -809,6 +828,10 @@ canvas {
     box-shadow: 0 12px 24px rgba(199, 102, 65, 0.18);
   }
 
+  #medication-form .primary-button-wide {
+    margin-top: 1.6rem;
+  }
+
   .browse-top-grid,
   .trends-grid {
     gap: 0.75rem;
@@ -818,18 +841,6 @@ canvas {
   .browse-top-grid > .panel,
   .trends-grid > .panel {
     border-radius: 18px;
-  }
-
-  .browse-top-grid > .panel:nth-child(1) {
-    border-color: rgba(199, 102, 65, 0.18);
-  }
-
-  .browse-top-grid > .panel:nth-child(2) {
-    border-color: rgba(143, 122, 96, 0.16);
-  }
-
-  .browse-top-grid > .panel:nth-child(3) {
-    border-color: rgba(106, 132, 108, 0.18);
   }
 
   .chart-panel {
@@ -932,8 +943,7 @@ canvas {
     padding: 0.88rem;
   }
 
-  .panel,
-  .stat-card {
+  .panel {
     border-radius: 18px;
   }
 
@@ -945,10 +955,6 @@ canvas {
     font-size: 0.86rem;
     padding-left: 0.45rem;
     padding-right: 0.45rem;
-  }
-
-  .hero-stats {
-    grid-auto-columns: 88%;
   }
 
   .dose-option span {

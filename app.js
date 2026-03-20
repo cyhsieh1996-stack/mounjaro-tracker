@@ -421,29 +421,10 @@ function sortCollection(collection) {
 }
 
 function render() {
-  renderHeroStats();
   renderMedicationList();
   renderWeightList();
   renderLabsList();
   renderCharts();
-}
-
-function renderHeroStats() {
-  const latestWeight = [...state.weights].sort(sortByDateDesc)[0];
-  const latestMedication = [...state.medications].sort(sortByDateTimeDesc)[0];
-  const latestLab = [...state.labs].sort(sortByDateDesc)[0];
-
-  document.getElementById("latest-weight-stat").textContent = latestWeight
-    ? `${latestWeight.weight.toFixed(1)} kg`
-    : "尚無資料";
-
-  document.getElementById("latest-dose-stat").textContent = latestMedication
-    ? `${latestMedication.dose} mg · ${latestMedication.injectionSite || "未填位置"}`
-    : "尚無資料";
-
-  document.getElementById("latest-lab-stat").textContent = latestLab
-    ? `${formatDate(latestLab.date)}`
-    : "尚無資料";
 }
 
 function renderMedicationList() {
@@ -879,7 +860,7 @@ function renderSyncStatus(mode, fallback = false) {
   }
 
   if (mode === "supabase") {
-    syncStatus.textContent = "目前使用 Supabase 雲端同步模式";
+    syncStatus.textContent = "目前使用雲端同步模式";
     return;
   }
 
@@ -889,7 +870,7 @@ function renderSyncStatus(mode, fallback = false) {
   }
 
   syncStatus.textContent = fallback
-    ? "Supabase 連線失敗，已切換成本機儲存模式"
+    ? "雲端連線失敗，已切換成本機儲存模式"
     : "目前使用本機儲存模式";
 }
 
