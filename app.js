@@ -1033,12 +1033,19 @@ function renderSyncStatus(mode, fallback = false) {
 }
 
 function formatDate(dateString, short = false) {
+  const date = new Date(`${dateString}T00:00:00`);
+  if (short) {
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${month}月${day}日`;
+  }
+
   const formatter = new Intl.DateTimeFormat("zh-TW", {
-    month: short ? "numeric" : "long",
+    year: "numeric",
+    month: "long",
     day: "numeric",
-    year: short ? undefined : "numeric",
   });
-  return formatter.format(new Date(`${dateString}T00:00:00`));
+  return formatter.format(date);
 }
 
 function sortByDateDesc(a, b) {
