@@ -744,10 +744,12 @@ function renderInBodyList() {
           <div class="lab-metric-row">
             <span class="lab-metric"><span class="lab-metric-label">體重</span><span class="lab-metric-value">${formatDecimal(item.weight)}</span></span>
             <span class="lab-metric"><span class="lab-metric-label">骨骼肌</span><span class="lab-metric-value">${formatDecimal(item.skeletalMuscleMass)}</span></span>
-            <span class="lab-metric"><span class="lab-metric-label">體脂重</span><span class="lab-metric-value">${formatDecimal(item.bodyFatMass)}</span></span>
           </div>
           <div class="lab-metric-row">
+            <span class="lab-metric"><span class="lab-metric-label">體脂重</span><span class="lab-metric-value">${formatDecimal(item.bodyFatMass)}</span></span>
             <span class="lab-metric"><span class="lab-metric-label">體脂率</span><span class="lab-metric-value">${formatDecimal(item.bodyFatPercentage)}</span></span>
+          </div>
+          <div class="lab-metric-row">
             <span class="lab-metric"><span class="lab-metric-label">內臟脂肪</span><span class="lab-metric-value">${formatDecimal(item.visceralFatArea)}</span></span>
           </div>
           <div class="lab-metric-row">
