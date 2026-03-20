@@ -591,6 +591,10 @@ fieldset {
   margin-bottom: 0.55rem;
 }
 
+.record-card-header-inline-action {
+  align-items: flex-start;
+}
+
 .record-card-header h3 {
   margin: 0;
   font-size: 1rem;
@@ -620,6 +624,11 @@ fieldset {
 #labs-list .record-card p:nth-of-type(3) {
   font-size: 1rem;
   color: #5d7464;
+}
+
+#labs-list .record-card .record-button {
+  padding: 0.34rem 0.74rem;
+  margin-top: -0.08rem;
 }
 
 .record-card p {

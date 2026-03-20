@@ -561,15 +561,13 @@ function renderLabsList() {
         .map(
           (item) => `
             <article class="record-card">
-              <div class="record-card-header">
+              <div class="record-card-header record-card-header-inline-action">
                 <h3>${formatDate(item.date)}</h3>
+                <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
               </div>
               <p>TC ${item.totalCholesterol} / HDL ${item.hdl} / LDL ${item.ldl}</p>
               <p>TG ${item.triglycerides} / FPG ${item.fastingGlucose} mg/dL</p>
               <p>${item.note || "無備註"}</p>
-              <div class="record-actions">
-                <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
-              </div>
             </article>
           `,
         )
