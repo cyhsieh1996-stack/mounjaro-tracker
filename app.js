@@ -512,7 +512,6 @@ function renderLabsList() {
             <article class="record-card">
               <div class="record-card-header">
                 <h3>${formatDate(item.date)}</h3>
-                <strong>總膽固醇 ${item.totalCholesterol}</strong>
               </div>
               <p>TC ${item.totalCholesterol} / HDL ${item.hdl} / LDL ${item.ldl}</p>
               <p>TG ${item.triglycerides} / FPG ${item.fastingGlucose} mg/dL</p>
