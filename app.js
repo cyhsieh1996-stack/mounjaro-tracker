@@ -196,7 +196,7 @@ function bindEvents() {
 
   inbodyForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!ensureFormValid(inbodyForm, "InBody 紀錄")) {
+    if (!ensureFormValid(inbodyForm, "身體組成紀錄")) {
       return;
     }
     if (!ensureCanWrite("新增資料")) {
@@ -206,13 +206,13 @@ function bindEvents() {
     const record = {
       id: crypto.randomUUID(),
       date: String(inbodyForm.elements.date.value || "").trim(),
-      weight: parseRequiredNumberField(inbodyForm, "weight", "體重", "InBody 紀錄"),
-      skeletalMuscleMass: parseRequiredNumberField(inbodyForm, "skeletalMuscleMass", "骨骼肌重", "InBody 紀錄"),
-      bodyFatMass: parseRequiredNumberField(inbodyForm, "bodyFatMass", "體脂肪重", "InBody 紀錄"),
-      bodyFatPercentage: parseRequiredNumberField(inbodyForm, "bodyFatPercentage", "體脂肪率", "InBody 紀錄"),
-      visceralFatArea: parseRequiredNumberField(inbodyForm, "visceralFatArea", "內臟脂肪面積", "InBody 紀錄"),
-      inbodyScore: parseRequiredNumberField(inbodyForm, "inbodyScore", "InBody 分數", "InBody 紀錄"),
-      basalMetabolicRate: parseRequiredNumberField(inbodyForm, "basalMetabolicRate", "基礎代謝率", "InBody 紀錄"),
+      weight: parseRequiredNumberField(inbodyForm, "weight", "體重", "身體組成紀錄"),
+      skeletalMuscleMass: parseRequiredNumberField(inbodyForm, "skeletalMuscleMass", "骨骼肌重", "身體組成紀錄"),
+      bodyFatMass: parseRequiredNumberField(inbodyForm, "bodyFatMass", "體脂肪重", "身體組成紀錄"),
+      bodyFatPercentage: parseRequiredNumberField(inbodyForm, "bodyFatPercentage", "體脂肪率", "身體組成紀錄"),
+      visceralFatArea: parseRequiredNumberField(inbodyForm, "visceralFatArea", "內臟脂肪面積", "身體組成紀錄"),
+      inbodyScore: parseRequiredNumberField(inbodyForm, "inbodyScore", "InBody 分數", "身體組成紀錄"),
+      basalMetabolicRate: parseRequiredNumberField(inbodyForm, "basalMetabolicRate", "基礎代謝率", "身體組成紀錄"),
     };
 
     if (
@@ -733,7 +733,7 @@ function renderInBodyList() {
   renderRecordList(
     inbodyList,
     items,
-    "尚無 InBody 紀錄",
+    "尚無身體組成紀錄",
     (item) => `
       <article class="record-card">
         <div class="record-card-header record-card-header-inline-action">
