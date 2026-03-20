@@ -744,7 +744,7 @@ function renderInBodyList() {
           <span class="lab-metric"><span class="lab-metric-label">骨骼肌</span><span class="lab-metric-value">${formatDecimal(item.skeletalMuscleMass)}</span></span>
           <span class="lab-metric"><span class="lab-metric-label">體脂重</span><span class="lab-metric-value">${formatDecimal(item.bodyFatMass)}</span></span>
           <span class="lab-metric"><span class="lab-metric-label">體脂率</span><span class="lab-metric-value">${formatDecimal(item.bodyFatPercentage)}</span></span>
-          <span class="lab-metric"><span class="lab-metric-label">內臟脂肪</span><span class="lab-metric-value">${formatDecimal(item.visceralFatArea)}</span></span>
+          <span class="lab-metric lab-metric-wide"><span class="lab-metric-label">內臟脂肪</span><span class="lab-metric-value">${formatDecimal(item.visceralFatArea)}</span></span>
           <span class="lab-metric"><span class="lab-metric-label">分數</span><span class="lab-metric-value">${Math.round(item.inbodyScore)}</span></span>
           <span class="lab-metric"><span class="lab-metric-label">BMR</span><span class="lab-metric-value">${Math.round(item.basalMetabolicRate)}</span></span>
         </div>
