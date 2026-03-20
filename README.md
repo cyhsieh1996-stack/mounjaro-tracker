@@ -11,7 +11,7 @@
 這個專案現在支援兩種模式：
 
 1. 本機模式：資料存瀏覽器 `localStorage`
-2. Supabase 模式：資料存雲端資料庫，可跨裝置同步，並透過 email 登入隔離每位使用者資料
+2. Supabase 模式：資料存雲端資料庫，可跨裝置同步，並透過 Email 登入連結隔離每位使用者資料
 
 如果 `config.js` 沒有填 Supabase 金鑰，網站會自動使用本機模式。
 
@@ -66,11 +66,21 @@ http://你的電腦區網IP:8080
 - 使用者登入後只會看到自己的用藥、體重與檢驗紀錄
 - 適合多人一起使用同一個網站
 
-## 第 3 步：設定登入與取得 Supabase 金鑰
+## 第 3 步：啟用 Email 登入與取得 Supabase 金鑰
 
 到 Supabase project 的：
 
-- `Settings`
+- `Authentication`
+- `Sign In / Providers`
+
+請確認：
+
+- `Email`
+- `Enable Email provider`
+- `Confirm email` 建議保持開啟
+
+然後再到：
+
 - `Authentication`
 - `URL Configuration`
 
@@ -190,13 +200,15 @@ Build output directory: /
 
 ## 目前最重要的注意事項
 
-這個版本的 Supabase 設定是「email magic link 登入」。
+這個版本的 Supabase 設定是「Email magic link 登入」。
 
 意思是：
 
-- 使用者輸入 email 後，系統會寄出登入連結
+- 使用者輸入自己的 Email
+- 系統會寄一封登入連結到信箱
+- 點開連結後就會回到網站完成登入
 - 登入後只會讀寫自己的資料
-- 不需要另外建立密碼欄位
+- 不需要另外建立密碼欄位，也不需要設定 Google Cloud Console
 
 如果你接下來要正式給同事使用，我建議下一步做：
 

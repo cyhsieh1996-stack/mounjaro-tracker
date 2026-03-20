@@ -28,9 +28,9 @@ const injectionRegionSelect = document.getElementById("injection-region");
 const injectionDetailSelect = document.getElementById("injection-detail");
 const injectionDetailLabel = document.getElementById("injection-detail-label");
 const syncStatus = document.getElementById("sync-status");
-const authForm = document.getElementById("auth-form");
-const authEmailInput = document.getElementById("auth-email");
-const authSubmitButton = document.getElementById("auth-submit-button");
+const authEmailField = document.getElementById("auth-email-field");
+const emailSignInInput = document.getElementById("email-sign-in-input");
+const emailSignInButton = document.getElementById("email-sign-in-button");
 const authSession = document.getElementById("auth-session");
 const authUserEmail = document.getElementById("auth-user-email");
 const signOutButton = document.getElementById("sign-out-button");
@@ -98,7 +98,7 @@ function bindEvents() {
     );
   });
 
-  authForm.addEventListener("submit", handleAuthSubmit);
+  emailSignInButton.addEventListener("click", handleEmailSignIn);
   signOutButton.addEventListener("click", handleSignOut);
 
   medicationForm.addEventListener("submit", async (event) => {
@@ -271,19 +271,20 @@ function setActiveTab(formId) {
   });
 }
 
-async function handleAuthSubmit(event) {
-  event.preventDefault();
+async function handleEmailSignIn() {
   if (!supabaseClient) {
     window.alert("目前沒有設定 Supabase，無法使用登入。");
     return;
   }
 
-  const email = authEmailInput.value.trim();
+  const email = emailSignInInput.value.trim();
   if (!email) {
+    window.alert("請先輸入 Email。");
+    emailSignInInput.focus();
     return;
   }
 
-  authSubmitButton.disabled = true;
+  emailSignInButton.disabled = true;
 
   try {
     const redirectTo = `${window.location.origin}${window.location.pathname}`;
@@ -298,13 +299,12 @@ async function handleAuthSubmit(event) {
       throw error;
     }
 
-    authHelp.textContent = "登入連結已寄出，請到信箱點擊後再回到這個頁面。";
-    authForm.reset();
+    window.alert("登入連結已寄出，請到你的 Email 信箱開啟連結完成登入。");
   } catch (error) {
     console.error(error);
-    window.alert("寄送登入連結失敗，請確認 email 是否正確。");
+    window.alert("寄送登入連結失敗，請稍後再試。");
   } finally {
-    authSubmitButton.disabled = false;
+    emailSignInButton.disabled = false;
   }
 }
 
@@ -325,19 +325,21 @@ function updateAuthUI() {
   const isSignedIn = Boolean(currentSession?.user);
 
   if (!requiresAuth) {
-    authForm.hidden = true;
+    authEmailField.hidden = true;
+    emailSignInButton.hidden = true;
     authSession.hidden = true;
     authHelp.textContent = "目前為本機模式，資料只保留在這台裝置的瀏覽器。";
     appContent.classList.remove("is-locked");
     return;
   }
 
-  authForm.hidden = isSignedIn;
+  authEmailField.hidden = isSignedIn;
+  emailSignInButton.hidden = isSignedIn;
   authSession.hidden = !isSignedIn;
   authUserEmail.textContent = isSignedIn ? `已登入：${currentSession.user.email}` : "";
   authHelp.textContent = isSignedIn
     ? "目前已登入，只會讀取與寫入你的個人資料。"
-    : "請輸入你的 email，系統會寄出登入連結。登入後你只能看到自己的資料。";
+    : "請輸入 Email 取得登入連結。登入後你只能看到自己的資料。";
 
   appContent.classList.toggle("is-locked", !isSignedIn);
 }

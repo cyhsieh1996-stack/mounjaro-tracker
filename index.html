@@ -46,17 +46,17 @@
             <p class="section-tag">AUTH</p>
             <h2>登入後只看自己的資料</h2>
             <p class="auth-help" id="auth-help">
-              請輸入你的 email，系統會寄出登入連結。登入後你只能看到自己的用藥、體重與檢驗紀錄。
+              請輸入 Email 取得登入連結。登入後你只能看到自己的用藥、體重與檢驗紀錄。
             </p>
           </div>
 
-          <form id="auth-form" class="auth-form" autocomplete="on">
-            <label class="field auth-field">
+          <div class="auth-form">
+            <label class="field auth-field" id="auth-email-field">
               <span>Email</span>
-              <input id="auth-email" name="email" type="email" placeholder="name@example.com" required />
+              <input id="email-sign-in-input" type="email" placeholder="name@example.com" autocomplete="email" />
             </label>
-            <button class="primary-button auth-button" id="auth-submit-button" type="submit">寄送登入連結</button>
-          </form>
+            <button class="primary-button auth-button" id="email-sign-in-button" type="button">寄送登入連結</button>
+          </div>
 
           <div class="auth-session" id="auth-session" hidden>
             <p class="auth-user" id="auth-user-email">已登入</p>
