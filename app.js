@@ -405,7 +405,14 @@ async function handleSignOut() {
   if (error) {
     console.error(error);
     window.alert("登出失敗，請稍後再試。");
+    return;
   }
+
+  currentSession = null;
+  Object.assign(state, { medications: [], weights: [], labs: [] });
+  renderSyncStatus("auth-required");
+  updateAuthUI();
+  render();
 }
 
 function updateAuthUI() {
