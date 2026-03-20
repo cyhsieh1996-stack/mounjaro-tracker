@@ -373,7 +373,7 @@ function updateAuthUI() {
   authUserEmail.textContent = isSignedIn ? `已登入：${currentSession.user.email}` : "";
   authHelp.textContent = isSignedIn
     ? "目前已登入，只會讀取與寫入你的個人資料。"
-    : "請輸入 Email 取得登入連結。登入後你只能看到自己的資料。";
+    : "請輸入 Email 取得登入連結。";
 
   appContent.classList.toggle("is-locked", !isSignedIn);
 }
