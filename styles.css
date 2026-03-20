@@ -14,7 +14,14 @@
   --card-soft: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
   --record-soft: linear-gradient(180deg, rgba(247, 243, 254, 0.99), rgba(237, 230, 248, 0.96));
   --interactive-border: rgba(149, 130, 194, 0.18);
+  --border-subtle: rgba(149, 130, 194, 0.14);
+  --border-soft: rgba(149, 130, 194, 0.16);
   --card-shadow-soft: 0 10px 26px rgba(80, 51, 132, 0.06);
+  --radius-panel: 24px;
+  --radius-card: 20px;
+  --radius-control: 16px;
+  --radius-pill: 999px;
+  --text-strong: #1f1736;
   --text: #251c40;
   --muted: #74688f;
   --accent: #6f35c8;
@@ -250,7 +257,7 @@ fieldset {
   backdrop-filter: blur(16px);
   background: var(--panel);
   border: 1px solid var(--panel-border);
-  border-radius: 24px;
+  border-radius: var(--radius-panel);
   box-shadow: var(--shadow);
 }
 
@@ -295,7 +302,7 @@ fieldset {
 .record-button,
 .tab {
   border: none;
-  border-radius: 16px;
+  border-radius: var(--radius-control);
   cursor: pointer;
   transition: transform 160ms ease, opacity 160ms ease, background 160ms ease, border-color 160ms ease;
 }
@@ -338,7 +345,7 @@ fieldset {
 
 .summary-chip {
   padding: 0.92rem 1rem 0.88rem;
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   background: var(--surface-tint);
   border: 1px solid rgba(127, 108, 177, 0.12);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
@@ -459,7 +466,7 @@ fieldset {
   min-width: 0;
   max-width: 100%;
   border: 1px solid var(--interactive-border);
-  border-radius: 16px;
+  border-radius: var(--radius-control);
   padding: 0.95rem 1rem;
   background: var(--surface-soft);
   color: var(--text);
@@ -519,7 +526,7 @@ fieldset {
   place-items: center;
   min-height: 3.35rem;
   padding: 0.9rem 0.5rem;
-  border-radius: 16px;
+  border-radius: var(--radius-control);
   border: 1px solid var(--panel-border);
   background: var(--surface-strong);
   color: var(--text);
@@ -589,7 +596,7 @@ fieldset {
 
 .browse-top-grid > .panel:nth-child(1) {
   background: var(--card-soft);
-  border-color: rgba(149, 130, 194, 0.14);
+  border-color: var(--border-subtle);
   box-shadow: var(--card-shadow-soft);
 }
 
@@ -599,7 +606,7 @@ fieldset {
 
 .browse-top-grid > .panel:nth-child(2) {
   background: var(--card-soft);
-  border-color: rgba(149, 130, 194, 0.14);
+  border-color: var(--border-subtle);
   box-shadow: var(--card-shadow-soft);
 }
 
@@ -609,7 +616,7 @@ fieldset {
 
 .browse-top-grid > .panel:nth-child(3) {
   background: var(--card-soft);
-  border-color: rgba(149, 130, 194, 0.14);
+  border-color: var(--border-subtle);
   box-shadow: var(--card-shadow-soft);
 }
 
@@ -619,7 +626,7 @@ fieldset {
 
 .browse-top-grid > .panel:nth-child(4) {
   background: var(--card-soft);
-  border-color: rgba(149, 130, 194, 0.14);
+  border-color: var(--border-subtle);
   box-shadow: var(--card-shadow-soft);
 }
 
@@ -639,7 +646,7 @@ fieldset {
 
 .trends-grid > .panel:nth-child(1) {
   background: var(--card-soft);
-  border-color: rgba(149, 130, 194, 0.14);
+  border-color: var(--border-subtle);
   box-shadow: var(--card-shadow-soft);
 }
 
@@ -649,7 +656,7 @@ fieldset {
 
 .trends-grid > .panel:nth-child(2) {
   background: var(--card-soft);
-  border-color: rgba(149, 130, 194, 0.14);
+  border-color: var(--border-subtle);
   box-shadow: var(--card-shadow-soft);
 }
 
@@ -675,7 +682,8 @@ fieldset {
   font-size: 1.34rem;
   line-height: 1.08;
   letter-spacing: -0.03em;
-  font-weight: 800;
+  font-weight: 760;
+  color: var(--text-strong);
 }
 
 .record-list {
@@ -685,7 +693,7 @@ fieldset {
 }
 
 .record-card {
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   padding: 0.96rem 1rem 0.82rem;
   background: var(--surface-tint);
   border: 1px solid rgba(149, 130, 194, 0.13);
@@ -697,13 +705,13 @@ fieldset {
 #labs-list .record-card,
 #inbody-list .record-card {
   background: var(--record-soft);
-  border-color: rgba(149, 130, 194, 0.15);
+  border-color: var(--border-subtle);
 }
 
 #labs-list .record-card-header h3,
 #inbody-list .record-card-header h3 {
   font-size: 1rem;
-  font-weight: 750;
+  font-weight: 720;
   color: #000;
   letter-spacing: -0.015em;
 }
@@ -749,8 +757,8 @@ fieldset {
 .record-card-header strong {
   font-size: 1rem;
   line-height: 1;
-  font-weight: 720;
-  color: var(--text);
+  font-weight: 680;
+  color: var(--text-strong);
   letter-spacing: -0.015em;
 }
 
@@ -797,7 +805,7 @@ fieldset {
 
 .lab-metric-value {
   font-size: 0.98rem;
-  font-weight: 680;
+  font-weight: 650;
   line-height: 1.2;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -816,9 +824,9 @@ fieldset {
 
 .record-button {
   padding: 0.32rem 0.68rem;
-  font-weight: 700;
+  font-weight: 650;
   font-size: 0.9rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
@@ -827,7 +835,7 @@ fieldset {
 #labs-list .record-button,
 #inbody-list .record-button {
   background: var(--surface-soft);
-  border: 1px solid rgba(149, 130, 194, 0.16);
+  border: 1px solid var(--border-soft);
   color: var(--muted);
 }
 
