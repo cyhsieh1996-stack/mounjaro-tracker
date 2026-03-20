@@ -724,11 +724,11 @@ function renderCharts() {
     data: {
       labels: labsData.map((item) => formatDate(item.date, true)),
       datasets: [
-        buildLabDataset("總膽固醇", labsData, "totalCholesterol", "#4f2495"),
-        buildLabDataset("HDL", labsData, "hdl", "#6f35c8"),
-        buildLabDataset("LDL", labsData, "ldl", "#8b55de"),
-        buildLabDataset("TG", labsData, "triglycerides", "#a173e5"),
-        buildLabDataset("空腹血糖", labsData, "fastingGlucose", "#c1a6ef"),
+        buildLabDataset("總膽固醇", labsData, "totalCholesterol", "#d95d39"),
+        buildLabDataset("HDL", labsData, "hdl", "#3f7d6b"),
+        buildLabDataset("LDL", labsData, "ldl", "#476dc7"),
+        buildLabDataset("TG", labsData, "triglycerides", "#d89a1d"),
+        buildLabDataset("空腹血糖", labsData, "fastingGlucose", "#8c4cc9"),
       ],
     },
     options: getChartOptions("mg/dL"),
