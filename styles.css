@@ -399,6 +399,10 @@ fieldset {
   line-height: 1;
 }
 
+.workspace-browse .workspace-header {
+  margin-bottom: 0.72rem;
+}
+
 .workspace-body[hidden] {
   display: none !important;
 }
@@ -1093,6 +1097,10 @@ canvas {
     min-height: 3.6rem;
     margin-bottom: 0.6rem;
     padding: 0.2rem 0.1rem;
+  }
+
+  .workspace-browse .workspace-header {
+    margin-bottom: 0.38rem;
   }
 
   .workspace-title {
