@@ -1,21 +1,21 @@
 :root {
   color-scheme: light;
-  --bg: #f5efe7;
-  --bg-strong: #efe4d6;
-  --surface: rgba(255, 250, 244, 0.8);
-  --surface-strong: rgba(255, 252, 247, 0.94);
-  --panel: rgba(255, 252, 247, 0.88);
-  --panel-soft: linear-gradient(180deg, rgba(250, 241, 230, 0.92), rgba(243, 232, 220, 0.84));
-  --panel-soft-strong: linear-gradient(180deg, rgba(247, 237, 226, 0.94), rgba(238, 226, 213, 0.88));
-  --panel-border: rgba(123, 101, 82, 0.14);
-  --text: #2f241d;
-  --muted: #756252;
-  --accent: #c76641;
-  --accent-deep: #96432b;
-  --accent-soft: rgba(199, 102, 65, 0.12);
-  --accent-line: rgba(199, 102, 65, 0.24);
-  --shadow: 0 20px 48px rgba(86, 58, 33, 0.12);
-  --success: #32674a;
+  --bg: #eef5f8;
+  --bg-strong: #dfeaf0;
+  --surface: rgba(247, 251, 253, 0.82);
+  --surface-strong: rgba(252, 254, 255, 0.96);
+  --panel: rgba(250, 253, 255, 0.9);
+  --panel-soft: linear-gradient(180deg, rgba(247, 251, 254, 0.96), rgba(237, 245, 250, 0.9));
+  --panel-soft-strong: linear-gradient(180deg, rgba(243, 249, 252, 0.98), rgba(232, 241, 247, 0.92));
+  --panel-border: rgba(89, 121, 146, 0.14);
+  --text: #153247;
+  --muted: #5f7890;
+  --accent: #2f7fa3;
+  --accent-deep: #1d5e7c;
+  --accent-soft: rgba(47, 127, 163, 0.1);
+  --accent-line: rgba(47, 127, 163, 0.22);
+  --shadow: 0 20px 48px rgba(47, 86, 112, 0.12);
+  --success: #327069;
   --danger: #aa3b2f;
 }
 
@@ -32,9 +32,9 @@ body {
   min-height: 100vh;
   font-family: "Noto Sans TC", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(255, 217, 168, 0.75), transparent 26%),
-    radial-gradient(circle at top right, rgba(235, 171, 151, 0.55), transparent 28%),
-    linear-gradient(160deg, var(--bg) 0%, #fcf7f0 45%, var(--bg-strong) 100%);
+    radial-gradient(circle at top left, rgba(123, 186, 216, 0.22), transparent 28%),
+    radial-gradient(circle at top right, rgba(126, 198, 180, 0.18), transparent 30%),
+    linear-gradient(160deg, var(--bg) 0%, #f7fbfd 44%, var(--bg-strong) 100%);
   color: var(--text);
 }
 
@@ -61,13 +61,13 @@ fieldset {
 }
 
 .background-glow-left {
-  background: rgba(245, 197, 125, 0.7);
+  background: rgba(113, 182, 213, 0.4);
   top: 3rem;
   left: -4rem;
 }
 
 .background-glow-right {
-  background: rgba(217, 129, 110, 0.55);
+  background: rgba(110, 183, 167, 0.34);
   top: 8rem;
   right: -5rem;
 }
@@ -109,7 +109,7 @@ fieldset {
   inset: 0.18rem auto 0.18rem 0;
   width: 4px;
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(199, 102, 65, 0.88), rgba(224, 139, 72, 0.36));
+  background: linear-gradient(180deg, rgba(47, 127, 163, 0.92), rgba(72, 158, 188, 0.4));
 }
 
 .hero h1,
@@ -129,8 +129,8 @@ fieldset {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  background: rgba(243, 230, 215, 0.82);
-  border: 1px solid rgba(123, 101, 82, 0.14);
+  background: rgba(240, 248, 252, 0.92);
+  border: 1px solid rgba(89, 121, 146, 0.14);
   color: var(--muted);
   font-size: 0.92rem;
 }
@@ -142,11 +142,11 @@ fieldset {
   align-items: end;
   padding: 1.15rem;
   background:
-    linear-gradient(180deg, rgba(255, 249, 242, 0.97), rgba(246, 234, 219, 0.93)),
-    linear-gradient(135deg, rgba(199, 102, 65, 0.06), transparent 55%);
-  border-color: rgba(199, 102, 65, 0.2);
+    linear-gradient(180deg, rgba(248, 252, 254, 0.98), rgba(237, 245, 250, 0.94)),
+    linear-gradient(135deg, rgba(47, 127, 163, 0.05), transparent 58%);
+  border-color: rgba(47, 127, 163, 0.16);
   box-shadow:
-    0 20px 48px rgba(86, 58, 33, 0.1),
+    0 20px 48px rgba(47, 86, 112, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
@@ -275,13 +275,13 @@ fieldset {
 }
 
 .workspace-input {
-  background: linear-gradient(180deg, rgba(255, 245, 232, 0.78), rgba(255, 249, 241, 0.62));
-  border: 1px solid rgba(199, 102, 65, 0.14);
+  background: linear-gradient(180deg, rgba(244, 250, 253, 0.9), rgba(237, 245, 250, 0.76));
+  border: 1px solid rgba(47, 127, 163, 0.12);
 }
 
 .workspace-browse {
-  background: linear-gradient(180deg, rgba(249, 245, 239, 0.92), rgba(243, 235, 225, 0.72));
-  border: 1px solid rgba(123, 101, 82, 0.1);
+  background: linear-gradient(180deg, rgba(245, 250, 253, 0.96), rgba(234, 242, 248, 0.82));
+  border: 1px solid rgba(89, 121, 146, 0.1);
 }
 
 .workspace-header {
@@ -324,14 +324,14 @@ fieldset {
 
 .tab {
   border: 1px solid var(--panel-border);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(249, 252, 254, 0.76);
   color: var(--muted);
   padding: 0.75rem 1rem;
   font-weight: 700;
 }
 
 .tab.active {
-  background: linear-gradient(180deg, rgba(240, 194, 178, 0.55), rgba(255, 244, 239, 0.95));
+  background: linear-gradient(180deg, rgba(219, 238, 246, 0.86), rgba(246, 251, 253, 0.98));
   color: var(--accent-deep);
   border-color: var(--accent-line);
   font-weight: 700;
@@ -452,10 +452,10 @@ fieldset {
 .primary-button {
   margin-top: 1rem;
   padding: 0.95rem 1.2rem;
-  background: linear-gradient(135deg, var(--accent) 0%, #e08b48 100%);
+  background: linear-gradient(135deg, #2f7fa3 0%, #4da8c3 100%);
   color: white;
   font-weight: 700;
-  box-shadow: 0 14px 28px rgba(199, 102, 65, 0.22);
+  box-shadow: 0 14px 28px rgba(47, 127, 163, 0.22);
 }
 
 .primary-button-wide {
@@ -680,9 +680,9 @@ canvas {
 @media (max-width: 720px) {
   body {
     background:
-      radial-gradient(circle at top left, rgba(255, 217, 168, 0.62), transparent 34%),
-      radial-gradient(circle at top right, rgba(235, 171, 151, 0.4), transparent 34%),
-      linear-gradient(180deg, #f8f2ea 0%, #f6eee4 42%, #efe3d5 100%);
+      radial-gradient(circle at top left, rgba(123, 186, 216, 0.2), transparent 34%),
+      radial-gradient(circle at top right, rgba(126, 198, 180, 0.15), transparent 34%),
+      linear-gradient(180deg, #f1f7fa 0%, #ecf4f8 42%, #dfe8ee 100%);
   }
 
   .background-glow {
@@ -777,11 +777,11 @@ canvas {
   }
 
   .workspace-input {
-    background: linear-gradient(180deg, rgba(255, 246, 235, 0.86), rgba(253, 248, 241, 0.72));
+    background: linear-gradient(180deg, rgba(244, 250, 253, 0.94), rgba(236, 244, 249, 0.8));
   }
 
   .workspace-browse {
-    background: linear-gradient(180deg, rgba(248, 243, 236, 0.94), rgba(242, 233, 222, 0.78));
+    background: linear-gradient(180deg, rgba(244, 250, 253, 0.96), rgba(232, 241, 247, 0.84));
   }
 
   .workspace-header {
