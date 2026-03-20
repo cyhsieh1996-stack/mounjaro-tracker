@@ -139,7 +139,7 @@ fieldset {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
   gap: 1rem;
-  align-items: end;
+  align-items: start;
   padding: 1.15rem;
   background:
     linear-gradient(180deg, rgba(248, 252, 254, 0.98), rgba(237, 245, 250, 0.94)),
