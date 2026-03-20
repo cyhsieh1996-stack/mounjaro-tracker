@@ -441,9 +441,7 @@ function updateAuthUI() {
   emailSignUpButton.hidden = isSignedIn;
   authSession.hidden = !isSignedIn;
   authUserEmail.textContent = isSignedIn ? `已登入：${currentSession.user.email}` : "";
-  authHelp.textContent = isSignedIn
-    ? "目前已登入，只會讀取與寫入你的個人資料。"
-    : "請輸入 Email 與密碼。";
+  authHelp.textContent = "請輸入 Email 與密碼。";
 
   appContent.classList.toggle("is-locked", !isSignedIn);
 }
@@ -591,7 +589,7 @@ function render() {
 
 function renderInputSummary() {
   const latestMedication = [...state.medications].sort(sortByDateTimeDesc)[0];
-  const latestWeight = [...state.weights].sort(sortByWeightDateTimeDesc)[0];
+  const latestWeight = [...state.weights].sort(sortByDateTimeDesc)[0];
 
   latestMedicationSummary.textContent = latestMedication
     ? `${latestMedication.injectionSite} / ${latestMedication.dose} mg`
@@ -626,7 +624,7 @@ function renderMedicationList() {
 }
 
 function renderWeightList() {
-  const items = [...state.weights].sort(sortByDateDesc);
+  const items = [...state.weights].sort(sortByDateTimeDesc);
   weightList.classList.toggle("empty-state", items.length === 0);
   weightList.innerHTML = items.length
     ? items
@@ -716,7 +714,7 @@ function renderCharts() {
         },
       ],
     },
-    options: getChartOptions("kg", { min: 50, max: 100 }),
+    options: getChartOptions({ min: 50, max: 100 }),
   });
 
   charts.labs = new Chart(labsCtx, {
@@ -731,7 +729,7 @@ function renderCharts() {
         buildLabDataset("空腹血糖", labsData, "fastingGlucose", "#8c4cc9"),
       ],
     },
-    options: getChartOptions("mg/dL"),
+    options: getChartOptions(),
   });
 }
 
@@ -752,7 +750,7 @@ function buildLabDataset(label, source, key, color) {
   };
 }
 
-function getChartOptions(unit, yAxisOverrides = {}) {
+function getChartOptions(yAxisOverrides = {}) {
   return {
     responsive: true,
     maintainAspectRatio: true,
@@ -900,7 +898,7 @@ function saveState() {
 async function fetchSupabaseData() {
   const [medicationsResult, weightsResult, labsResult] = await Promise.all([
     supabaseClient.from("medications").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
-    supabaseClient.from("weights").select("*").order("date", { ascending: false }),
+    supabaseClient.from("weights").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
     supabaseClient.from("labs").select("*").order("date", { ascending: false }),
   ]);
 
@@ -1111,9 +1109,5 @@ function sortByDateAsc(a, b) {
 }
 
 function sortByDateTimeDesc(a, b) {
-  return new Date(`${b.date}T${b.time || "00:00"}`) - new Date(`${a.date}T${a.time || "00:00"}`);
-}
-
-function sortByWeightDateTimeDesc(a, b) {
   return new Date(`${b.date}T${b.time || "00:00"}`) - new Date(`${a.date}T${a.time || "00:00"}`);
 }

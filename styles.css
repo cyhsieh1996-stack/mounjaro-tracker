@@ -234,8 +234,7 @@ fieldset {
 }
 
 .browse-top-grid,
-.trends-grid,
-.records-grid {
+.trends-grid {
   display: grid;
   gap: 1rem;
 }
@@ -381,13 +380,6 @@ fieldset {
 .workspace-header h2 {
   margin: 0;
   line-height: 1.08;
-}
-
-.workspace-text {
-  margin: 0.45rem 0 0;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 38rem;
 }
 
 .form-panel {
@@ -787,12 +779,6 @@ fieldset {
   margin-bottom: 0;
 }
 
-.record-actions {
-  margin-top: 0.16rem;
-  display: flex;
-  justify-content: flex-end;
-}
-
 .record-button {
   padding: 0.32rem 0.68rem;
   font-weight: 700;
@@ -837,10 +823,6 @@ canvas {
 
   .hero h1 {
     font-size: clamp(2rem, 7.4vw, 2.85rem);
-  }
-
-  .records-grid {
-    grid-template-columns: 1fr;
   }
 
   .workspace-browse {
@@ -1215,10 +1197,6 @@ canvas {
   .record-card p {
     font-size: 0.9rem;
     line-height: 1.48;
-  }
-
-  .record-actions {
-    margin-top: 0.12rem;
   }
 
   .record-button {
