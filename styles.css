@@ -547,7 +547,7 @@ fieldset {
 
 .record-card {
   border-radius: 18px;
-  padding: 0.9rem;
+  padding: 0.85rem 0.9rem 0.62rem;
   background: linear-gradient(180deg, rgba(244, 233, 220, 0.9), rgba(235, 223, 209, 0.84));
   border: 1px solid rgba(123, 101, 82, 0.12);
 }
@@ -599,14 +599,18 @@ fieldset {
   line-height: 1.5;
 }
 
+.record-card p:last-of-type {
+  margin-bottom: 0;
+}
+
 .record-actions {
-  margin-top: 0.4rem;
+  margin-top: 0.16rem;
   display: flex;
   justify-content: flex-end;
 }
 
 .record-button {
-  padding: 0.46rem 0.8rem;
+  padding: 0.4rem 0.78rem;
   background: rgba(170, 59, 47, 0.11);
   border: 1px solid rgba(170, 59, 47, 0.15);
   color: var(--danger);
@@ -910,7 +914,7 @@ canvas {
   }
 
   .record-card {
-    padding: 0.82rem;
+    padding: 0.74rem 0.82rem 0.52rem;
     border-radius: 16px;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
   }
@@ -937,12 +941,12 @@ canvas {
   }
 
   .record-actions {
-    margin-top: 0.32rem;
+    margin-top: 0.12rem;
   }
 
   .record-button {
-    min-height: 2.5rem;
-    padding: 0.46rem 0.78rem;
+    min-height: 2.28rem;
+    padding: 0.34rem 0.74rem;
     border-radius: 12px;
     font-size: 0.88rem;
   }
