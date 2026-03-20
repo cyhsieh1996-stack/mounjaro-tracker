@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
   --bg: #f3f0fb;
-  --bg-strong: #e6e0f4;
+  --bg-strong: #d8cee9;
   --surface: rgba(250, 248, 255, 0.84);
   --surface-strong: rgba(255, 254, 255, 0.97);
   --panel: rgba(252, 250, 255, 0.92);
@@ -922,7 +922,7 @@ canvas {
     background:
       radial-gradient(circle at top left, rgba(149, 117, 223, 0.2), transparent 34%),
       radial-gradient(circle at top right, rgba(120, 94, 196, 0.15), transparent 34%),
-      linear-gradient(180deg, #f5f1fb 0%, #f0ebf8 42%, #e4ddf0 100%);
+      linear-gradient(180deg, #f5f1fb 0%, #ede6f6 42%, #d7cbe7 100%);
   }
 
   .background-glow {
