@@ -169,11 +169,22 @@ fieldset {
 }
 
 .auth-field {
-  flex: 1 1 18rem;
+  flex: 1 1 13rem;
+}
+
+.auth-actions {
+  display: flex;
+  gap: 0.65rem;
+  flex: 1 1 100%;
+}
+
+.secondary-auth-button {
+  background: linear-gradient(180deg, rgba(245, 250, 253, 0.98), rgba(235, 244, 250, 0.94));
 }
 
 .auth-button {
-  min-width: 12rem;
+  min-width: 0;
+  flex: 1 1 0;
 }
 
 .auth-session-panel {
@@ -848,6 +859,11 @@ canvas {
 
   .auth-field {
     flex-basis: auto;
+  }
+
+  .auth-actions {
+    width: 100%;
+    flex-direction: column;
   }
 
   .auth-button,

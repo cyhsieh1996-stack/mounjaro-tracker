@@ -30,7 +30,7 @@
             <p class="section-tag">AUTH</p>
             <h2>登入</h2>
             <p class="auth-help" id="auth-help">
-              請輸入 Email 取得登入連結。
+              請輸入 Email 與密碼。
             </p>
           </div>
 
@@ -39,7 +39,14 @@
               <span>Email</span>
               <input id="email-sign-in-input" type="email" placeholder="name@example.com" autocomplete="email" />
             </label>
-            <button class="primary-button auth-button" id="email-sign-in-button" type="button">寄送登入連結</button>
+            <label class="field auth-field" id="auth-password-field">
+              <span>密碼</span>
+              <input id="password-sign-in-input" type="password" placeholder="至少 6 碼" autocomplete="current-password" />
+            </label>
+            <div class="auth-actions">
+              <button class="primary-button auth-button" id="email-sign-in-button" type="button">登入</button>
+              <button class="ghost-button auth-button secondary-auth-button" id="email-sign-up-button" type="button">註冊</button>
+            </div>
           </div>
         </section>
         <p class="sync-status" id="sync-status">目前使用本機儲存模式</p>

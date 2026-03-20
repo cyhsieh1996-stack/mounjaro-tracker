@@ -30,8 +30,11 @@ const injectionDetailLabel = document.getElementById("injection-detail-label");
 const syncStatus = document.getElementById("sync-status");
 const authPanel = document.getElementById("auth-panel");
 const authEmailField = document.getElementById("auth-email-field");
+const authPasswordField = document.getElementById("auth-password-field");
 const emailSignInInput = document.getElementById("email-sign-in-input");
+const passwordSignInInput = document.getElementById("password-sign-in-input");
 const emailSignInButton = document.getElementById("email-sign-in-button");
+const emailSignUpButton = document.getElementById("email-sign-up-button");
 const authSession = document.getElementById("auth-session");
 const authUserEmail = document.getElementById("auth-user-email");
 const signOutButton = document.getElementById("sign-out-button");
@@ -100,6 +103,13 @@ function bindEvents() {
   });
 
   emailSignInButton.addEventListener("click", handleEmailSignIn);
+  emailSignUpButton.addEventListener("click", handleEmailSignUp);
+  passwordSignInInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleEmailSignIn();
+    }
+  });
   signOutButton.addEventListener("click", handleSignOut);
 
   medicationForm.addEventListener("submit", async (event) => {
@@ -297,47 +307,93 @@ async function handleEmailSignIn() {
     return;
   }
 
-  const email = emailSignInInput.value.trim();
+  const { email, password } = getAuthCredentials();
   if (!email) {
     window.alert("請先輸入 Email。");
     emailSignInInput.focus();
     return;
   }
+  if (!password) {
+    window.alert("請先輸入密碼。");
+    passwordSignInInput.focus();
+    return;
+  }
 
-  emailSignInButton.disabled = true;
+  setAuthButtonsDisabled(true);
 
   try {
-    const redirectTo = getEmailRedirectUrl();
-    const { error } = await supabaseClient.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: redirectTo,
-      },
-    });
+    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
     if (error) {
       throw error;
     }
 
-    window.alert("登入連結已寄出，請到你的 Email 信箱開啟連結完成登入。");
+    passwordSignInInput.value = "";
   } catch (error) {
     console.error(error);
     const details = error?.message ? `\n\n錯誤訊息：${error.message}` : "";
-    window.alert(`寄送登入連結失敗，請稍後再試。${details}`);
+    window.alert(`登入失敗，請確認 Email 與密碼。${details}`);
   } finally {
-    emailSignInButton.disabled = false;
+    setAuthButtonsDisabled(false);
   }
 }
 
-function getEmailRedirectUrl() {
-  const hostname = window.location.hostname;
-  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
-
-  if (isLocalhost) {
-    return `${window.location.origin}${window.location.pathname}`;
+async function handleEmailSignUp() {
+  if (!supabaseClient) {
+    window.alert("目前沒有設定 Supabase，無法使用註冊。");
+    return;
   }
 
-  return "https://mounjaro-tracker.pages.dev/";
+  const { email, password } = getAuthCredentials();
+  if (!email) {
+    window.alert("請先輸入 Email。");
+    emailSignInInput.focus();
+    return;
+  }
+  if (!password) {
+    window.alert("請先輸入密碼。");
+    passwordSignInInput.focus();
+    return;
+  }
+  if (password.length < 6) {
+    window.alert("密碼至少需要 6 碼。");
+    passwordSignInInput.focus();
+    return;
+  }
+
+  setAuthButtonsDisabled(true);
+
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({ email, password });
+    if (error) {
+      throw error;
+    }
+
+    if (data.session) {
+      passwordSignInInput.value = "";
+      return;
+    }
+
+    window.alert("註冊成功，請先到 Email 信箱完成驗證後再登入。");
+  } catch (error) {
+    console.error(error);
+    const details = error?.message ? `\n\n錯誤訊息：${error.message}` : "";
+    window.alert(`註冊失敗，請稍後再試。${details}`);
+  } finally {
+    setAuthButtonsDisabled(false);
+  }
+}
+
+function getAuthCredentials() {
+  return {
+    email: emailSignInInput.value.trim(),
+    password: String(passwordSignInInput.value || ""),
+  };
+}
+
+function setAuthButtonsDisabled(disabled) {
+  emailSignInButton.disabled = disabled;
+  emailSignUpButton.disabled = disabled;
 }
 
 async function handleSignOut() {
@@ -359,7 +415,9 @@ function updateAuthUI() {
   if (!requiresAuth) {
     authPanel.hidden = false;
     authEmailField.hidden = true;
+    authPasswordField.hidden = true;
     emailSignInButton.hidden = true;
+    emailSignUpButton.hidden = true;
     authSession.hidden = true;
     authHelp.textContent = "目前為本機模式，資料只保留在這台裝置的瀏覽器。";
     appContent.classList.remove("is-locked");
@@ -368,12 +426,14 @@ function updateAuthUI() {
 
   authPanel.hidden = isSignedIn;
   authEmailField.hidden = isSignedIn;
+  authPasswordField.hidden = isSignedIn;
   emailSignInButton.hidden = isSignedIn;
+  emailSignUpButton.hidden = isSignedIn;
   authSession.hidden = !isSignedIn;
   authUserEmail.textContent = isSignedIn ? `已登入：${currentSession.user.email}` : "";
   authHelp.textContent = isSignedIn
     ? "目前已登入，只會讀取與寫入你的個人資料。"
-    : "請輸入 Email 取得登入連結。";
+    : "請輸入 Email 與密碼。";
 
   appContent.classList.toggle("is-locked", !isSignedIn);
 }
