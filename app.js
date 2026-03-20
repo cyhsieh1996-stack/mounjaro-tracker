@@ -57,6 +57,7 @@ const supabaseClient = hasSupabaseConfig
 let activeStorageMode = supabaseClient ? "supabase" : "local";
 let eventsBound = false;
 let currentSession = null;
+let hasShownWeightTimeCompatibilityNotice = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   initializeApp().catch((error) => {
@@ -901,7 +902,19 @@ async function fetchSupabaseData() {
 async function upsertSupabaseRecord(collection, record) {
   const table = getSupabaseTable(collection);
   const payload = mapRecordToDb(collection, record);
-  const result = await supabaseClient.from(table).upsert(payload);
+  let result = await supabaseClient.from(table).upsert(payload);
+
+  if (collection === "weights" && isMissingWeightTimeColumnError(result.error)) {
+    const fallbackPayload = { ...payload };
+    delete fallbackPayload.time;
+    result = await supabaseClient.from(table).upsert(fallbackPayload);
+
+    if (!result.error && !hasShownWeightTimeCompatibilityNotice) {
+      hasShownWeightTimeCompatibilityNotice = true;
+      window.alert("目前體重資料已先成功儲存，但雲端資料表尚未完成時間欄位更新，所以這筆體重時間不會被保留。請到 Supabase SQL Editor 重新執行最新的 schema。");
+    }
+  }
+
   handleSupabaseError(result.error);
 }
 
@@ -927,9 +940,20 @@ async function replaceSupabaseData(nextState) {
   }
 
   if (nextState.weights.length) {
-    const result = await supabaseClient
+    let result = await supabaseClient
       .from("weights")
       .insert(nextState.weights.map((item) => mapRecordToDb("weights", item)));
+
+    if (isMissingWeightTimeColumnError(result.error)) {
+      result = await supabaseClient.from("weights").insert(
+        nextState.weights.map((item) => {
+          const payload = mapRecordToDb("weights", item);
+          delete payload.time;
+          return payload;
+        }),
+      );
+    }
+
     handleSupabaseError(result.error);
   }
 
@@ -1015,6 +1039,15 @@ function handleSupabaseError(error) {
   if (error) {
     throw error;
   }
+}
+
+function isMissingWeightTimeColumnError(error) {
+  if (!error) {
+    return false;
+  }
+
+  const message = String(error.message || "").toLowerCase();
+  return message.includes("time") && (message.includes("column") || message.includes("schema cache"));
 }
 
 function renderSyncStatus(mode, fallback = false) {
