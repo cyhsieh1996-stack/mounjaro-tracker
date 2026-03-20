@@ -877,8 +877,8 @@ canvas {
   }
 
   .workspace-header {
-    margin-bottom: 0.75rem;
-    padding: 0.1rem;
+    margin-bottom: 0.6rem;
+    padding: 0.02rem 0.1rem 0.16rem;
   }
 
   .section-heading {
