@@ -176,8 +176,9 @@ function bindEvents() {
     const triglycerides = parseRequiredNumberField(labsForm, "triglycerides", "三酸甘油脂（TG）");
     const fastingGlucose = parseRequiredNumberField(labsForm, "fastingGlucose", "空腹血糖");
     const uricAcid = parseRequiredNumberField(labsForm, "uricAcid", "尿酸");
+    const creatinine = parseRequiredNumberField(labsForm, "creatinine", "Creatinine");
 
-    if ([totalCholesterol, hdl, ldl, triglycerides, fastingGlucose, uricAcid].some((value) => value === null)) {
+    if ([totalCholesterol, hdl, ldl, triglycerides, fastingGlucose, uricAcid, creatinine].some((value) => value === null)) {
       return;
     }
 
@@ -190,6 +191,7 @@ function bindEvents() {
       triglycerides,
       fastingGlucose,
       uricAcid,
+      creatinine,
     };
 
     await saveRecord("labs", record);
@@ -721,6 +723,7 @@ function renderLabsList() {
           <span class="lab-metric"><span class="lab-metric-label">TG</span><span class="lab-metric-value">${item.triglycerides}</span></span>
           <span class="lab-metric"><span class="lab-metric-label">FPG</span><span class="lab-metric-value">${item.fastingGlucose}</span></span>
           <span class="lab-metric"><span class="lab-metric-label">UA</span><span class="lab-metric-value">${formatDecimal(item.uricAcid)}</span></span>
+          <span class="lab-metric"><span class="lab-metric-label">Cr</span><span class="lab-metric-value">${formatDecimal(item.creatinine)}</span></span>
         </div>
       </article>
     `,
@@ -811,6 +814,7 @@ function renderCharts() {
         buildLabDataset("TG", labsData, "triglycerides", "#d89a1d"),
         buildLabDataset("空腹血糖", labsData, "fastingGlucose", "#8c4cc9"),
         buildLabDataset("尿酸", labsData, "uricAcid", "#3f5db7"),
+        buildLabDataset("Creatinine", labsData, "creatinine", "#5d6f86"),
       ],
     },
     options: getChartOptions(),
@@ -1130,6 +1134,7 @@ function mapRecordToDb(collection, record) {
     triglycerides: record.triglycerides,
     fasting_glucose: record.fastingGlucose,
     uric_acid: record.uricAcid,
+    creatinine: record.creatinine,
   };
 }
 
@@ -1162,6 +1167,7 @@ function mapLabFromDb(record) {
     triglycerides: Number(record.triglycerides),
     fastingGlucose: Number(record.fasting_glucose),
     uricAcid: Number(record.uric_acid),
+    creatinine: Number(record.creatinine),
   };
 }
 
