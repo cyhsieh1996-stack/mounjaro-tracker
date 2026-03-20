@@ -568,8 +568,8 @@ fieldset {
 }
 
 #medication-list .record-card {
-  background: linear-gradient(180deg, rgba(242, 219, 207, 0.96), rgba(229, 199, 184, 0.9));
-  border-color: rgba(199, 102, 65, 0.2);
+  background: linear-gradient(180deg, rgba(242, 234, 184, 0.98), rgba(229, 218, 151, 0.92));
+  border-color: rgba(188, 158, 58, 0.22);
 }
 
 #weight-list .record-card {
