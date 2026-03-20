@@ -8,6 +8,13 @@
   --panel-soft: linear-gradient(180deg, rgba(250, 248, 255, 0.97), rgba(242, 237, 250, 0.92));
   --panel-soft-strong: linear-gradient(180deg, rgba(248, 244, 253, 0.99), rgba(239, 233, 248, 0.94));
   --panel-border: rgba(127, 108, 177, 0.14);
+  --surface-soft: linear-gradient(180deg, rgba(250, 246, 255, 0.98), rgba(241, 235, 250, 0.94));
+  --surface-tint: linear-gradient(180deg, rgba(252, 250, 255, 0.98), rgba(244, 239, 251, 0.95));
+  --workspace-tint: linear-gradient(180deg, rgba(249, 246, 255, 0.95), rgba(240, 234, 249, 0.84));
+  --card-soft: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  --record-soft: linear-gradient(180deg, rgba(247, 243, 254, 0.99), rgba(237, 230, 248, 0.96));
+  --interactive-border: rgba(149, 130, 194, 0.18);
+  --card-shadow-soft: 0 10px 26px rgba(80, 51, 132, 0.06);
   --text: #251c40;
   --muted: #74688f;
   --accent: #6f35c8;
@@ -142,7 +149,7 @@ fieldset {
   align-items: start;
   padding: 1.15rem;
   background:
-    linear-gradient(180deg, rgba(252, 250, 255, 0.98), rgba(244, 239, 251, 0.95)),
+    var(--surface-tint),
     linear-gradient(135deg, rgba(111, 53, 200, 0.05), transparent 58%);
   border-color: rgba(111, 53, 200, 0.16);
   box-shadow:
@@ -194,7 +201,7 @@ fieldset {
 }
 
 .secondary-auth-button {
-  background: linear-gradient(180deg, rgba(250, 246, 255, 0.98), rgba(241, 235, 250, 0.94));
+  background: var(--surface-soft);
 }
 
 .auth-button {
@@ -256,7 +263,7 @@ fieldset {
   margin-top: 0.2rem;
   margin-bottom: 1.1rem;
   padding: 0.9rem;
-  background: linear-gradient(180deg, rgba(251, 249, 255, 0.98), rgba(242, 237, 250, 0.94));
+  background: var(--panel-soft);
   border: 1px solid rgba(127, 108, 177, 0.12);
   box-shadow: 0 16px 36px rgba(80, 51, 132, 0.07);
 }
@@ -295,8 +302,8 @@ fieldset {
 
 .ghost-button {
   padding: 0.9rem 1rem;
-  background: linear-gradient(180deg, rgba(250, 246, 255, 0.98), rgba(241, 235, 250, 0.94));
-  border: 1px solid rgba(127, 108, 177, 0.18);
+  background: var(--surface-soft);
+  border: 1px solid var(--interactive-border);
   color: var(--text);
   font-weight: 600;
 }
@@ -332,7 +339,7 @@ fieldset {
 .summary-chip {
   padding: 0.92rem 1rem 0.88rem;
   border-radius: 20px;
-  background: linear-gradient(180deg, rgba(252, 250, 255, 0.98), rgba(243, 238, 251, 0.94));
+  background: var(--surface-tint);
   border: 1px solid rgba(127, 108, 177, 0.12);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
@@ -355,12 +362,12 @@ fieldset {
 }
 
 .workspace-input {
-  background: linear-gradient(180deg, rgba(249, 246, 255, 0.92), rgba(241, 235, 250, 0.8));
+  background: var(--workspace-tint);
   border: 1px solid rgba(111, 53, 200, 0.12);
 }
 
 .workspace-browse {
-  background: linear-gradient(180deg, rgba(249, 246, 255, 0.97), rgba(240, 234, 249, 0.84));
+  background: var(--workspace-tint);
   border: 1px solid rgba(127, 108, 177, 0.1);
 }
 
@@ -405,9 +412,9 @@ fieldset {
 }
 
 .tab {
-  border: 1px solid rgba(149, 130, 194, 0.18);
+  border: 1px solid var(--interactive-border);
   background: rgba(244, 239, 251, 0.96);
-  color: #74688f;
+  color: var(--muted);
   padding: 0.75rem 1rem;
   font-weight: 700;
 }
@@ -451,10 +458,10 @@ fieldset {
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  border: 1px solid rgba(149, 130, 194, 0.18);
+  border: 1px solid var(--interactive-border);
   border-radius: 16px;
   padding: 0.95rem 1rem;
-  background: linear-gradient(180deg, rgba(250, 247, 255, 0.98), rgba(242, 237, 250, 0.94));
+  background: var(--surface-soft);
   color: var(--text);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -581,9 +588,9 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(1) {
-  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  background: var(--card-soft);
   border-color: rgba(149, 130, 194, 0.14);
-  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
+  box-shadow: var(--card-shadow-soft);
 }
 
 .browse-top-grid > .panel:nth-child(1)::before {
@@ -591,9 +598,9 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(2) {
-  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  background: var(--card-soft);
   border-color: rgba(149, 130, 194, 0.14);
-  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
+  box-shadow: var(--card-shadow-soft);
 }
 
 .browse-top-grid > .panel:nth-child(2)::before {
@@ -601,9 +608,9 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(3) {
-  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  background: var(--card-soft);
   border-color: rgba(149, 130, 194, 0.14);
-  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
+  box-shadow: var(--card-shadow-soft);
 }
 
 .browse-top-grid > .panel:nth-child(3)::before {
@@ -611,9 +618,9 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(4) {
-  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  background: var(--card-soft);
   border-color: rgba(149, 130, 194, 0.14);
-  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
+  box-shadow: var(--card-shadow-soft);
 }
 
 .browse-top-grid > .panel:nth-child(4)::before {
@@ -631,9 +638,9 @@ fieldset {
 }
 
 .trends-grid > .panel:nth-child(1) {
-  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  background: var(--card-soft);
   border-color: rgba(149, 130, 194, 0.14);
-  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
+  box-shadow: var(--card-shadow-soft);
 }
 
 .trends-grid > .panel:nth-child(1)::before {
@@ -641,9 +648,9 @@ fieldset {
 }
 
 .trends-grid > .panel:nth-child(2) {
-  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  background: var(--card-soft);
   border-color: rgba(149, 130, 194, 0.14);
-  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
+  box-shadow: var(--card-shadow-soft);
 }
 
 .trends-grid > .panel:nth-child(2)::before {
@@ -660,7 +667,7 @@ fieldset {
   margin-bottom: 0.2rem;
   font-size: 0.64rem;
   letter-spacing: 0.2em;
-  color: #6f5e8e;
+  color: var(--muted);
 }
 
 .browse-top-grid .section-heading h2,
@@ -680,7 +687,7 @@ fieldset {
 .record-card {
   border-radius: 20px;
   padding: 0.96rem 1rem 0.82rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(245, 240, 251, 0.96));
+  background: var(--surface-tint);
   border: 1px solid rgba(149, 130, 194, 0.13);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88), 0 6px 14px rgba(80, 51, 132, 0.04);
 }
@@ -689,7 +696,7 @@ fieldset {
 #weight-list .record-card,
 #labs-list .record-card,
 #inbody-list .record-card {
-  background: linear-gradient(180deg, rgba(247, 243, 254, 0.99), rgba(237, 230, 248, 0.96));
+  background: var(--record-soft);
   border-color: rgba(149, 130, 194, 0.15);
 }
 
@@ -785,7 +792,7 @@ fieldset {
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #7b6e97;
+  color: var(--muted);
 }
 
 .lab-metric-value {
@@ -793,22 +800,7 @@ fieldset {
   font-weight: 680;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: #251c40;
-}
-
-#inbody-list .lab-metric-label {
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #7b6e97;
-}
-
-#inbody-list .lab-metric-value {
-  font-size: 0.98rem;
-  font-weight: 680;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: #251c40;
+  color: var(--text);
 }
 
 .record-card p {
@@ -834,9 +826,9 @@ fieldset {
 #weight-list .record-button,
 #labs-list .record-button,
 #inbody-list .record-button {
-  background: linear-gradient(180deg, rgba(245, 240, 252, 0.98), rgba(235, 227, 248, 0.96));
+  background: var(--surface-soft);
   border: 1px solid rgba(149, 130, 194, 0.16);
-  color: #6f5e8e;
+  color: var(--muted);
 }
 
 .empty-state {
