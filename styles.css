@@ -572,13 +572,13 @@ fieldset {
 }
 
 .record-actions {
-  margin-top: 0.65rem;
+  margin-top: 0.4rem;
   display: flex;
   justify-content: flex-end;
 }
 
 .record-button {
-  padding: 0.55rem 0.85rem;
+  padding: 0.46rem 0.8rem;
   background: rgba(170, 59, 47, 0.11);
   border: 1px solid rgba(170, 59, 47, 0.15);
   color: var(--danger);
@@ -909,12 +909,12 @@ canvas {
   }
 
   .record-actions {
-    margin-top: 0.55rem;
+    margin-top: 0.32rem;
   }
 
   .record-button {
     min-height: 2.5rem;
-    padding: 0.52rem 0.8rem;
+    padding: 0.46rem 0.78rem;
     border-radius: 12px;
     font-size: 0.88rem;
   }

@@ -371,15 +371,12 @@ async function handleDelete(event) {
     return;
   }
 
-  const { deleteId, deleteType } = button.dataset;
-  const collections = {
-    medication: "medications",
-    weight: "weights",
-    lab: "labs",
-  };
+  const { deleteId, deleteCollection } = button.dataset;
+  if (!deleteCollection) {
+    return;
+  }
 
-  const key = collections[deleteType];
-  await removeRecord(key, deleteId);
+  await removeRecord(deleteCollection, deleteId);
 }
 
 async function saveRecord(collection, record) {
@@ -418,7 +415,8 @@ async function removeRecord(collection, id) {
     render();
   } catch (error) {
     console.error(error);
-    window.alert("刪除資料失敗，請稍後再試。");
+    const detail = error instanceof Error && error.message ? `\n${error.message}` : "";
+    window.alert(`刪除資料失敗，請稍後再試。${detail}`);
   }
 }
 
@@ -472,7 +470,7 @@ function renderMedicationList() {
               <p>施打位置：${item.injectionSite || "未填位置"}</p>
               <p>${item.note || "無備註"}</p>
               <div class="record-actions">
-                <button class="record-button" type="button" data-delete-type="medication" data-delete-id="${item.id}">刪除</button>
+                <button class="record-button" type="button" data-delete-collection="medications" data-delete-id="${item.id}">刪除</button>
               </div>
             </article>
           `,
@@ -495,7 +493,7 @@ function renderWeightList() {
               </div>
               <p>${item.note || "無備註"}</p>
               <div class="record-actions">
-                <button class="record-button" type="button" data-delete-type="weight" data-delete-id="${item.id}">刪除</button>
+                <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
               </div>
             </article>
           `,
@@ -520,7 +518,7 @@ function renderLabsList() {
               <p>TG ${item.triglycerides} / FPG ${item.fastingGlucose} mg/dL</p>
               <p>${item.note || "無備註"}</p>
               <div class="record-actions">
-                <button class="record-button" type="button" data-delete-type="lab" data-delete-id="${item.id}">刪除</button>
+                <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
               </div>
             </article>
           `,
