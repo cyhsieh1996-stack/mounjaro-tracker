@@ -1,20 +1,20 @@
 :root {
   color-scheme: light;
-  --bg: #eef5f8;
-  --bg-strong: #dfeaf0;
-  --surface: rgba(247, 251, 253, 0.82);
-  --surface-strong: rgba(252, 254, 255, 0.96);
-  --panel: rgba(250, 253, 255, 0.9);
-  --panel-soft: linear-gradient(180deg, rgba(247, 251, 254, 0.96), rgba(237, 245, 250, 0.9));
-  --panel-soft-strong: linear-gradient(180deg, rgba(243, 249, 252, 0.98), rgba(232, 241, 247, 0.92));
-  --panel-border: rgba(89, 121, 146, 0.14);
-  --text: #153247;
-  --muted: #5f7890;
-  --accent: #2f7fa3;
-  --accent-deep: #1d5e7c;
-  --accent-soft: rgba(47, 127, 163, 0.1);
-  --accent-line: rgba(47, 127, 163, 0.22);
-  --shadow: 0 20px 48px rgba(47, 86, 112, 0.12);
+  --bg: #f3f0fb;
+  --bg-strong: #e6e0f4;
+  --surface: rgba(250, 248, 255, 0.84);
+  --surface-strong: rgba(255, 254, 255, 0.97);
+  --panel: rgba(252, 250, 255, 0.92);
+  --panel-soft: linear-gradient(180deg, rgba(250, 248, 255, 0.97), rgba(242, 237, 250, 0.92));
+  --panel-soft-strong: linear-gradient(180deg, rgba(248, 244, 253, 0.99), rgba(239, 233, 248, 0.94));
+  --panel-border: rgba(127, 108, 177, 0.14);
+  --text: #251c40;
+  --muted: #74688f;
+  --accent: #6f35c8;
+  --accent-deep: #4f2495;
+  --accent-soft: rgba(111, 53, 200, 0.1);
+  --accent-line: rgba(111, 53, 200, 0.22);
+  --shadow: 0 20px 48px rgba(80, 51, 132, 0.13);
   --success: #327069;
   --danger: #aa3b2f;
 }
@@ -32,9 +32,9 @@ body {
   min-height: 100vh;
   font-family: "Noto Sans TC", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(123, 186, 216, 0.22), transparent 28%),
-    radial-gradient(circle at top right, rgba(126, 198, 180, 0.18), transparent 30%),
-    linear-gradient(160deg, var(--bg) 0%, #f7fbfd 44%, var(--bg-strong) 100%);
+    radial-gradient(circle at top left, rgba(149, 117, 223, 0.22), transparent 28%),
+    radial-gradient(circle at top right, rgba(120, 94, 196, 0.16), transparent 30%),
+    linear-gradient(160deg, var(--bg) 0%, #faf8fe 44%, var(--bg-strong) 100%);
   color: var(--text);
 }
 
@@ -61,13 +61,13 @@ fieldset {
 }
 
 .background-glow-left {
-  background: rgba(113, 182, 213, 0.4);
+  background: rgba(130, 93, 210, 0.34);
   top: 3rem;
   left: -4rem;
 }
 
 .background-glow-right {
-  background: rgba(110, 183, 167, 0.34);
+  background: rgba(171, 132, 239, 0.28);
   top: 8rem;
   right: -5rem;
 }
@@ -109,7 +109,7 @@ fieldset {
   inset: 0.18rem auto 0.18rem 0;
   width: 4px;
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(47, 127, 163, 0.92), rgba(72, 158, 188, 0.4));
+  background: linear-gradient(180deg, rgba(111, 53, 200, 0.92), rgba(161, 115, 229, 0.42));
 }
 
 .hero h1,
@@ -129,8 +129,8 @@ fieldset {
   width: fit-content;
   max-width: 100%;
   border-radius: 999px;
-  background: rgba(240, 248, 252, 0.92);
-  border: 1px solid rgba(89, 121, 146, 0.14);
+  background: rgba(248, 244, 253, 0.92);
+  border: 1px solid rgba(127, 108, 177, 0.14);
   color: var(--muted);
   font-size: 0.92rem;
 }
@@ -142,11 +142,11 @@ fieldset {
   align-items: start;
   padding: 1.15rem;
   background:
-    linear-gradient(180deg, rgba(248, 252, 254, 0.98), rgba(237, 245, 250, 0.94)),
-    linear-gradient(135deg, rgba(47, 127, 163, 0.05), transparent 58%);
-  border-color: rgba(47, 127, 163, 0.16);
+    linear-gradient(180deg, rgba(252, 250, 255, 0.98), rgba(244, 239, 251, 0.95)),
+    linear-gradient(135deg, rgba(111, 53, 200, 0.05), transparent 58%);
+  border-color: rgba(111, 53, 200, 0.16);
   box-shadow:
-    0 20px 48px rgba(47, 86, 112, 0.08),
+    0 20px 48px rgba(80, 51, 132, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
@@ -194,7 +194,7 @@ fieldset {
 }
 
 .secondary-auth-button {
-  background: linear-gradient(180deg, rgba(245, 250, 253, 0.98), rgba(235, 244, 250, 0.94));
+  background: linear-gradient(180deg, rgba(250, 246, 255, 0.98), rgba(241, 235, 250, 0.94));
 }
 
 .auth-button {
@@ -279,8 +279,8 @@ fieldset {
 
 .ghost-button {
   padding: 0.9rem 1rem;
-  background: linear-gradient(180deg, rgba(245, 250, 253, 0.98), rgba(235, 244, 250, 0.94));
-  border: 1px solid rgba(126, 155, 182, 0.18);
+  background: linear-gradient(180deg, rgba(250, 246, 255, 0.98), rgba(241, 235, 250, 0.94));
+  border: 1px solid rgba(127, 108, 177, 0.18);
   color: var(--text);
   font-weight: 600;
 }
@@ -308,13 +308,13 @@ fieldset {
 }
 
 .workspace-input {
-  background: linear-gradient(180deg, rgba(244, 250, 253, 0.9), rgba(237, 245, 250, 0.76));
-  border: 1px solid rgba(47, 127, 163, 0.12);
+  background: linear-gradient(180deg, rgba(249, 246, 255, 0.92), rgba(241, 235, 250, 0.8));
+  border: 1px solid rgba(111, 53, 200, 0.12);
 }
 
 .workspace-browse {
-  background: linear-gradient(180deg, rgba(245, 250, 253, 0.96), rgba(234, 242, 248, 0.82));
-  border: 1px solid rgba(89, 121, 146, 0.1);
+  background: linear-gradient(180deg, rgba(249, 246, 255, 0.97), rgba(240, 234, 249, 0.84));
+  border: 1px solid rgba(127, 108, 177, 0.1);
 }
 
 .workspace-header {
@@ -365,17 +365,17 @@ fieldset {
 }
 
 .tab {
-  border: 1px solid rgba(127, 156, 181, 0.18);
-  background: rgba(233, 242, 248, 0.96);
-  color: #5f7690;
+  border: 1px solid rgba(149, 130, 194, 0.18);
+  background: rgba(244, 239, 251, 0.96);
+  color: #74688f;
   padding: 0.75rem 1rem;
   font-weight: 700;
 }
 
 .tab.active {
-  background: linear-gradient(180deg, rgba(191, 221, 239, 0.96), rgba(216, 235, 246, 0.98));
+  background: linear-gradient(180deg, rgba(232, 219, 250, 0.97), rgba(244, 236, 252, 0.99));
   color: var(--accent-deep);
-  border-color: rgba(78, 127, 166, 0.3);
+  border-color: rgba(132, 95, 207, 0.28);
   font-weight: 700;
 }
 
@@ -411,10 +411,10 @@ fieldset {
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  border: 1px solid rgba(126, 155, 182, 0.18);
+  border: 1px solid rgba(149, 130, 194, 0.18);
   border-radius: 16px;
   padding: 0.95rem 1rem;
-  background: linear-gradient(180deg, rgba(245, 250, 253, 0.98), rgba(237, 245, 250, 0.94));
+  background: linear-gradient(180deg, rgba(250, 247, 255, 0.98), rgba(242, 237, 250, 0.94));
   color: var(--text);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -436,12 +436,12 @@ fieldset {
 
 .field input:focus,
 .field select:focus {
-  outline: 2px solid rgba(96, 146, 190, 0.22);
-  border-color: rgba(96, 146, 190, 0.34);
+  outline: 2px solid rgba(132, 95, 207, 0.22);
+  border-color: rgba(132, 95, 207, 0.34);
 }
 
 .field input::placeholder {
-  color: rgba(110, 136, 158, 0.88);
+  color: rgba(123, 111, 154, 0.88);
 }
 
 .dose-fieldset {
@@ -482,8 +482,8 @@ fieldset {
 }
 
 .dose-option input:checked + span {
-  background: linear-gradient(135deg, rgba(213, 231, 242, 0.95), rgba(233, 245, 250, 0.98));
-  border-color: rgba(71, 109, 199, 0.38);
+  background: linear-gradient(135deg, rgba(235, 224, 251, 0.95), rgba(246, 239, 253, 0.98));
+  border-color: rgba(132, 95, 207, 0.36);
   color: var(--accent-deep);
 }
 
@@ -498,10 +498,10 @@ fieldset {
 .primary-button {
   margin-top: 1rem;
   padding: 0.95rem 1.2rem;
-  background: linear-gradient(135deg, #2f7fa3 0%, #4da8c3 100%);
+  background: linear-gradient(135deg, #6f35c8 0%, #8b55de 100%);
   color: white;
   font-weight: 700;
-  box-shadow: 0 14px 28px rgba(47, 127, 163, 0.22);
+  box-shadow: 0 14px 28px rgba(111, 53, 200, 0.22);
 }
 
 .primary-button-wide {
@@ -541,33 +541,33 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(1) {
-  background: linear-gradient(180deg, rgba(253, 254, 255, 0.99), rgba(246, 250, 253, 0.96));
-  border-color: rgba(146, 174, 198, 0.14);
-  box-shadow: 0 10px 26px rgba(87, 116, 145, 0.045);
+  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  border-color: rgba(149, 130, 194, 0.14);
+  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
 }
 
 .browse-top-grid > .panel:nth-child(1)::before {
-  background: linear-gradient(180deg, rgba(71, 109, 199, 0.88), rgba(111, 161, 224, 0.52));
+  background: linear-gradient(180deg, rgba(111, 53, 200, 0.88), rgba(171, 132, 239, 0.52));
 }
 
 .browse-top-grid > .panel:nth-child(2) {
-  background: linear-gradient(180deg, rgba(253, 254, 255, 0.99), rgba(246, 250, 253, 0.96));
-  border-color: rgba(146, 174, 198, 0.14);
-  box-shadow: 0 10px 26px rgba(87, 116, 145, 0.045);
+  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  border-color: rgba(149, 130, 194, 0.14);
+  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
 }
 
 .browse-top-grid > .panel:nth-child(2)::before {
-  background: linear-gradient(180deg, rgba(71, 109, 199, 0.88), rgba(111, 161, 224, 0.52));
+  background: linear-gradient(180deg, rgba(111, 53, 200, 0.88), rgba(171, 132, 239, 0.52));
 }
 
 .browse-top-grid > .panel:nth-child(3) {
-  background: linear-gradient(180deg, rgba(253, 254, 255, 0.99), rgba(246, 250, 253, 0.96));
-  border-color: rgba(146, 174, 198, 0.14);
-  box-shadow: 0 10px 26px rgba(87, 116, 145, 0.045);
+  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  border-color: rgba(149, 130, 194, 0.14);
+  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
 }
 
 .browse-top-grid > .panel:nth-child(3)::before {
-  background: linear-gradient(180deg, rgba(71, 109, 199, 0.88), rgba(111, 161, 224, 0.52));
+  background: linear-gradient(180deg, rgba(111, 53, 200, 0.88), rgba(171, 132, 239, 0.52));
 }
 
 .trends-grid {
@@ -581,23 +581,23 @@ fieldset {
 }
 
 .trends-grid > .panel:nth-child(1) {
-  background: linear-gradient(180deg, rgba(253, 254, 255, 0.99), rgba(246, 250, 253, 0.96));
-  border-color: rgba(146, 174, 198, 0.14);
-  box-shadow: 0 10px 26px rgba(87, 116, 145, 0.045);
+  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  border-color: rgba(149, 130, 194, 0.14);
+  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
 }
 
 .trends-grid > .panel:nth-child(1)::before {
-  background: linear-gradient(180deg, rgba(71, 109, 199, 0.88), rgba(111, 161, 224, 0.52));
+  background: linear-gradient(180deg, rgba(111, 53, 200, 0.88), rgba(171, 132, 239, 0.52));
 }
 
 .trends-grid > .panel:nth-child(2) {
-  background: linear-gradient(180deg, rgba(253, 254, 255, 0.99), rgba(246, 250, 253, 0.96));
-  border-color: rgba(146, 174, 198, 0.14);
-  box-shadow: 0 10px 26px rgba(87, 116, 145, 0.045);
+  background: linear-gradient(180deg, rgba(253, 251, 255, 0.99), rgba(246, 240, 251, 0.96));
+  border-color: rgba(149, 130, 194, 0.14);
+  box-shadow: 0 10px 26px rgba(80, 51, 132, 0.06);
 }
 
 .trends-grid > .panel:nth-child(2)::before {
-  background: linear-gradient(180deg, rgba(71, 109, 199, 0.88), rgba(111, 161, 224, 0.52));
+  background: linear-gradient(180deg, rgba(111, 53, 200, 0.88), rgba(171, 132, 239, 0.52));
 }
 
 .browse-top-grid .section-heading.compact,
@@ -610,7 +610,7 @@ fieldset {
   margin-bottom: 0.2rem;
   font-size: 0.64rem;
   letter-spacing: 0.2em;
-  color: #587a96;
+  color: #6f5e8e;
 }
 
 .browse-top-grid .section-heading h2,
@@ -630,16 +630,16 @@ fieldset {
 .record-card {
   border-radius: 20px;
   padding: 0.96rem 1rem 0.82rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(246, 250, 253, 0.96));
-  border: 1px solid rgba(146, 174, 198, 0.13);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88), 0 6px 14px rgba(87, 116, 145, 0.035);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(245, 240, 251, 0.96));
+  border: 1px solid rgba(149, 130, 194, 0.13);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88), 0 6px 14px rgba(80, 51, 132, 0.04);
 }
 
 #medication-list .record-card,
 #weight-list .record-card,
 #labs-list .record-card {
-  background: linear-gradient(180deg, rgba(245, 250, 254, 0.99), rgba(232, 242, 249, 0.96));
-  border-color: rgba(146, 174, 198, 0.15);
+  background: linear-gradient(180deg, rgba(247, 243, 254, 0.99), rgba(237, 230, 248, 0.96));
+  border-color: rgba(149, 130, 194, 0.15);
 }
 
 #labs-list .record-card-header h3 {
@@ -717,7 +717,7 @@ fieldset {
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: #6a8298;
+  color: #7b6e97;
 }
 
 .lab-metric-value {
@@ -725,7 +725,7 @@ fieldset {
   font-weight: 680;
   line-height: 1.2;
   letter-spacing: -0.01em;
-  color: #112436;
+  color: #251c40;
 }
 
 .record-card p {
@@ -756,9 +756,9 @@ fieldset {
 #medication-list .record-button,
 #weight-list .record-button,
 #labs-list .record-button {
-  background: linear-gradient(180deg, rgba(243, 248, 252, 0.98), rgba(231, 239, 246, 0.96));
-  border: 1px solid rgba(146, 174, 198, 0.16);
-  color: #567896;
+  background: linear-gradient(180deg, rgba(245, 240, 252, 0.98), rgba(235, 227, 248, 0.96));
+  border: 1px solid rgba(149, 130, 194, 0.16);
+  color: #6f5e8e;
 }
 
 .empty-state {
@@ -840,9 +840,9 @@ canvas {
 @media (max-width: 720px) {
   body {
     background:
-      radial-gradient(circle at top left, rgba(123, 186, 216, 0.2), transparent 34%),
-      radial-gradient(circle at top right, rgba(126, 198, 180, 0.15), transparent 34%),
-      linear-gradient(180deg, #f1f7fa 0%, #ecf4f8 42%, #dfe8ee 100%);
+      radial-gradient(circle at top left, rgba(149, 117, 223, 0.2), transparent 34%),
+      radial-gradient(circle at top right, rgba(120, 94, 196, 0.15), transparent 34%),
+      linear-gradient(180deg, #f5f1fb 0%, #f0ebf8 42%, #e4ddf0 100%);
   }
 
   .background-glow {
@@ -902,7 +902,7 @@ canvas {
     width: 7.5rem;
     height: 7.5rem;
     border-radius: 999px;
-    background: radial-gradient(circle, rgba(96, 146, 190, 0.13), transparent 68%);
+    background: radial-gradient(circle, rgba(126, 96, 190, 0.13), transparent 68%);
     pointer-events: none;
   }
 
@@ -956,11 +956,11 @@ canvas {
   }
 
   .workspace-input {
-    background: linear-gradient(180deg, rgba(244, 250, 253, 0.94), rgba(236, 244, 249, 0.8));
+    background: linear-gradient(180deg, rgba(248, 244, 253, 0.94), rgba(240, 234, 249, 0.8));
   }
 
   .workspace-browse {
-    background: linear-gradient(180deg, rgba(244, 250, 253, 0.96), rgba(232, 241, 247, 0.84));
+    background: linear-gradient(180deg, rgba(248, 244, 253, 0.96), rgba(239, 232, 248, 0.84));
   }
 
   .workspace-header {
@@ -1036,7 +1036,7 @@ canvas {
   }
 
   .field input::placeholder {
-    color: rgba(110, 136, 158, 0.84);
+    color: rgba(123, 111, 154, 0.84);
   }
 
   .dose-fieldset {
@@ -1068,7 +1068,7 @@ canvas {
     max-width: none;
     padding-top: 1rem;
     padding-bottom: 1rem;
-    box-shadow: 0 12px 24px rgba(47, 127, 163, 0.18);
+    box-shadow: 0 12px 24px rgba(111, 53, 200, 0.18);
   }
 
   #medication-form .primary-button-wide {
@@ -1169,8 +1169,8 @@ canvas {
   .quick-actions .ghost-button,
   .quick-actions .danger-button {
     border-radius: 14px;
-    background: linear-gradient(180deg, rgba(245, 250, 253, 0.98), rgba(235, 244, 250, 0.94));
-    border-color: rgba(126, 155, 182, 0.18);
+    background: linear-gradient(180deg, rgba(250, 246, 255, 0.98), rgba(241, 235, 250, 0.94));
+    border-color: rgba(127, 108, 177, 0.18);
   }
 }
 
