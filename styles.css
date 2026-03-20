@@ -162,20 +162,33 @@ fieldset {
 }
 
 .auth-form {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(10.5rem, 0.72fr);
+  grid-template-areas:
+    "email actions"
+    "password actions";
   gap: 0.8rem;
-  align-items: end;
+  align-items: start;
 }
 
 .auth-field {
-  flex: 1 1 13rem;
+  min-width: 0;
+}
+
+#auth-email-field {
+  grid-area: email;
+}
+
+#auth-password-field {
+  grid-area: password;
 }
 
 .auth-actions {
-  display: flex;
+  grid-area: actions;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.65rem;
-  flex: 1 1 100%;
+  align-self: stretch;
 }
 
 .secondary-auth-button {
@@ -184,7 +197,7 @@ fieldset {
 
 .auth-button {
   min-width: 0;
-  flex: 1 1 0;
+  width: 100%;
 }
 
 .auth-session-panel {
@@ -852,9 +865,16 @@ canvas {
 
   .auth-form,
   .auth-session-panel {
-    flex-direction: column;
-    align-items: stretch;
     gap: 0.7rem;
+  }
+
+  .auth-form {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "email"
+      "password"
+      "actions";
+    align-items: stretch;
   }
 
   .auth-field {
@@ -863,7 +883,6 @@ canvas {
 
   .auth-actions {
     width: 100%;
-    flex-direction: column;
   }
 
   .auth-button,
