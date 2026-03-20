@@ -963,7 +963,7 @@ canvas {
 
   .app-shell {
     width: min(100vw - 1.5rem, 100%);
-    padding: 0.98rem 0 0.85rem;
+    padding: 0.98rem 0 0.18rem;
   }
 
   .hero {
@@ -1354,6 +1354,7 @@ canvas {
 @media (max-width: 420px) {
   .app-shell {
     width: min(100vw - 1.1rem, 100%);
+    padding-bottom: 0.12rem;
   }
 
   .hero {
