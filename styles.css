@@ -500,13 +500,13 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(1) {
-  background: linear-gradient(180deg, rgba(252, 242, 236, 0.96), rgba(244, 229, 220, 0.9));
-  border-color: rgba(199, 102, 65, 0.18);
-  box-shadow: 0 18px 36px rgba(138, 79, 52, 0.1);
+  background: linear-gradient(180deg, rgba(237, 246, 247, 0.97), rgba(224, 238, 241, 0.91));
+  border-color: rgba(78, 141, 154, 0.2);
+  box-shadow: 0 18px 36px rgba(70, 118, 132, 0.09);
 }
 
 .browse-top-grid > .panel:nth-child(1)::before {
-  background: linear-gradient(180deg, rgba(199, 102, 65, 0.9), rgba(224, 139, 72, 0.6));
+  background: linear-gradient(180deg, rgba(74, 131, 146, 0.9), rgba(111, 173, 190, 0.56));
 }
 
 .browse-top-grid > .panel:nth-child(2) {
@@ -573,8 +573,8 @@ fieldset {
 }
 
 #medication-list .record-card {
-  background: linear-gradient(180deg, rgba(242, 234, 184, 0.98), rgba(229, 218, 151, 0.92));
-  border-color: rgba(188, 158, 58, 0.22);
+  background: linear-gradient(180deg, rgba(214, 232, 236, 0.98), rgba(197, 220, 226, 0.93));
+  border-color: rgba(78, 141, 154, 0.22);
 }
 
 #weight-list .record-card {
@@ -657,9 +657,9 @@ fieldset {
 }
 
 #medication-list .record-button {
-  background: linear-gradient(180deg, rgba(229, 214, 132, 0.98), rgba(216, 198, 107, 0.94));
-  border: 1px solid rgba(188, 158, 58, 0.28);
-  color: #7b641a;
+  background: linear-gradient(180deg, rgba(188, 214, 221, 0.98), rgba(171, 199, 208, 0.94));
+  border: 1px solid rgba(78, 141, 154, 0.24);
+  color: #2f6873;
 }
 
 #weight-list .record-button {
