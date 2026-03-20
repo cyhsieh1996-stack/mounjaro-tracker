@@ -307,6 +307,38 @@ fieldset {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
+.input-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 0.85rem;
+}
+
+.summary-chip {
+  padding: 0.92rem 1rem 0.88rem;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(252, 250, 255, 0.98), rgba(243, 238, 251, 0.94));
+  border: 1px solid rgba(127, 108, 177, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.summary-chip-label {
+  margin: 0 0 0.32rem;
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.summary-chip-value {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
 .workspace-input {
   background: linear-gradient(180deg, rgba(249, 246, 255, 0.92), rgba(241, 235, 250, 0.8));
   border: 1px solid rgba(111, 53, 200, 0.12);
@@ -953,6 +985,26 @@ canvas {
     margin-top: 0.9rem;
     padding: 0.7rem;
     border-radius: 22px;
+  }
+
+  .input-summary {
+    grid-template-columns: 1fr;
+    gap: 0.62rem;
+    margin-bottom: 0.72rem;
+  }
+
+  .summary-chip {
+    padding: 0.82rem 0.9rem 0.8rem;
+    border-radius: 18px;
+  }
+
+  .summary-chip-label {
+    margin-bottom: 0.22rem;
+    font-size: 0.72rem;
+  }
+
+  .summary-chip-value {
+    font-size: 0.95rem;
   }
 
   .workspace-input {

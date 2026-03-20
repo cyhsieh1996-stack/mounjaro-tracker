@@ -28,6 +28,8 @@ const injectionRegionSelect = document.getElementById("injection-region");
 const injectionDetailSelect = document.getElementById("injection-detail");
 const injectionDetailLabel = document.getElementById("injection-detail-label");
 const syncStatus = document.getElementById("sync-status");
+const latestMedicationSummary = document.getElementById("latest-medication-summary");
+const latestWeightSummary = document.getElementById("latest-weight-summary");
 const authPanel = document.getElementById("auth-panel");
 const authEmailField = document.getElementById("auth-email-field");
 const authPasswordField = document.getElementById("auth-password-field");
@@ -580,10 +582,24 @@ function parseRequiredNumberField(form, fieldName, fieldLabel) {
 }
 
 function render() {
+  renderInputSummary();
   renderMedicationList();
   renderWeightList();
   renderLabsList();
   renderCharts();
+}
+
+function renderInputSummary() {
+  const latestMedication = [...state.medications].sort(sortByDateTimeDesc)[0];
+  const latestWeight = [...state.weights].sort(sortByWeightDateTimeDesc)[0];
+
+  latestMedicationSummary.textContent = latestMedication
+    ? `${latestMedication.injectionSite} / ${latestMedication.dose} mg`
+    : "尚無資料";
+
+  latestWeightSummary.textContent = latestWeight
+    ? `${latestWeight.weight.toFixed(1)} kg`
+    : "尚無資料";
 }
 
 function renderMedicationList() {
@@ -1095,5 +1111,9 @@ function sortByDateAsc(a, b) {
 }
 
 function sortByDateTimeDesc(a, b) {
-  return new Date(`${b.date}T${b.time}`) - new Date(`${a.date}T${a.time}`);
+  return new Date(`${b.date}T${b.time || "00:00"}`) - new Date(`${a.date}T${a.time || "00:00"}`);
+}
+
+function sortByWeightDateTimeDesc(a, b) {
+  return new Date(`${b.date}T${b.time || "00:00"}`) - new Date(`${a.date}T${a.time || "00:00"}`);
 }
