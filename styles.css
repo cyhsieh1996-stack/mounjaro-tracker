@@ -687,12 +687,14 @@ fieldset {
 
 #medication-list .record-card,
 #weight-list .record-card,
-#labs-list .record-card {
+#labs-list .record-card,
+#inbody-list .record-card {
   background: linear-gradient(180deg, rgba(247, 243, 254, 0.99), rgba(237, 230, 248, 0.96));
   border-color: rgba(149, 130, 194, 0.15);
 }
 
-#labs-list .record-card-header h3 {
+#labs-list .record-card-header h3,
+#inbody-list .record-card-header h3 {
   font-size: 1rem;
   font-weight: 750;
   color: #000;
@@ -726,6 +728,17 @@ fieldset {
   letter-spacing: -0.01em;
 }
 
+.record-datetime {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.record-date-line,
+.record-time-line {
+  display: block;
+  white-space: nowrap;
+}
+
 .record-card-header strong {
   font-size: 1rem;
   line-height: 1;
@@ -739,7 +752,8 @@ fieldset {
   margin-top: 0.16rem;
 }
 
-#labs-list .record-card .record-button {
+#labs-list .record-card .record-button,
+#inbody-list .record-card .record-button {
   padding: 0.34rem 0.74rem;
   margin-top: -0.08rem;
 }
@@ -775,6 +789,21 @@ fieldset {
 }
 
 .lab-metric-value {
+  font-size: 0.98rem;
+  font-weight: 680;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #251c40;
+}
+
+#inbody-list .lab-metric-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7b6e97;
+}
+
+#inbody-list .lab-metric-value {
   font-size: 0.98rem;
   font-weight: 680;
   line-height: 1.2;
