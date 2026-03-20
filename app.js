@@ -591,7 +591,7 @@ function renderMedicationList() {
           (item) => `
             <article class="record-card">
               <div class="record-card-header">
-                <h3>${formatDate(item.date)} ${item.time}</h3>
+                <h3>${formatDate(item.date, true)} ${item.time}</h3>
                 <div class="record-card-header-actions">
                   <strong>${item.dose} mg</strong>
                   <button class="record-button" type="button" data-delete-collection="medications" data-delete-id="${item.id}">刪除</button>
@@ -614,7 +614,7 @@ function renderWeightList() {
           (item) => `
             <article class="record-card">
               <div class="record-card-header">
-                <h3>${formatDate(item.date)}</h3>
+                <h3>${formatDate(item.date, true)}</h3>
                 <div class="record-card-header-actions">
                   <strong>${item.weight.toFixed(1)} kg</strong>
                   <button class="record-button" type="button" data-delete-collection="weights" data-delete-id="${item.id}">刪除</button>
@@ -636,7 +636,7 @@ function renderLabsList() {
           (item) => `
             <article class="record-card">
               <div class="record-card-header record-card-header-inline-action">
-                <h3>${formatDate(item.date)}</h3>
+                <h3>${formatDate(item.date, true)}</h3>
                 <button class="record-button" type="button" data-delete-collection="labs" data-delete-id="${item.id}">刪除</button>
               </div>
               <div class="lab-metrics">
