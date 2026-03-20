@@ -307,7 +307,7 @@ async function handleEmailSignIn() {
   emailSignInButton.disabled = true;
 
   try {
-    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const redirectTo = getEmailRedirectUrl();
     const { error } = await supabaseClient.auth.signInWithOtp({
       email,
       options: {
@@ -322,10 +322,22 @@ async function handleEmailSignIn() {
     window.alert("登入連結已寄出，請到你的 Email 信箱開啟連結完成登入。");
   } catch (error) {
     console.error(error);
-    window.alert("寄送登入連結失敗，請稍後再試。");
+    const details = error?.message ? `\n\n錯誤訊息：${error.message}` : "";
+    window.alert(`寄送登入連結失敗，請稍後再試。${details}`);
   } finally {
     emailSignInButton.disabled = false;
   }
+}
+
+function getEmailRedirectUrl() {
+  const hostname = window.location.hostname;
+  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+
+  if (isLocalhost) {
+    return `${window.location.origin}${window.location.pathname}`;
+  }
+
+  return "https://mounjaro-tracker.pages.dev/";
 }
 
 async function handleSignOut() {
