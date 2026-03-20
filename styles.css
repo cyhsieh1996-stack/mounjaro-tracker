@@ -491,13 +491,13 @@ fieldset {
 }
 
 .browse-top-grid > .panel:nth-child(2) {
-  background: linear-gradient(180deg, rgba(249, 244, 236, 0.96), rgba(239, 231, 220, 0.9));
-  border-color: rgba(143, 122, 96, 0.18);
-  box-shadow: 0 18px 36px rgba(110, 92, 72, 0.08);
+  background: linear-gradient(180deg, rgba(238, 245, 252, 0.97), rgba(225, 236, 248, 0.9));
+  border-color: rgba(86, 126, 183, 0.2);
+  box-shadow: 0 18px 36px rgba(72, 104, 150, 0.08);
 }
 
 .browse-top-grid > .panel:nth-child(2)::before {
-  background: linear-gradient(180deg, rgba(143, 122, 96, 0.88), rgba(198, 170, 132, 0.55));
+  background: linear-gradient(180deg, rgba(71, 109, 199, 0.9), rgba(111, 161, 224, 0.58));
 }
 
 .browse-top-grid > .panel:nth-child(3) {
@@ -521,13 +521,13 @@ fieldset {
 }
 
 .trends-grid > .panel:nth-child(1) {
-  background: linear-gradient(180deg, rgba(251, 243, 236, 0.97), rgba(242, 231, 221, 0.91));
-  border-color: rgba(180, 120, 83, 0.18);
-  box-shadow: 0 18px 36px rgba(120, 83, 56, 0.08);
+  background: linear-gradient(180deg, rgba(238, 245, 252, 0.97), rgba(226, 236, 248, 0.91));
+  border-color: rgba(86, 126, 183, 0.18);
+  box-shadow: 0 18px 36px rgba(72, 104, 150, 0.08);
 }
 
 .trends-grid > .panel:nth-child(1)::before {
-  background: linear-gradient(180deg, rgba(180, 120, 83, 0.88), rgba(226, 172, 108, 0.52));
+  background: linear-gradient(180deg, rgba(71, 109, 199, 0.88), rgba(111, 161, 224, 0.52));
 }
 
 .trends-grid > .panel:nth-child(2) {
@@ -550,6 +550,21 @@ fieldset {
   padding: 0.9rem;
   background: linear-gradient(180deg, rgba(244, 233, 220, 0.9), rgba(235, 223, 209, 0.84));
   border: 1px solid rgba(123, 101, 82, 0.12);
+}
+
+#medication-list .record-card {
+  background: linear-gradient(180deg, rgba(242, 219, 207, 0.96), rgba(229, 199, 184, 0.9));
+  border-color: rgba(199, 102, 65, 0.2);
+}
+
+#weight-list .record-card {
+  background: linear-gradient(180deg, rgba(214, 228, 244, 0.97), rgba(198, 217, 238, 0.9));
+  border-color: rgba(71, 109, 199, 0.18);
+}
+
+#labs-list .record-card {
+  background: linear-gradient(180deg, rgba(217, 229, 211, 0.97), rgba(201, 217, 194, 0.91));
+  border-color: rgba(106, 132, 108, 0.2);
 }
 
 .record-card-header {
