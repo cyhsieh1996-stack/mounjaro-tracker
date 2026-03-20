@@ -28,6 +28,14 @@ const injectionRegionSelect = document.getElementById("injection-region");
 const injectionDetailSelect = document.getElementById("injection-detail");
 const injectionDetailLabel = document.getElementById("injection-detail-label");
 const syncStatus = document.getElementById("sync-status");
+const authForm = document.getElementById("auth-form");
+const authEmailInput = document.getElementById("auth-email");
+const authSubmitButton = document.getElementById("auth-submit-button");
+const authSession = document.getElementById("auth-session");
+const authUserEmail = document.getElementById("auth-user-email");
+const signOutButton = document.getElementById("sign-out-button");
+const authHelp = document.getElementById("auth-help");
+const appContent = document.getElementById("app-content");
 
 const injectionSiteOptions = {
   肚臍: ["左側", "右側", "上方", "下方"],
@@ -41,16 +49,22 @@ const hasSupabaseConfig = Boolean(supabaseConfig.url && supabaseConfig.anonKey &
 const supabaseClient = hasSupabaseConfig
   ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey)
   : null;
+
 let activeStorageMode = supabaseClient ? "supabase" : "local";
 let eventsBound = false;
+let currentSession = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   initializeApp().catch((error) => {
     console.error(error);
     window.alert("初始化資料時發生問題，已切換成本機模式。");
-    renderSyncStatus("local", true);
+    activeStorageMode = "local";
+    currentSession = null;
+    Object.assign(state, loadState());
     setDefaultFormValues();
     bindEvents();
+    updateAuthUI();
+    renderSyncStatus("local", true);
     render();
   });
 });
@@ -58,7 +72,8 @@ document.addEventListener("DOMContentLoaded", () => {
 async function initializeApp() {
   setDefaultFormValues();
   bindEvents();
-  await loadInitialData();
+  await setupStorageMode();
+  updateAuthUI();
   render();
 }
 
@@ -83,8 +98,16 @@ function bindEvents() {
     );
   });
 
+  authForm.addEventListener("submit", handleAuthSubmit);
+  signOutButton.addEventListener("click", handleSignOut);
+
   medicationForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!canWriteRecords()) {
+      window.alert("請先登入後再新增資料。");
+      return;
+    }
+
     const formData = new FormData(medicationForm);
     const record = {
       id: crypto.randomUUID(),
@@ -106,6 +129,11 @@ function bindEvents() {
 
   weightForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!canWriteRecords()) {
+      window.alert("請先登入後再新增資料。");
+      return;
+    }
+
     const formData = new FormData(weightForm);
     const record = {
       id: crypto.randomUUID(),
@@ -121,6 +149,11 @@ function bindEvents() {
 
   labsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (!canWriteRecords()) {
+      window.alert("請先登入後再新增資料。");
+      return;
+    }
+
     const formData = new FormData(labsForm);
     const record = {
       id: crypto.randomUUID(),
@@ -147,26 +180,52 @@ function bindEvents() {
   clearDataButton.addEventListener("click", clearAllData);
 }
 
-async function loadInitialData() {
+async function setupStorageMode() {
   if (!supabaseClient) {
-    Object.assign(state, loadState());
     activeStorageMode = "local";
+    currentSession = null;
+    Object.assign(state, loadState());
     renderSyncStatus("local");
     return;
   }
 
-  try {
-    const remoteData = await fetchSupabaseData();
-    Object.assign(state, remoteData);
-    saveState();
-    activeStorageMode = "supabase";
-    renderSyncStatus("supabase");
-  } catch (error) {
-    console.error("Supabase load failed, fallback to localStorage.", error);
-    Object.assign(state, loadState());
-    activeStorageMode = "local";
-    renderSyncStatus("local", true);
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error) {
+    throw error;
   }
+
+  currentSession = data.session;
+
+  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+    currentSession = session;
+    if (currentSession) {
+      activeStorageMode = "supabase";
+      await loadRemoteRecords();
+      renderSyncStatus("supabase");
+    } else {
+      Object.assign(state, { medications: [], weights: [], labs: [] });
+      renderSyncStatus("auth-required");
+    }
+
+    updateAuthUI();
+    render();
+  });
+
+  if (currentSession) {
+    activeStorageMode = "supabase";
+    await loadRemoteRecords();
+    renderSyncStatus("supabase");
+  } else {
+    activeStorageMode = "supabase";
+    Object.assign(state, { medications: [], weights: [], labs: [] });
+    renderSyncStatus("auth-required");
+  }
+}
+
+async function loadRemoteRecords() {
+  const remoteData = await fetchSupabaseData();
+  Object.assign(state, remoteData);
+  saveState();
 }
 
 function setDefaultFormValues() {
@@ -212,9 +271,89 @@ function setActiveTab(formId) {
   });
 }
 
+async function handleAuthSubmit(event) {
+  event.preventDefault();
+  if (!supabaseClient) {
+    window.alert("目前沒有設定 Supabase，無法使用登入。");
+    return;
+  }
+
+  const email = authEmailInput.value.trim();
+  if (!email) {
+    return;
+  }
+
+  authSubmitButton.disabled = true;
+
+  try {
+    const redirectTo = `${window.location.origin}${window.location.pathname}`;
+    const { error } = await supabaseClient.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: redirectTo,
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    authHelp.textContent = "登入連結已寄出，請到信箱點擊後再回到這個頁面。";
+    authForm.reset();
+  } catch (error) {
+    console.error(error);
+    window.alert("寄送登入連結失敗，請確認 email 是否正確。");
+  } finally {
+    authSubmitButton.disabled = false;
+  }
+}
+
+async function handleSignOut() {
+  if (!supabaseClient) {
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.signOut();
+  if (error) {
+    console.error(error);
+    window.alert("登出失敗，請稍後再試。");
+  }
+}
+
+function updateAuthUI() {
+  const requiresAuth = Boolean(supabaseClient);
+  const isSignedIn = Boolean(currentSession?.user);
+
+  if (!requiresAuth) {
+    authForm.hidden = true;
+    authSession.hidden = true;
+    authHelp.textContent = "目前為本機模式，資料只保留在這台裝置的瀏覽器。";
+    appContent.classList.remove("is-locked");
+    return;
+  }
+
+  authForm.hidden = isSignedIn;
+  authSession.hidden = !isSignedIn;
+  authUserEmail.textContent = isSignedIn ? `已登入：${currentSession.user.email}` : "";
+  authHelp.textContent = isSignedIn
+    ? "目前已登入，只會讀取與寫入你的個人資料。"
+    : "請輸入你的 email，系統會寄出登入連結。登入後你只能看到自己的資料。";
+
+  appContent.classList.toggle("is-locked", !isSignedIn);
+}
+
+function canWriteRecords() {
+  return activeStorageMode === "local" || Boolean(currentSession?.user);
+}
+
 async function handleDelete(event) {
   const button = event.target.closest("[data-delete-id]");
   if (!button) {
+    return;
+  }
+
+  if (!canWriteRecords()) {
+    window.alert("請先登入後再刪除資料。");
     return;
   }
 
@@ -233,8 +372,7 @@ async function saveRecord(collection, record) {
   try {
     if (activeStorageMode === "supabase" && supabaseClient) {
       await upsertSupabaseRecord(collection, record);
-      Object.assign(state, await fetchSupabaseData());
-      saveState();
+      await loadRemoteRecords();
       renderSyncStatus("supabase");
     } else {
       state[collection].push(record);
@@ -254,8 +392,7 @@ async function removeRecord(collection, id) {
   try {
     if (activeStorageMode === "supabase" && supabaseClient) {
       await deleteSupabaseRecord(collection, id);
-      Object.assign(state, await fetchSupabaseData());
-      saveState();
+      await loadRemoteRecords();
       renderSyncStatus("supabase");
     } else {
       state[collection] = state[collection].filter((item) => item.id !== id);
@@ -275,7 +412,6 @@ function sortCollection(collection) {
     state[collection].sort(sortByDateTimeDesc);
     return;
   }
-
   state[collection].sort(sortByDateDesc);
 }
 
@@ -482,6 +618,11 @@ function getChartOptions(unit, yAxisOverrides = {}) {
 }
 
 function exportData() {
+  if (!canWriteRecords()) {
+    window.alert("請先登入後再匯出資料。");
+    return;
+  }
+
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -497,6 +638,12 @@ async function importData(event) {
     return;
   }
 
+  if (!canWriteRecords()) {
+    window.alert("請先登入後再匯入資料。");
+    importInput.value = "";
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = async () => {
     try {
@@ -509,8 +656,7 @@ async function importData(event) {
 
       if (activeStorageMode === "supabase" && supabaseClient) {
         await replaceSupabaseData(nextState);
-        Object.assign(state, await fetchSupabaseData());
-        saveState();
+        await loadRemoteRecords();
         renderSyncStatus("supabase");
       } else {
         Object.assign(state, nextState);
@@ -531,6 +677,11 @@ async function importData(event) {
 }
 
 async function clearAllData() {
+  if (!canWriteRecords()) {
+    window.alert("請先登入後再清空資料。");
+    return;
+  }
+
   const shouldClear = window.confirm("確定要清空所有資料嗎？這個動作無法復原。");
   if (!shouldClear) {
     return;
@@ -540,7 +691,6 @@ async function clearAllData() {
     if (activeStorageMode === "supabase" && supabaseClient) {
       await replaceSupabaseData({ medications: [], weights: [], labs: [] });
       Object.assign(state, { medications: [], weights: [], labs: [] });
-      saveState();
       renderSyncStatus("supabase");
     } else {
       Object.assign(state, { medications: [], weights: [], labs: [] });
@@ -609,11 +759,12 @@ async function deleteSupabaseRecord(collection, id) {
 }
 
 async function replaceSupabaseData(nextState) {
-  await Promise.all([
+  const results = await Promise.all([
     supabaseClient.from("medications").delete().not("id", "is", null),
     supabaseClient.from("weights").delete().not("id", "is", null),
     supabaseClient.from("labs").delete().not("id", "is", null),
-  ]).then((results) => results.forEach((result) => handleSupabaseError(result.error)));
+  ]);
+  results.forEach((result) => handleSupabaseError(result.error));
 
   if (nextState.medications.length) {
     const result = await supabaseClient
@@ -724,6 +875,11 @@ function renderSyncStatus(mode, fallback = false) {
 
   if (mode === "supabase") {
     syncStatus.textContent = "目前使用 Supabase 雲端同步模式";
+    return;
+  }
+
+  if (mode === "auth-required") {
+    syncStatus.textContent = "請先登入，登入後只會看到自己的資料";
     return;
   }
 

@@ -113,6 +113,56 @@ fieldset {
   font-size: 0.92rem;
 }
 
+.auth-panel {
+  display: grid;
+  gap: 1rem;
+  align-items: end;
+}
+
+.auth-copy h2 {
+  margin: 0;
+}
+
+.auth-help {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.auth-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: end;
+}
+
+.auth-field {
+  flex: 1 1 18rem;
+}
+
+.auth-button {
+  min-width: 12rem;
+}
+
+.auth-session {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.auth-user {
+  margin: 0;
+  font-weight: 700;
+}
+
+#app-content.is-locked {
+  opacity: 0.42;
+  pointer-events: none;
+  user-select: none;
+}
+
 .hero-stats,
 .browse-top-grid,
 .trends-grid,
@@ -499,5 +549,15 @@ canvas {
   .ghost-button,
   .file-button {
     justify-content: center;
+  }
+
+  .auth-form,
+  .auth-session {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .auth-button {
+    width: 100%;
   }
 }

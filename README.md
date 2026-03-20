@@ -11,7 +11,7 @@
 這個專案現在支援兩種模式：
 
 1. 本機模式：資料存瀏覽器 `localStorage`
-2. Supabase 模式：資料存雲端資料庫，可跨裝置同步
+2. Supabase 模式：資料存雲端資料庫，可跨裝置同步，並透過 email 登入隔離每位使用者資料
 
 如果 `config.js` 沒有填 Supabase 金鑰，網站會自動使用本機模式。
 
@@ -60,24 +60,42 @@ http://你的電腦區網IP:8080
 - `weights`
 - `labs`
 
-目前策略是「共用資料模式」：
+目前策略是「登入後只看自己的資料」：
 
-- 任何拿到網站的人都能讀寫同一份資料
-- 適合團隊共用單一資料池
+- 每一筆資料都會綁定登入者
+- 使用者登入後只會看到自己的用藥、體重與檢驗紀錄
+- 適合多人一起使用同一個網站
 
-如果你之後要改成「每位同事只能看自己的資料」，我可以再幫你加登入與權限。
-
-## 第 3 步：取得 Supabase 金鑰
+## 第 3 步：設定登入與取得 Supabase 金鑰
 
 到 Supabase project 的：
 
 - `Settings`
-- `API`
+- `Authentication`
+- `URL Configuration`
+
+請把 `Site URL` 設成你之後部署好的網站網址，例如：
+
+```text
+https://mounjaro-tracker.pages.dev
+```
+
+如果你會同時用本機測試，也可以把下面網址加進 `Redirect URLs`：
+
+```text
+http://localhost:8080
+http://localhost:8081
+```
+
+然後再到：
+
+- `Settings`
+- `API Keys`
 
 記下兩個值：
 
 1. `Project URL`
-2. `anon public key`
+2. `Publishable key`
 
 ## 第 4 步：填入前端設定
 
@@ -87,7 +105,7 @@ http://你的電腦區網IP:8080
 window.APP_CONFIG = {
   supabase: {
     url: "https://YOUR_PROJECT_ID.supabase.co",
-    anonKey: "YOUR_SUPABASE_ANON_KEY",
+    anonKey: "YOUR_SUPABASE_PUBLISHABLE_KEY",
   },
 };
 ```
@@ -167,18 +185,18 @@ Build output directory: /
 資料存在 Supabase 雲端資料庫：
 
 - 手機和電腦可共用
-- 同事也能看到同一份資料
+- 每位同事登入後只會看到自己的資料
 - 不再依賴單一裝置的瀏覽器
 
 ## 目前最重要的注意事項
 
-這個版本的 Supabase 設定是「共用資料模式」。
+這個版本的 Supabase 設定是「email magic link 登入」。
 
 意思是：
 
-- 知道網站網址的人，都能存取同一份資料
-- 適合小團隊內部先使用
-- 不適合公開給外部不特定人員
+- 使用者輸入 email 後，系統會寄出登入連結
+- 登入後只會讀寫自己的資料
+- 不需要另外建立密碼欄位
 
 如果你接下來要正式給同事使用，我建議下一步做：
 
