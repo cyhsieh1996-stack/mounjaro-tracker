@@ -979,23 +979,34 @@ function saveState() {
 }
 
 async function fetchSupabaseData() {
-  const [medicationsResult, weightsResult, labsResult, inbodyResult] = await Promise.all([
+  const [medicationsResult, weightsResult, labsResult] = await Promise.all([
     supabaseClient.from("medications").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
     supabaseClient.from("weights").select("*").order("date", { ascending: false }).order("time", { ascending: false }),
     supabaseClient.from("labs").select("*").order("date", { ascending: false }),
-    supabaseClient.from("inbody").select("*").order("date", { ascending: false }),
   ]);
 
   handleSupabaseError(medicationsResult.error);
   handleSupabaseError(weightsResult.error);
   handleSupabaseError(labsResult.error);
-  handleSupabaseError(inbodyResult.error);
+
+  let inbodyRecords = [];
+  try {
+    const inbodyResult = await supabaseClient.from("inbody").select("*").order("date", { ascending: false });
+    handleSupabaseError(inbodyResult.error);
+    inbodyRecords = (inbodyResult.data || []).map(mapInBodyFromDb);
+  } catch (error) {
+    if (isMissingInBodyTableError(error)) {
+      console.warn("InBody 資料表尚未建立，已略過 InBody 初始化。", error);
+    } else {
+      throw error;
+    }
+  }
 
   return {
     medications: (medicationsResult.data || []).map(mapMedicationFromDb),
     weights: (weightsResult.data || []).map(mapWeightFromDb),
     labs: (labsResult.data || []).map(mapLabFromDb),
-    inbody: (inbodyResult.data || []).map(mapInBodyFromDb),
+    inbody: inbodyRecords,
   };
 }
 
@@ -1003,12 +1014,18 @@ async function upsertSupabaseRecord(collection, record) {
   const table = getSupabaseTable(collection);
   const payload = mapRecordToDb(collection, record);
   const result = await supabaseClient.from(table).upsert(payload);
+  if (collection === "inbody" && isMissingInBodyTableError(result.error)) {
+    throw new Error("Supabase 尚未建立 InBody 資料表，請先到 SQL Editor 重新執行最新的 supabase-schema.sql。");
+  }
   handleSupabaseError(result.error);
 }
 
 async function deleteSupabaseRecord(collection, id) {
   const table = getSupabaseTable(collection);
   const result = await supabaseClient.from(table).delete().eq("id", id);
+  if (collection === "inbody" && isMissingInBodyTableError(result.error)) {
+    throw new Error("Supabase 尚未建立 InBody 資料表，請先到 SQL Editor 重新執行最新的 supabase-schema.sql。");
+  }
   handleSupabaseError(result.error);
 }
 
@@ -1017,9 +1034,17 @@ async function replaceSupabaseData(nextState) {
     supabaseClient.from("medications").delete().not("id", "is", null),
     supabaseClient.from("weights").delete().not("id", "is", null),
     supabaseClient.from("labs").delete().not("id", "is", null),
-    supabaseClient.from("inbody").delete().not("id", "is", null),
   ]);
   results.forEach((result) => handleSupabaseError(result.error));
+
+  const inbodyDeleteResult = await supabaseClient.from("inbody").delete().not("id", "is", null);
+  if (isMissingInBodyTableError(inbodyDeleteResult.error)) {
+    if (nextState.inbody.length) {
+      throw new Error("Supabase 尚未建立 InBody 資料表，請先到 SQL Editor 重新執行最新的 supabase-schema.sql。");
+    }
+  } else {
+    handleSupabaseError(inbodyDeleteResult.error);
+  }
 
   if (nextState.medications.length) {
     const result = await supabaseClient
@@ -1046,6 +1071,9 @@ async function replaceSupabaseData(nextState) {
     const result = await supabaseClient
       .from("inbody")
       .insert(nextState.inbody.map((item) => mapRecordToDb("inbody", item)));
+    if (isMissingInBodyTableError(result.error)) {
+      throw new Error("Supabase 尚未建立 InBody 資料表，請先到 SQL Editor 重新執行最新的 supabase-schema.sql。");
+    }
     handleSupabaseError(result.error);
   }
 }
@@ -1153,6 +1181,15 @@ function handleSupabaseError(error) {
   if (error) {
     throw error;
   }
+}
+
+function isMissingInBodyTableError(error) {
+  if (!error) {
+    return false;
+  }
+
+  const message = String(error.message || error.details || "");
+  return error.code === "42P01" || /relation .*inbody/i.test(message);
 }
 
 function renderSyncStatus(mode, fallback = false) {
