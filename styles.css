@@ -1315,6 +1315,14 @@ canvas {
     min-height: 2.9rem;
   }
 
+  .workspace-header .section-toggle {
+    width: auto;
+    min-width: 0;
+    min-height: 0;
+    margin-left: auto;
+    padding: 0.34rem 0.58rem;
+  }
+
   .quick-actions .ghost-button,
   .quick-actions .danger-button {
     border-radius: 14px;
