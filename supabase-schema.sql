@@ -43,6 +43,10 @@ alter table medications enable row level security;
 alter table weights enable row level security;
 alter table labs enable row level security;
 
+drop policy if exists "shared medications access" on medications;
+drop policy if exists "shared weights access" on weights;
+drop policy if exists "shared labs access" on labs;
+
 drop policy if exists "medications_select_own" on medications;
 drop policy if exists "medications_insert_own" on medications;
 drop policy if exists "medications_update_own" on medications;

@@ -78,6 +78,8 @@ http://你的電腦區網IP:8080
 - `Email`
 - `Enable Email provider`
 - `Confirm email` 建議保持開啟
+- `Password security`
+- `Leaked password protection` 建議打開
 
 然後再到：
 
