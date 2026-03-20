@@ -325,17 +325,17 @@ fieldset {
 }
 
 .tab {
-  border: 1px solid var(--panel-border);
-  background: rgba(249, 252, 254, 0.76);
-  color: var(--muted);
+  border: 1px solid rgba(127, 156, 181, 0.18);
+  background: rgba(233, 242, 248, 0.96);
+  color: #5f7690;
   padding: 0.75rem 1rem;
   font-weight: 700;
 }
 
 .tab.active {
-  background: linear-gradient(180deg, rgba(219, 238, 246, 0.86), rgba(246, 251, 253, 0.98));
+  background: linear-gradient(180deg, rgba(191, 221, 239, 0.96), rgba(216, 235, 246, 0.98));
   color: var(--accent-deep);
-  border-color: var(--accent-line);
+  border-color: rgba(78, 127, 166, 0.3);
   font-weight: 700;
 }
 
@@ -862,10 +862,10 @@ canvas {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.45rem;
-    padding: 0.28rem;
-    border-radius: 18px;
-    background: rgba(240, 247, 251, 0.92);
-    border: 1px solid rgba(89, 121, 146, 0.1);
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
   }
 
   .tab {
