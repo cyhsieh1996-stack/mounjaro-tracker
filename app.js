@@ -156,7 +156,7 @@ function bindEvents() {
 
   labsForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (!ensureFormValid(labsForm, "檢驗紀錄")) {
+    if (!ensureLabsFormValid()) {
       return;
     }
     if (!canWriteRecords()) {
@@ -164,16 +164,26 @@ function bindEvents() {
       return;
     }
 
-    const formData = new FormData(labsForm);
+    const date = String(labsForm.elements.date.value || "").trim();
+    const totalCholesterol = parseRequiredNumberField(labsForm, "totalCholesterol", "總膽固醇");
+    const hdl = parseRequiredNumberField(labsForm, "hdl", "高密度膽固醇（HDL）");
+    const ldl = parseRequiredNumberField(labsForm, "ldl", "低密度膽固醇（LDL）");
+    const triglycerides = parseRequiredNumberField(labsForm, "triglycerides", "三酸甘油脂（TG）");
+    const fastingGlucose = parseRequiredNumberField(labsForm, "fastingGlucose", "空腹血糖");
+
+    if ([totalCholesterol, hdl, ldl, triglycerides, fastingGlucose].some((value) => value === null)) {
+      return;
+    }
+
     const record = {
       id: crypto.randomUUID(),
-      date: String(formData.get("date")),
-      totalCholesterol: Number(formData.get("totalCholesterol")),
-      hdl: Number(formData.get("hdl")),
-      ldl: Number(formData.get("ldl")),
-      triglycerides: Number(formData.get("triglycerides")),
-      fastingGlucose: Number(formData.get("fastingGlucose")),
-      note: String(formData.get("note")).trim(),
+      date,
+      totalCholesterol,
+      hdl,
+      ldl,
+      triglycerides,
+      fastingGlucose,
+      note: String(labsForm.elements.note.value || "").trim(),
     };
 
     await saveRecord("labs", record);
@@ -446,6 +456,47 @@ function ensureFormValid(form, formLabel) {
   }
 
   return false;
+}
+
+function ensureLabsFormValid() {
+  const dateField = labsForm.elements.date;
+  if (!String(dateField.value || "").trim()) {
+    dateField.scrollIntoView({ behavior: "smooth", block: "center" });
+    dateField.focus({ preventScroll: true });
+    window.alert("請先完成「檢驗日期」再儲存檢驗紀錄。");
+    return false;
+  }
+
+  return true;
+}
+
+function parseRequiredNumberField(form, fieldName, fieldLabel) {
+  const field = form.elements[fieldName];
+  const rawValue = String(field.value || "").trim();
+
+  if (!rawValue) {
+    field.scrollIntoView({ behavior: "smooth", block: "center" });
+    field.focus({ preventScroll: true });
+    window.alert(`請先完成「${fieldLabel}」再儲存檢驗紀錄。`);
+    return null;
+  }
+
+  const parsed = Number(rawValue);
+  if (!Number.isFinite(parsed)) {
+    field.scrollIntoView({ behavior: "smooth", block: "center" });
+    field.focus({ preventScroll: true });
+    window.alert(`「${fieldLabel}」請輸入有效數字。`);
+    return null;
+  }
+
+  if (parsed < 0) {
+    field.scrollIntoView({ behavior: "smooth", block: "center" });
+    field.focus({ preventScroll: true });
+    window.alert(`「${fieldLabel}」不能小於 0。`);
+    return null;
+  }
+
+  return parsed;
 }
 
 function render() {
