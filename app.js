@@ -52,7 +52,7 @@ const inputWorkspaceBody = document.getElementById("input-workspace-body");
 const browseWorkspaceBody = document.getElementById("browse-workspace-body");
 
 const injectionSiteOptions = {
-  肚臍: ["右上", "左上", "右下", "左下"],
+  肚臍: ["左側", "右側", "上方", "下方", "右上", "左上", "右下", "左下"],
   大腿: ["左腿外側", "右腿外側"],
   上臂: ["左上臂外側", "右上臂外側"],
 };
